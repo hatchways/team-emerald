@@ -3,7 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development nodemon app/server.js"
+    "dev": "NODE_ENV=development nodemon app/server.js",
+    "lint": "eslint .",
+    "prettier": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|md|graphql|mdx)\"",
+    "format": "npm run prettier -- --write",
+    "validate": "npm run lint && npm run prettier -- --list-different"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "root": true,
   "dependencies": {
@@ -25,7 +34,8 @@
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-prettier": "^3.1.1",
+    "husky": "^3.0.9",
+    "lint-staged": "^10.0.0-1",
     "nodemon": "^1.19.4",
     "prettier": "^1.19.1"
   }
