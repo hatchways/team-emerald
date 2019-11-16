@@ -5,6 +5,8 @@ const morgan = require('morgan');
 const connectDB = require('./utils/database');
 const errorHandler = require('./middleware/error');
 
+const indexRouter = require('./routes/index');
+
 // Connect to database
 connectDB();
 
@@ -21,11 +23,10 @@ if (process.env.NODE_ENV === 'development') {
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-/* eslint-disable-next-line no-unused-vars */
-app.get('/', (req, res, next) => {
-  res.status(200).json({ success: true });
-});
+// API routes
+app.use('/', indexRouter);
 
+// Error handler
 app.use(errorHandler);
 
 module.exports = app;
