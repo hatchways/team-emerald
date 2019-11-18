@@ -1,5 +1,9 @@
+require('colors');
 const mongoose = require('mongoose');
 
+/**
+ * Connect to MongoDB
+ */
 const connectDB = async () => {
   let uri;
   if (process.env.NODE_ENV === 'test') {
