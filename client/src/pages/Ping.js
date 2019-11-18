@@ -1,34 +1,36 @@
-import { FormControl, TextField, Button, Typography } from "@material-ui/core";
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { FormControl, TextField, Button, Typography } from '@material-ui/core';
 
 function Ping(props) {
-  const [result, setResult] = useState("");
-  const [answer, setAnswer] = useState("");
+  const [result, setResult] = useState('');
+  const [answer, setAnswer] = useState('');
+
+  const { incrementStep } = props;
   useEffect(() => {
-    props.incrementStep();
-  }, []);
+    incrementStep();
+  }, [incrementStep]);
 
   const submitAnswer = () => {
     let status;
-    fetch("/ping", {
-      method: "POST",
+    fetch('/ping', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ teamName: answer })
+      body: JSON.stringify({ teamName: answer }),
     })
       .then(res => {
         status = res.status;
         if (status < 500) return res.json();
-        else throw Error("Server error");
+        throw Error('Server error');
       })
       .then(res => {
         setResult(res.response);
         if (status === 200) props.incrementStep();
       })
       .catch(err => {
-        console.log(err.message);
+        console.log(err.message); // eslint-disable-line no-console
       });
   };
 
@@ -42,7 +44,7 @@ function Ping(props) {
 
       <FormControl>
         <TextField
-          label={"first name"}
+          label="first name"
           onChange={e => setAnswer(e.target.value)}
         />
       </FormControl>
@@ -50,5 +52,9 @@ function Ping(props) {
     </div>
   );
 }
+
+Ping.propTypes = {
+  incrementStep: PropTypes.func.isRequired,
+};
 
 export default Ping;
