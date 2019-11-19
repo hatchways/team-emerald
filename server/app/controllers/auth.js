@@ -106,10 +106,7 @@ const login = asyncHandler(async (req, res, next) => {
  */
 // eslint-disable-next-line no-unused-vars
 const logout = asyncHandler(async (req, res, next) => {
-  res.cookie('token', 'none', {
-    expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true,
-  });
+  res.clearCookie('token');
 
   res.status(200).json({
     success: true,
