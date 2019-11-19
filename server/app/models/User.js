@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const ErrorResponse = require('../utils/errorResponse');
+
 const options = {
   timestamps: true,
 };
@@ -42,6 +44,20 @@ UserSchema.pre('save', async function encryptPassword(next) {
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   next();
+});
+
+// Custom middleware error handler after save
+UserSchema.post('save', (error, doc, next) => {
+  console.log(error);
+  if (
+    error.name === 'MongoError' &&
+    error.code === 11000 &&
+    error.keyPattern.email
+  ) {
+    next(new ErrorResponse('The email entered is already taken', 400));
+  } else {
+    next();
+  }
 });
 
 // Sign JWT and return
