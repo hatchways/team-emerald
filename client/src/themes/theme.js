@@ -3,7 +3,8 @@ import red from '@material-ui/core/colors/red';
 
 const theme = createMuiTheme({
   typography: {
-    fontFamily: '"Comic Sans"',
+    fontFamily: 'Roboto, Helvetica Neue, Arial',
+    color: 'green'
   },
   palette: {
     primary: red,

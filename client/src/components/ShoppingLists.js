@@ -1,65 +1,99 @@
 import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 
-const tileStyles = {
-  width: 240,
-  height: 330,
-  padding: 0,
-  margin: 10,
-  borderRadius: 7,
-  overflow: 'hidden',
-  backgroundColor: 'white',
-  boxShadow: '0px 2px 6px #ccf',
-};
+const useStyles = makeStyles({
+  container: {
+    display: 'flex',
+    flexFlow: 'row wrap',
+    justifyContent: 'flex-start'
+  },
+  card: {
+    width: 240,
+    height: 330,
+    borderRadius: 7,
+    margin: 8,
+    boxShadow: '0px 2px 6px #ccf',
+  },
+  media: {
+    height: 240,
+  },
+  cardContent: {
+    height: 90,
+    margin: 0,
+    padding:0,
+    display: 'flex',
+    flexFlow: 'column nowrap',
+    justifyContent: 'center'
+  },
+});
 
-const imgStyles = {
-  height: 245,
-};
-
-const tileTextStyles = {
-  height: 80,
-  display: 'flex',
-  flexFlow: 'column nowrap',
-  overflow: 'scroll',
-  justifyContent: 'center',
-  alignItems: 'center',
-};
-
-const tileTitleStyles = {
-  textStyle: 'bold',
-  fontSize: '1em',
-};
-
-const itemCountStyles = {
-  color: '#999',
-  fontSize: '0.8em',
-};
-
-export default function Shoppintlists(props) {
-  const [tiles, setTiles] = useState([]);
+export default function Shoppintlists() {
+  const [cards, setCards] = useState([]);
+  const classes = useStyles();
 
   useEffect(() => {
-    setTiles(mockData);
+    setCards(mockData);
   }, []);
   return (
-    <Container maxWidth={'lg'}>
-      <h3>My Shopping Lists:</h3>
-      <GridList>
-        {tiles.map(tile => (
-          <GridListTile key={tile.img} style={tileStyles}>
-            <img src={tile.img} alt={tile.title} style={imgStyles} />
-            <div style={tileTextStyles}>
-              <span style={tileTitleStyles}>{tile.title}</span>
-              <span style={itemCountStyles}>
-                {tile.items.length + ' items'}
-              </span>
-            </div>
-          </GridListTile>
+      <Container className={classes.container}>
+        {cards.map(card => (
+          <Card className={classes.card}>
+            <CardActionArea>
+              <CardMedia
+                className={classes.media}
+                image={card.img}
+                title="Contemplative Reptile"
+              />
+              <CardContent className={classes.cardContent}>
+                <Typography 
+                  noWrap
+                  variant='h6'
+                  align='center'
+                >
+                  {card.title}
+                </Typography>
+                <Typography 
+                  noWrap
+                  variant='body1'
+                  color='textSecondary'
+                  align='center'
+                >
+                  {card.items.length + ' items'}
+                </Typography>
+              </CardContent>
+          </CardActionArea>
+        </Card>
         ))}
-      </GridList>
-    </Container>
+        <Card className={classes.card}>
+            <CardActionArea>
+              <CardContent 
+                className={classes.cardContent}
+                style={{ height: 330 }}
+              >
+                <Typography 
+                  variant='h2'
+                  color='primary'
+                  align='center'
+                >
+                  +
+                </Typography>
+                <Typography 
+                  gutterBottom
+                  variant='h6'
+                  align='center'
+                >
+                  ADD NEW LIST
+                </Typography>
+              </CardContent>
+          </CardActionArea>
+        </Card>
+      </Container>
   );
 }
 
