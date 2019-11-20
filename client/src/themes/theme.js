@@ -10,4 +10,19 @@ const theme = createMuiTheme({
   bgcolor: '#f6f6f6',
 });
 
+// export const theme = createMuiTheme({
+// 	bla: 1,
+//   typography: {
+//     fontFamily: '"Roboto"',
+//     fontSize: 12,
+//     h1:{
+//        // could customize the h1 variant as well
+//     }
+//   },
+//   palette: {
+//     primary: { main: "#fff12323" },
+//     secondary: { main: green[300] }
+//   },
+// });
+
 export default theme;
