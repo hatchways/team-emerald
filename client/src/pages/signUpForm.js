@@ -76,10 +76,11 @@ function registerReducer(state, action) {
   throw new Error(`That action doesn't exist`);
 }
 
-const SignIn = () => {
+const SignUp = () => {
   const classes = useStyles();
 
   const [state, dispatch] = React.useReducer(registerReducer, {
+    name: '',
     email: '',
     password: '',
     loading: false,
@@ -119,9 +120,31 @@ const SignIn = () => {
       <div className={classes.paper}>
         {state.error && <p>{state.error}</p>}
         <Typography component="h1" variant="h5">
-          Sign In
+          Sign Up
         </Typography>
         <form className={classes.form} noValidate>
+          <InputLabel>Your name:</InputLabel>
+          <TextField
+            className={classes.textfield}
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            id="name"
+            label="Name"
+            name="name"
+            autoComplete="name"
+            autoFocus
+            onChange={
+              e =>
+                dispatch({
+                  type: 'input',
+                  name: 'name',
+                  value: e.target.value,
+                })
+              // eslint-disable-next-line react/jsx-curly-newline
+            }
+            value={state.name}
+          />
           <InputLabel>Your e-mail address:</InputLabel>
           <TextField
             className={classes.textfield}
@@ -162,7 +185,7 @@ const SignIn = () => {
             color="primary"
             className={classes.submit}
           >
-            Sign In
+            Create Account
           </Button>
           <Grid container>
             <Grid item xs>
@@ -180,4 +203,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
