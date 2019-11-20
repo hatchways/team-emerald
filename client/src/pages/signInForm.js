@@ -10,32 +10,36 @@ class SignInForm extends React.Component {
   }
 
   handleChange = event => {
-    this.setState({ value: event.target.value });
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   handleSubmit = event => {
     event.preventDefault();
   };
+
   render() {
+    const { email, password } = this.state;
     return (
       <div>
         <h1> Sign In </h1>
         <form onSubmit={this.handleSubmit}>
-          <label>
+          <label htmlFor="email">
             Your email address:
             <input
               type="text"
               name="email"
-              value={this.state.email}
+              value={email}
               placeholder="E-mail"
+              id="email"
             />
           </label>
-          <label>
+          <label htmlFor="password">
             Password:
             <input
               name="password"
-              value={this.state.password}
+              value={password}
               placeholder="Password"
+              id="password"
             />
           </label>
           <input type="submit" value="Submit" />
