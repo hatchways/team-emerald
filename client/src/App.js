@@ -4,7 +4,9 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 
 import theme from './themes/theme';
-import SignUpForm from './components/SignUpForm';
+// import SignUpForm from './components/SignUpForm';
+// import Landing from './components/Landing';
+import SignInForm from './components/SignInForm';
 
 const styles = () => ({
   '@global': {
@@ -21,7 +23,7 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        <Route path="/" component={SignUpForm} />
+        <Route path="/" component={SignInForm} />
       </BrowserRouter>
     </MuiThemeProvider>
   );

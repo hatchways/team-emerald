@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import InputLabel from '@material-ui/core/InputLabel';
+import CloseIconButton from './CloseIconButton';
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -19,7 +20,14 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'flex-end',
+  },
+  h1: {
+    fontSize: theme.typography.fontSize * 3,
+    textAlign: 'center',
+    fontWeight: theme.typography.fontWeightMedium,
+    paddingBottom: '30px',
+    alignSelf: 'center',
   },
   form: {
     width: '100%',
@@ -34,6 +42,13 @@ const useStyles = makeStyles(theme => ({
   },
   textfield: {
     backgroundColor: 'white',
+    marginBottom: '35px',
+  },
+  label: {
+    fontSize: theme.typography.fontSize * 1.8,
+    textAlign: 'center',
+    fontWeight: theme.typography.fontWeightMedium,
+    color: 'black',
   },
 }));
 
@@ -44,6 +59,8 @@ function Redirect() {
 function Loading() {
   return <p>Loading...</p>;
 }
+
+const handleClose = () => {};
 
 function registerReducer(state, action) {
   if (action.type === 'login') {
@@ -120,7 +137,10 @@ const SignIn = () => {
       <CssBaseline />
       <div className={classes.paper}>
         {state.error && <p>{state.error}</p>}
-        <Typography component="h1" variant="h5">
+        <div className={classes.buttonContainer}>
+          <CloseIconButton handleClose={handleClose} />
+        </div>
+        <Typography component="h1" className={classes.h1}>
           Sign In
         </Typography>
         <form className={classes.form} noValidate>
