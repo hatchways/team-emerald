@@ -4,7 +4,7 @@ import SearchBar from '../components/SearchBar';
 import ShoppingLists from '../components/ShoppingLists';
 
 const dashboardStyle = {
-  backgroundColor: '#fcfbff',
+  backgroundColor: '#fdfdff',
 };
 
 export default function Dashboard(props) {

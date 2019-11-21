@@ -30,7 +30,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexFlow: 'column nowrap',
     justifyContent: 'center'
-  },
+  }
 });
 
 export default function Shoppintlists() {
@@ -42,6 +42,9 @@ export default function Shoppintlists() {
   }, []);
   return (
       <Container className={classes.container}>
+        <Typography variant='h5' gutterBottom style={{ width: '100%'}}>
+          My Shopping Lists:
+        </Typography>
         {cards.map(card => (
           <Card className={classes.card}>
             <CardActionArea>
