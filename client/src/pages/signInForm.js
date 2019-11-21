@@ -76,8 +76,8 @@ function registerReducer(state, action) {
   throw new Error(`That action doesn't exist`);
 }
 
-const SignIn = () => {
-  const classes = useStyles();
+const SignIn = props => {
+  const classes = useStyles(props);
 
   const [state, dispatch] = React.useReducer(registerReducer, {
     email: '',

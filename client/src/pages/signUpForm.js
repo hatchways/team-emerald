@@ -26,6 +26,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1),
     flexDirection: 'column',
     alignItems: 'center',
+    textAlign: 'center',
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -155,7 +156,7 @@ const SignUp = () => {
             label="E-mail"
             name="email"
             autoComplete="email"
-            autoFocus
+            // autoFocus
             onChange={
               e =>
                 dispatch({
@@ -169,14 +170,15 @@ const SignUp = () => {
           />
           <InputLabel>Password:</InputLabel>
           <TextField
+            className={classes.textfield}
             variant="outlined"
             margin="normal"
             fullWidth
             name="password"
-            label="Password"
+            // label="Password"
+            placeholder="Password"
             type="password"
             id="password"
-            autoComplete="current-password"
           />
           <Button
             type="submit"
