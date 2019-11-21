@@ -42,7 +42,7 @@ export default function Shoppintlists() {
   }, []);
   return (
       <Container className={classes.container}>
-        <Typography variant='h5' gutterBottom style={{ width: '100%'}}>
+        <Typography variant='h5' gutterBottom style={{width: '100%'}}>
           My Shopping Lists:
         </Typography>
         {cards.map(card => (
