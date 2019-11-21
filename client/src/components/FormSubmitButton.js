@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function DialogButton(props) {
+function FormSubmitButton(props) {
   const classes = useStyles(props);
   const { text, handleClick, disabled } = props;
 
@@ -40,14 +40,14 @@ function DialogButton(props) {
   );
 }
 
-DialogButton.defaultProps = {
+FormSubmitButton.defaultProps = {
   disabled: false,
 };
 
-DialogButton.propTypes = {
+FormSubmitButton.propTypes = {
   text: PropTypes.string.isRequired,
   handleClick: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
 };
 
-export default DialogButton;
+export default FormSubmitButton;
