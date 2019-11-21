@@ -1,10 +1,9 @@
 const express = require('express');
 
+const authRouter = require('./auth');
+
 const router = express();
 
-/* eslint-disable-next-line no-unused-vars */
-router.get('/welcome', (req, res, next) => {
-  res.status(200).json({ success: true });
-});
+router.use('/auth', authRouter);
 
 module.exports = router;

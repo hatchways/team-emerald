@@ -3,11 +3,20 @@ import red from '@material-ui/core/colors/red';
 
 const theme = createMuiTheme({
   typography: {
-    fontFamily: 'Roboto, Helvetica Neue, Arial',
-    color: 'green'
+    fontFamily: ['"Open Sans"'].join(','),
+    fontWeightRegular: 400,
+    fontWeightMedium: 600,
+    htmlFontSize: 10,
+    fontSize: 10,
   },
   palette: {
-    primary: red,
+    primary: { main: '#DF1B1B' },
+  },
+  props: {
+    MuiButtonBase: {
+      // The properties to apply
+      disableRipple: true, // No more ripple, on the whole application
+    },
   },
 });
 
