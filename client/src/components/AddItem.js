@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
@@ -68,6 +70,8 @@ export default function AddItem() {
     set({ select: e.target.value });
   }
 
+  const renderSelectValue = value => input.select? value: 'Select list';
+
   useEffect(() => {
     setOptions(mockData);
   }, []);
@@ -87,15 +91,18 @@ export default function AddItem() {
           placeholder='Paste your link here'
         />
         <span className={classes.selectContainer}>
-          <select
+          <Select
             onChange={handleSelectChange}
             className={classes.select}
+            displayEmpty
+            renderValue={renderSelectValue}
           >
-            <option value='default'>Select list</option>
             {options.map(list => (
-              <option value="list.title">{list.title}</option>
+              <MenuItem key={list.title} value={list.title}>
+                {list.title}
+              </MenuItem>
             ))}
-          </select>
+          </Select>
           <Button
             color='primary'
             variant='contained'
