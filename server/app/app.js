@@ -13,7 +13,6 @@ const connectDB = require('./utils/database');
 const errorHandler = require('./middleware/error');
 
 const indexRouter = require('./routes/index');
-const pingRouter = require('./routes/ping');
 
 // Connect to database
 connectDB();
@@ -57,8 +56,7 @@ app.use(mongoSanitize());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // API routes
-app.use('/', indexRouter);
-app.use('/ping', pingRouter);
+app.use('/api/v1', indexRouter);
 
 // Error handler
 app.use(errorHandler);

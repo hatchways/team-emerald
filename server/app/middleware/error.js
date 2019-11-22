@@ -2,12 +2,12 @@ require('colors');
 const ErrorResponse = require('../utils/errorResponse');
 
 /**
- * The next middleware function in the stack
+ * The next middleware function in the stack.
  * @callback nextCallback
  */
 
 /**
- * Returns the response object with an error message and status code
+ * Returns the response object with an error message and status code.
  * @param {Error} err - the error object
  * @param {object} req - the request object
  * @param {object} res - the response object
@@ -30,7 +30,7 @@ const errorHandler = (err, req, res, next) => {
   }
 
   // Mongoose duplicate key
-  if (err.code === 11000) {
+  if (error.name === 'MongoError' && error.code === 11000) {
     const message = `Duplicate field value entered`;
     error = new ErrorResponse(message, 400);
   }

@@ -1,5 +1,5 @@
 /**
- * A class for creating errors for http responses
+ * A class for creating errors for http responses.
  * @class ErrorResponse
  * @extends {Error}
  */
