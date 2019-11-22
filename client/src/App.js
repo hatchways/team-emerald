@@ -17,7 +17,6 @@ const styles = () => ({
 });
 
 function App() {
-  // console.log(theme);
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />

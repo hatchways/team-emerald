@@ -20,13 +20,14 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
   h1: {
     fontSize: theme.typography.fontSize * 3,
     textAlign: 'center',
     fontWeight: theme.typography.fontWeightMedium,
     paddingBottom: '30px',
+    alignSelf: 'center',
   },
   form: {
     width: '100%',
@@ -41,17 +42,13 @@ const useStyles = makeStyles(theme => ({
   },
   textfield: {
     backgroundColor: 'white',
+    marginBottom: '35px',
   },
   label: {
     fontSize: theme.typography.fontSize * 1.8,
     textAlign: 'center',
     fontWeight: theme.typography.fontWeightMedium,
-  },
-  button: {
-    display: 'flex',
-  },
-  closeButton: {
-    justifyContent: 'flex-end',
+    color: 'black',
   },
 }));
 
@@ -140,11 +137,8 @@ const SignUp = () => {
       <CssBaseline />
       <div className={classes.paper}>
         {state.error && <p>{state.error}</p>}
-        <div className={classes.button}>
-          <CloseIconButton
-            className={classes.closeButton}
-            handleClose={handleClose}
-          />
+        <div className={classes.buttonContainer}>
+          <CloseIconButton handleClose={handleClose} />
         </div>
         <Typography component="h1" className={classes.h1}>
           Sign Up
@@ -161,7 +155,6 @@ const SignUp = () => {
             name="name"
             autoComplete="name"
             autoFocus
-            inputProps={{ style: { textAlign: 'center' } }}
             onChange={
               e =>
                 dispatch({
@@ -185,7 +178,6 @@ const SignUp = () => {
             placeholder="E-mail"
             name="email"
             autoComplete="email"
-            inputProps={{ style: { textAlign: 'center' } }}
             onChange={
               e =>
                 dispatch({
@@ -204,11 +196,9 @@ const SignUp = () => {
             margin="normal"
             fullWidth
             name="password"
-            // label="Password"
             placeholder="Password"
             type="password"
             id="password"
-            inputProps={{ style: { textAlign: 'center' } }}
           />
           {/* <Button type="submit" fullWidth variant="contained" color="primary">
             Create Account
