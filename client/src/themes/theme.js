@@ -1,5 +1,10 @@
 import { createMuiTheme } from '@material-ui/core';
 
+// For custom properties not found in the default MuiTheme object
+const themeSettings = {
+  boxShadow: '0px 0px 30px rgba(208,219,233,0.3)',
+};
+
 const theme = createMuiTheme({
   typography: {
     fontFamily: ['"Open Sans"'].join(','),
@@ -17,7 +22,7 @@ const theme = createMuiTheme({
       fontWeight: 700,
     },
   },
-  boxShadowTheme: '0px 0px 30px rgba(208,219,233,0.3)', // project theme
+  boxShadowTheme: themeSettings.boxShadow,
   palette: {
     primary: { main: '#DF1B1B' },
   },
@@ -26,14 +31,21 @@ const theme = createMuiTheme({
       // The properties to apply
       disableRipple: true, // No more ripple, on the whole application
     },
-    MuiInput: {
-      disableUnderline: true,
-    },
   },
   overrides: {
     MuiButton: {
       root: {
         borderRadius: 30,
+      },
+    },
+    MuiInputBase: {
+      input: {
+        textAlign: 'center',
+        borderRadius: 5,
+        boxShadow: themeSettings.boxShadow,
+        height: '7rem',
+        fontSize: '1.4rem',
+        fontWeight: 400,
       },
     },
     MuiPaper: {

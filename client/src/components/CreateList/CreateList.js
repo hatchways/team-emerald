@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
 import {
-  IconButton,
-  TextField,
   Container,
   Dialog,
   DialogActions,
   DialogTitle,
+  IconButton,
+  InputBase,
   Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -34,9 +34,6 @@ const useStyles = makeStyles(theme => ({
     maxHeight: '74rem',
     minWidth: '32rem',
     maxWidth: '72rem',
-  },
-  inputProps: {
-    textAlign: 'center',
   },
 }));
 
@@ -102,15 +99,13 @@ function CreateList() {
             </Typography>
           </div>
 
-          <TextField
-            margin="normal"
-            id="name"
-            label="Enter name"
-            type="text"
+          <InputBase
+            placeholder="Enter Name"
+            name="name"
             fullWidth
             value={name}
             onChange={e => setName(e.target.value)}
-            inputProps={{ style: { textAlign: 'center' } }}
+            classes={{ input: classes.input }}
           />
 
           <Typography variant="body1">Add a cover</Typography>
