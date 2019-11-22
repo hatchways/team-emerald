@@ -4,7 +4,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 
 import theme from './themes/theme';
-import LandingPage from './pages/Landing';
+import SignUpForm from './components/SignUpForm';
 
 const styles = () => ({
   '@global': {
@@ -17,11 +17,12 @@ const styles = () => ({
 });
 
 function App() {
+  // console.log(theme);
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        <Route path="/" component={LandingPage} />
+        <Route path="/" component={SignUpForm} />
       </BrowserRouter>
     </MuiThemeProvider>
   );

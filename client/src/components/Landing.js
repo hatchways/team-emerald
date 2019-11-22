@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React from 'react';
 
-import FormSubmitButton from '../components/FormSubmitButton';
+import FormSubmitButton from './FormSubmitButton';
 
 function LandingPage() {
   return (
