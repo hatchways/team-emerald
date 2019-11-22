@@ -11,7 +11,9 @@ const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexFlow: 'row wrap',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    maxWidth: 1100,
+    padding: '60px 0'
   },
   card: {
     width: 240,
@@ -41,7 +43,9 @@ export default function Shoppintlists() {
     setCards(mockData);
   }, []);
   return (
-      <Container className={classes.container}>
+    <Container>
+
+      <div className={classes.container}>
         <Typography variant='h5' gutterBottom style={{width: '100%'}}>
           My Shopping Lists:
         </Typography>
@@ -52,13 +56,13 @@ export default function Shoppintlists() {
                 className={classes.media}
                 image={card.img}
                 title="Contemplative Reptile"
-              />
+                />
               <CardContent className={classes.cardContent}>
                 <Typography 
                   noWrap
                   variant='h6'
                   align='center'
-                >
+                  >
                   {card.title}
                 </Typography>
                 <Typography 
@@ -83,20 +87,21 @@ export default function Shoppintlists() {
                   variant='h2'
                   color='primary'
                   align='center'
-                >
+                  >
                   +
                 </Typography>
                 <Typography 
                   gutterBottom
                   variant='h6'
                   align='center'
-                >
+                  >
                   ADD NEW LIST
                 </Typography>
               </CardContent>
           </CardActionArea>
         </Card>
-      </Container>
+      </div>
+  </Container>
   );
 }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ToolBar from '@material-ui/core/ToolBar';
-import SearchBar from '../components/SearchBar';
+import AddItem from '../components/AddItem';
 import ShoppingLists from '../components/ShoppingLists';
 
 const dashboardStyle = {
@@ -11,7 +11,7 @@ export default function Dashboard(props) {
   return (
     <div id="Dashboard" style={dashboardStyle}>
       <ToolBar />
-      <SearchBar />
+      <AddItem />
       <ShoppingLists />
     </div>
   );
