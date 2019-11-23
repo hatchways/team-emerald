@@ -23,6 +23,7 @@ const theme = createMuiTheme({
     },
   },
   boxShadowTheme: themeSettings.boxShadow,
+  backgroundColor: '#FBFCFF',
   palette: {
     primary: { main: '#DF1B1B' },
   },
@@ -36,6 +37,14 @@ const theme = createMuiTheme({
     MuiButton: {
       root: {
         borderRadius: 30,
+      },
+    },
+    MuiCard: {
+      root: {
+        borderRadius: 10,
+        boxShadow: '0px 0px 20px rgba(208,219,233,0.2)',
+        width: '25rem',
+        height: '35rem',
       },
     },
     MuiInputBase: {
