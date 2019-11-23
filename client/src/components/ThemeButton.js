@@ -27,12 +27,19 @@ const useStyles = makeStyles(theme => ({
   }),
 }));
 
-function FormSubmitButton(props) {
+/**
+ * Custom button component styled with the themes
+ * This button can be used for forms (set type="submit")
+ * or as a regular button (default, but must pass a function to the
+ * handleClick prop)
+ */
+function ThemeButton(props) {
   const classes = useStyles(props);
-  const { text, handleClick, disabled, padding, width, height } = props;
+  const { text, handleClick, disabled, padding, width, height, type } = props;
 
   return (
     <Button
+      type={type}
       className={classes.root}
       onClick={handleClick}
       disabled={disabled}
@@ -45,17 +52,20 @@ function FormSubmitButton(props) {
   );
 }
 
-FormSubmitButton.defaultProps = {
+ThemeButton.defaultProps = {
   disabled: false,
+  handleClick: null,
+  type: 'button',
 };
 
-FormSubmitButton.propTypes = {
+ThemeButton.propTypes = {
   text: PropTypes.string.isRequired,
-  handleClick: PropTypes.func.isRequired,
   padding: PropTypes.string.isRequired,
   width: PropTypes.string.isRequired,
   height: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
+  handleClick: PropTypes.func,
+  type: PropTypes.string,
 };
 
-export default FormSubmitButton;
+export default ThemeButton;
