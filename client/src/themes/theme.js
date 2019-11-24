@@ -49,11 +49,9 @@ const theme = createMuiTheme({
         margin: 8,
       },
     },
-    MuiInputBase: {
+    MuiInput: {
       input: {
-        textAlign: 'center',
         borderRadius: 5,
-        boxShadow: themeSettings.boxShadow,
         height: '7rem',
         fontSize: '1.4rem',
         fontWeight: 400,
