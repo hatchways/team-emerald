@@ -1,5 +1,4 @@
 import { createMuiTheme } from '@material-ui/core';
-import red from '@material-ui/core/colors/red';
 
 // For custom properties not found in the default MuiTheme object
 const themeSettings = {
@@ -27,7 +26,7 @@ const theme = createMuiTheme({
   backgroundColor: '#FBFCFF',
   palette: {
     primary: { main: '#DF1B1B' },
-    secondary: { main: '#00D600'}
+    secondary: { main: '#00D600' },
   },
   props: {
     MuiButtonBase: {
@@ -47,6 +46,7 @@ const theme = createMuiTheme({
         boxShadow: '0px 0px 20px rgba(208,219,233,0.2)',
         width: '25rem',
         height: '35rem',
+        margin: 8,
       },
     },
     MuiInputBase: {

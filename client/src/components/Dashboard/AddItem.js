@@ -1,9 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+  makeStyles,
+  MuiThemeProvider,
+  createMuiTheme,
+} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
+
+const addItemTheme = createMuiTheme({
+  palette: {
+    primary: { main: '#DF1B1B' },
+  },
+});
+
+const mockData = [
+  { title: 'Scented Candles' },
+  { title: 'Towels' },
+  { title: 'Kale' },
+];
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -12,20 +29,18 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
   },
   label: {
-    margin: 50
+    margin: 50,
   },
   input: {
-    width: 420,
+    width: 400,
+    height: 30,
     maxWidth: '100%',
     backgroundColor: 'white',
-    color: '#333',
     fontFamily: theme.typography.fontFamily,
-    fontSize: theme.typography.fontSize * 1.5,
+    fontSize: '1.6rem',
     padding: '15px 25px',
-    border: 'none',
-    borderRadius: '24px 0 0 24px',
-    boxShadow: '0px 2px 6px #ccf',
-    outline: 'none',
+    borderRadius: '28px 0 0 28px',
+    boxShadow: theme.boxShadowTheme,
   },
   selectContainer: {
     display: 'flex',
@@ -34,27 +49,26 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '100%',
     backgroundColor: 'white',
     padding: 5,
-    borderRadius: '0 24px 24px 0',
-    boxShadow: '0px 2px 6px #ccf',
+    borderRadius: '0 28px 28px 0',
+    boxShadow: theme.boxShadowTheme,
   },
   select: {
     width: 180,
     maxWidth: '100%',
     padding: 10,
-    border: 'none',
-    outline: 'none',
-    backgroundColor: 'white',
     fontFamily: theme.typography.fontFamily,
-    fontSize: theme.typography.fontSize * 1.5,
-    color: '#333',
+    fontSize: '1.6rem',
   },
   addButton: {
-    fontSize: theme.typography.fontSize * 1.5,
+    fontSize: '1.6rem',
     borderRadius: 24,
     width: 140,
     position: 'relative',
-    left: '140'
-  }
+    left: '140',
+  },
+  menuItem: {
+    fontSize: '1.6rem',
+  },
 }));
 
 export default function AddItem() {
@@ -62,61 +76,60 @@ export default function AddItem() {
   const [input, set] = useState({ text: '', select: '' });
   const [options, setOptions] = useState([]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     set({ text: e.target.value });
-  }
+  };
 
-  const handleSelectChange = (e) => {
+  const handleSelectChange = e => {
     set({ select: e.target.value });
-  }
+  };
 
-  const renderSelectValue = value => input.select? value: 'Select list';
+  const renderSelectValue = value => (input.select ? value : 'Select list');
 
   useEffect(() => {
     setOptions(mockData);
   }, []);
 
   return (
-    <div>
-      <Typography
-        variant='h4'
-        align='center'
-        className={classes.label}
-      >Add new item:</Typography>
+    <MuiThemeProvider theme={addItemTheme}>
+      <Typography variant="h3" align="center" className={classes.label}>
+        Add new item:
+      </Typography>
       <form className={classes.container}>
-        <input
-          className={classes.input}
+        <Input
+          classes={{ input: classes.input }}
           onChange={handleInputChange}
           value={input.text}
-          placeholder='Paste your link here'
+          placeholder="Paste your link here"
+          disableUnderline
         />
         <span className={classes.selectContainer}>
           <Select
             onChange={handleSelectChange}
-            className={classes.select}
+            classes={{ root: classes.select }}
             displayEmpty
             renderValue={renderSelectValue}
+            disableUnderline
           >
             {options.map(list => (
-              <MenuItem key={list.title} value={list.title}>
+              <MenuItem
+                key={list.title}
+                value={list.title}
+                classes={{ root: classes.menuItem }}
+              >
                 {list.title}
               </MenuItem>
             ))}
           </Select>
           <Button
-            color='primary'
-            variant='contained'
+            color="primary"
+            variant="contained"
             className={classes.addButton}
-          >Add</Button>
+          >
+            Add
+          </Button>
         </span>
       </form>
-    </div>
+    </MuiThemeProvider>
   );
 }
-
-
-const mockData = [
-  { title: 'Scented Candles' },
-  { title: 'Towels' },
-  { title: 'Kale' },
-]
