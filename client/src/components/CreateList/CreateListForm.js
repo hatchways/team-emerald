@@ -19,6 +19,10 @@ const useStyles = makeStyles(theme => ({
 
     height: '70rem',
   },
+  input: {
+    textAlign: 'center',
+    boxShadow: theme.boxShadowTheme,
+  },
 }));
 
 function CreateListForm() {
