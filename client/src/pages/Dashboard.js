@@ -1,7 +1,7 @@
 import React from 'react';
-import { ToolBar } from '@material-ui/core';
+import { Toolbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import AddItem from '../components/Dashboard/AddItem';
+import AddItemForm from '../components/Dashboard/AddItemForm';
 import ShoppingLists from '../components/Dashboard/ShoppingLists';
 import theme from '../themes/theme';
 
@@ -16,8 +16,8 @@ export default function Dashboard() {
 
   return (
     <div id="Dashboard" className={classes.dashboard}>
-      <ToolBar />
-      <AddItem />
+      <Toolbar />
+      <AddItemForm />
       <ShoppingLists />
     </div>
   );
