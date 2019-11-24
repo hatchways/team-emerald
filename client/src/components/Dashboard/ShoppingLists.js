@@ -1,114 +1,96 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Container,
+  Typography,
+} from '@material-ui/core';
+
 import CreateList from '../CreateList/CreateList';
 
+// mock data to test out the component's functionality
+// the actual data will be passed as props from the redux store
 const mockData = [
   {
     img: 'https://www.candles4less.com/assets/images/lavender-4x6-candles.jpg',
     title: 'Scented Candles',
-    items: [],
+    items: ['item1', 'item2', 'item3'],
   },
   {
     img: 'https://www.candles4less.com/assets/images/lavender-4x6-candles.jpg',
     title: 'Scented Candles',
-    items: [],
+    items: ['item1', 'item2'],
   },
   {
     img: 'https://www.candles4less.com/assets/images/lavender-4x6-candles.jpg',
     title: 'Scented Candles',
-    items: [],
+    items: ['item1'],
   },
 ];
 
-const useStyles = makeStyles({
-  container: {
-    display: 'flex',
-    flexFlow: 'row wrap',
-    justifyContent: 'flex-start',
-    maxWidth: 1100,
-    padding: '60px 0',
+const useStyles = makeStyles(theme => ({
+  root: {
+    marginTop: theme.spacing(10),
   },
-  media: {
-    height: 240,
-  },
-  cardContent: {
-    height: 90,
-    margin: 0,
-    padding: 0,
+  cardContainer: {
     display: 'flex',
-    flexFlow: 'column nowrap',
+    flexWrap: 'wrap',
     justifyContent: 'center',
+    marginTop: theme.spacing(4),
   },
-});
+  cardActionArea: {
+    width: '100%',
+    height: '100%',
+  },
+  cardMedia: {
+    height: '75%',
+  },
+}));
 
-export default function Shoppintlists() {
-  const [cards, setCards] = useState([]);
-  const classes = useStyles();
+function mapListsToCards(shoppingLists, classes) {
+  return shoppingLists.map(sl => (
+    <Card>
+      <CardActionArea
+        className={classes.cardActionArea}
+        onClick={() => console.log('Add New Item Form Dialog should trigger')} // eslint-disable-line
+      >
+        <CardMedia
+          component="img"
+          src={sl.img}
+          title={sl.title}
+          className={classes.cardMedia}
+        />
+        <CardContent>
+          <Typography noWrap variant="body1" align="center">
+            {sl.title}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" align="center">
+            {`${sl.items.length} item${sl.items.length > 1 ? 's' : ''}`}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
+  ));
+}
 
-  useEffect(() => {
-    setCards(mockData);
-  }, []);
+function Shoppinglists(props) {
+  const classes = useStyles(props);
+
   return (
-    <Container>
-      <div className={classes.container}>
-        <Typography variant="h5" gutterBottom style={{ width: '100%' }}>
-          My Shopping Lists:
-        </Typography>
-        {cards.map(card => (
-          <Card>
-            <CardActionArea>
-              <CardMedia
-                className={classes.media}
-                image={card.img}
-                title="Contemplative Reptile"
-              />
-              <CardContent className={classes.cardContent}>
-                <Typography noWrap variant="h6" align="center">
-                  {card.title}
-                </Typography>
-                <Typography
-                  noWrap
-                  variant="body1"
-                  color="textSecondary"
-                  align="center"
-                >
-                  {`${card.items.length} items`}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        ))}
+    <Container className={classes.root}>
+      <Typography variant="h6" style={{ display: 'block' }}>
+        My Shopping Lists:
+      </Typography>
+
+      <div className={classes.cardContainer}>
+        {mapListsToCards(mockData, classes)}
         <CreateList />
-        {/* <Card className={classes.card}>
-            <CardActionArea>
-              <CardContent 
-                className={classes.cardContent}
-                style={{ height: 330 }}
-              >
-                <Typography 
-                  variant='h2'
-                  color='primary'
-                  align='center'
-                  >
-                  +
-                </Typography>
-                <Typography 
-                  gutterBottom
-                  variant='h6'
-                  align='center'
-                  >
-                  ADD NEW LIST
-                </Typography>
-              </CardContent>
-          </CardActionArea>
-        </Card> */}
       </div>
     </Container>
   );
 }
+
+export default Shoppinglists;
