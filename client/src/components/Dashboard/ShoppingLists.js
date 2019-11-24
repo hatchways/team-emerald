@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   cardContainer: {
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     marginTop: theme.spacing(4),
   },
   cardActionArea: {
@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
   },
   cardMedia: {
-    height: '75%',
+    height: '80%',
   },
 }));
 
@@ -81,9 +81,7 @@ function Shoppinglists(props) {
 
   return (
     <Container className={classes.root}>
-      <Typography variant="h6" style={{ display: 'block' }}>
-        My Shopping Lists:
-      </Typography>
+      <Typography variant="h6">My Shopping Lists:</Typography>
 
       <div className={classes.cardContainer}>
         {mapListsToCards(mockData, classes)}

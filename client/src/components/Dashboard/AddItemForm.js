@@ -40,16 +40,14 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     width: '88rem',
     maxWidth: '88rem',
-    margin: 'auto',
     backgroundColor: 'white',
-    padding: 5,
-    borderRadius: 35,
+    borderRadius: 40,
+    boxShadow: theme.boxShadowTheme,
   },
   select: {
     width: '18rem',
     maxWidth: '100%',
     padding: '1rem',
-    fontSize: '1.4rem',
   },
   placeholderFontColor: {
     color: theme.palette.grey[500],
@@ -82,6 +80,10 @@ function AddItemForm() {
     console.log(formData); // eslint-disable-line
   };
 
+  const handleInputChange = e => setLink(e.target.value);
+
+  const handleSelectChange = e => setList(e.target.value);
+
   return (
     <>
       <Typography variant="h5" align="center" className={classes.label}>
@@ -91,7 +93,7 @@ function AddItemForm() {
         <Box className={classes.styledBox}>
           <Input
             classes={{ input: classes.input }}
-            onChange={e => setLink(e.target.value)}
+            onChange={handleInputChange}
             value={link}
             placeholder="Paste your link here"
             disableUnderline
@@ -102,7 +104,7 @@ function AddItemForm() {
           <Select
             value={list}
             classes={{ root: classes.select }}
-            onChange={e => setList(e.target.value)}
+            onChange={handleSelectChange}
             autoWidth
             displayEmpty
             disableUnderline
@@ -125,7 +127,7 @@ function AddItemForm() {
             type="submit"
             padding="0rem 0rem"
             width="14.2rem"
-            height="5.6rem"
+            height="4.8rem"
             disabled={!(link && list)}
           />
         </Box>

@@ -8,6 +8,7 @@ import theme from '../themes/theme';
 const useStyles = makeStyles({
   dashboard: {
     backgroundColor: theme.backgroundColor,
+    paddingBottom: theme.spacing(5),
   },
 });
 
