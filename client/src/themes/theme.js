@@ -33,6 +33,14 @@ const theme = createMuiTheme({
       // The properties to apply
       disableRipple: true, // No more ripple, on the whole application
     },
+    MuiTextField: {
+      inputProps: {
+        style: {
+          textAlign: 'center',
+          fontSize: '15px',
+        },
+      },
+    },
   },
   overrides: {
     MuiButton: {
