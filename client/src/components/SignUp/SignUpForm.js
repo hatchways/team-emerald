@@ -39,7 +39,7 @@ function SignUpForm({ isAuthenticated, error, registerUser }) {
   const classes = useStyles();
 
   if (isAuthenticated) {
-    return <Redirect to="/dashboard" />;
+    return <Redirect to="/shoppinglists" />;
   }
 
   const handleSubmit = event => {

@@ -38,7 +38,7 @@ function SignInForm({ isAuthenticated, error, loginUser }) {
   const classes = useStyles();
 
   if (isAuthenticated) {
-    return <Redirect to="/dashboard" />;
+    return <Redirect to="/shoppinglists" />;
   }
 
   const handleSubmit = event => {
