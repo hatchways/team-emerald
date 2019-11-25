@@ -8,6 +8,8 @@ import TopNavBar from './components/TopNavBar';
 import theme from './themes/theme';
 import LandingPage from './pages/Landing';
 import Dashboard from './pages/Dashboard';
+import SignUpDialog from './components/SignUp/SignUpDialog';
+import SignInDialog from './components/SignIn/SignInDialog';
 
 const styles = () => ({
   '@global': {
@@ -27,6 +29,8 @@ function App() {
         <TopNavBar />
         <Route path="/" component={LandingPage} exact />
         <Route path="/shoppinglists" component={Dashboard} exact />
+        <Route path="/login" component={SignInDialog} exact />
+        <Route path="/register" component={SignUpDialog} exact />
       </BrowserRouter>
     </MuiThemeProvider>
   );
