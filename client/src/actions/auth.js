@@ -3,10 +3,28 @@ import axios from 'axios';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  AUTH_SUCCESS,
+  AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
 } from './types';
+
+// Authenticate user - determines whether or not the user is
+// has an existing valid token
+export const authenticateUser = () => async dispatch => {
+  try {
+    const res = await axios.get('/api/v1/auth');
+    dispatch({
+      type: AUTH_SUCCESS,
+      payload: res.data.user,
+    });
+  } catch (err) {
+    dispatch({
+      type: AUTH_ERROR,
+    });
+  }
+};
 
 // Register User
 export const register = ({ name, email, password }) => async dispatch => {

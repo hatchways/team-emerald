@@ -1,6 +1,8 @@
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  AUTH_SUCCESS,
+  AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
@@ -17,6 +19,7 @@ export default function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case REGISTER_SUCCESS:
+    case AUTH_SUCCESS:
     case LOGIN_SUCCESS:
       return {
         ...state,
@@ -26,6 +29,7 @@ export default function(state = initialState, action) {
         error: '',
       };
     case REGISTER_FAIL:
+    case AUTH_ERROR:
     case LOGIN_FAIL:
       return {
         ...state,
