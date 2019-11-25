@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { Input, InputLabel } from '@material-ui/core';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import { Box, Input, InputLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import ThemeButton from '../ThemeButton';
+import { register } from '../../actions/auth';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,12 +31,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function SignUpForm() {
+function SignUpForm({ isAuthenticated, error, registerUser }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const classes = useStyles();
+
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -41,9 +49,8 @@ function SignUpForm() {
       email,
       password,
     };
-    /* TODO: SUBSCRIBE TO REDUX STORE AND PASS FORMDATA TO ACTION CREATORS */
-    // eslint-disable-next-line no-console
-    console.log(formData); // For debugging
+
+    registerUser(formData);
   };
 
   return (
@@ -86,6 +93,8 @@ function SignUpForm() {
         disableUnderline
       />
 
+      {error && <Box>{error}</Box>}
+
       <ThemeButton
         text="Create Account"
         type="submit"
@@ -98,4 +107,19 @@ function SignUpForm() {
   );
 }
 
-export default SignUpForm;
+SignUpForm.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
+  registerUser: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  error: state.auth.error,
+});
+
+const mapDispatchToProps = {
+  registerUser: register,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);
