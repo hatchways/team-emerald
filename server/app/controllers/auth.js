@@ -25,18 +25,13 @@ const sendTokenResponse = (user, statusCode, res) => {
     options.secure = true; // Only send cookies with https protocol
   }
 
-  const { name, email } = user;
-
   res
     .status(statusCode)
     .cookie('token', token, options)
     .json({
       success: true,
       authenticated: true,
-      user: {
-        name,
-        email,
-      },
+      user: user.toJSON(),
     });
 };
 

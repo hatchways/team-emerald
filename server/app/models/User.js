@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -33,6 +35,20 @@ const UserSchema = mongoose.Schema(
   },
   options,
 );
+
+// Removes unnecessary properties before converting the document
+// to a JSON object
+UserSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    // returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+    delete returnedObject.createdAt;
+    delete returnedObject.updatedAt;
+    // the passwordHash should not be revealed
+    delete returnedObject.password;
+  },
+});
 
 // Encrypt password using bcrypt
 UserSchema.pre('save', async function encryptPassword(next) {
