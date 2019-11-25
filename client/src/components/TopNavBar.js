@@ -5,12 +5,13 @@ import {
   AppBar,
   Badge,
   Breadcrumbs,
-  Button,
+  // Button,
   Toolbar,
   Typography,
 } from '@material-ui/core';
 
 import logo from '../images/logo.png';
+import SignIn from './SignInSignUp/CreateDialog';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -89,14 +90,20 @@ export default function TopNavBar() {
               Notifications
             </Typography>
           </Badge>
-          <Button variant="text" size="small" className={classes.profileButton}>
+          {/* <Button
+            variant="text"
+            size="small"
+            className={classes.profileButton}
+            onClick={}
+          >
             <img
               src="https://c-sf.smule.com/sf/s80/arr/09/74/eab20ae2-2357-4623-a703-f0f8a6ac6fbd.jpg"
               className={classes.avatar}
               alt="user avatar"
             />
             <span className={classes.profileButtonText}>Profile</span>
-          </Button>
+          </Button> */}
+          <SignIn />
         </Breadcrumbs>
       </Toolbar>
     </AppBar>
