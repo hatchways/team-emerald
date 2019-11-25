@@ -3,12 +3,11 @@ import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 
+import TopNavBar from './components/TopNavBar';
+
 import theme from './themes/theme';
-// import SignInForm from './pages/signInForm';
-// import SignUpForm from './pages/signUpForm';
-// import SignUpForm from './components/SignUpForm';
-// import Landing from './components/Landing';
-import SignInForm from './components/SignInForm';
+import LandingPage from './pages/Landing';
+import Dashboard from './pages/Dashboard';
 
 const styles = () => ({
   '@global': {
@@ -25,7 +24,9 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        <Route path="/" component={SignInForm} />
+        <TopNavBar />
+        <Route path="/" component={LandingPage} exact />
+        <Route path="/shoppinglists" component={Dashboard} exact />
       </BrowserRouter>
     </MuiThemeProvider>
   );
