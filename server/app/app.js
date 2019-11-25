@@ -8,6 +8,7 @@ const rateLimit = require('express-rate-limit');
 const cookiePaser = require('cookie-parser');
 const hpp = require('hpp');
 const mongoSanitize = require('express-mongo-sanitize');
+const expressFileUpload = require('express-fileupload');
 
 const connectDB = require('./utils/database');
 const errorHandler = require('./middleware/error');
@@ -51,6 +52,9 @@ app.use(hpp());
 
 // Sanitize data
 app.use(mongoSanitize());
+
+// Parse files
+app.use(expressFileUpload());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));

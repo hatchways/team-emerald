@@ -1,6 +1,7 @@
 const uuid = require('uuid/v4');
 const AWS = require('aws-sdk');
 const asyncHandler = require('../middleware/async');
+const ErrorResponse = require('../middleware/error');
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -10,7 +11,10 @@ const s3 = new AWS.S3({
 const { BUCKET_NAME, UPLOAD_DIRNAME } = process.env;
 
 const upload = asyncHandler(async (req, res, next) => {
-  if (!req.files || !req.files.file) throw Error('File is undefined');
+  if (!req.files || !req.files.file) {
+    next(new ErrorResponse('File is undefined', 400));
+    return;
+  }
 
   const { file } = req.files;
   const filename = uuid();
