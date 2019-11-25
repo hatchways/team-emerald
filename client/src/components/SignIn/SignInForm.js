@@ -1,5 +1,4 @@
-// import React, { useState, useRef } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 import { Input, InputLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -28,57 +27,62 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function CreateSignInForm() {
-  // const [email, setEmail] = useState('');
+function SignUpForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const classes = useStyles();
 
-  // const handleSubmit = event => {
-  //   event.preventDefault();
-  //   // eslint-disable-next-line no-unused-vars
-  //   const formData = {
-  //     email,
-  //   };
-  //   /* TODO: SUBSCRIBE TO REDUX STORE AND PASS FORMDATA TO ACTION CREATORS */
-
-  //   // Clear Data
-  //   setEmail('');
-  // };
+  const handleSubmit = event => {
+    event.preventDefault();
+    const formData = {
+      email,
+      password,
+    };
+    /* TODO: SUBSCRIBE TO REDUX STORE AND PASS FORMDATA TO ACTION CREATORS */
+    // eslint-disable-next-line no-console
+    console.log(formData); // For debugging
+  };
 
   return (
-    // onSubmit={handleSubmit}
-    <form className={classes.root}>
+    <form className={classes.root} onSubmit={handleSubmit}>
       <InputLabel className={classes.label}>Your e-mail address:</InputLabel>
       <Input
         placeholder="E-mail"
         name="email"
-        fullWidth
-        // value={email}
-        // onChange={e => setEmail(e.target.value)}
+        type="email"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
         classes={{ input: classes.input }}
+        fullWidth
         disableUnderline
       />
+
       <InputLabel className={classes.label}>Password:</InputLabel>
       <Input
         placeholder="Password"
         name="password"
-        fullWidth
-        // value={password}
-        // onChange={e => setPassword(e.target.value)}
+        type="password"
+        value={password}
+        inputProps={{
+          minLength: 6,
+        }}
+        onChange={e => setPassword(e.target.value)}
         classes={{ input: classes.input }}
+        fullWidth
         disableUnderline
       />
 
       <ThemeButton
-        text="Sign In"
+        text="Log In"
         type="submit"
         padding="2rem 3rem"
-        width="26rem"
+        width="24rem"
         height="6.3rem"
-        // disabled={!name}
+        disabled={!(email && password.length >= 6)}
       />
     </form>
   );
 }
 
-export default CreateSignInForm;
+export default SignUpForm;
