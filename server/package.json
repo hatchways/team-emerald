@@ -31,6 +31,7 @@
     "mongoose": "^5.7.11",
     "morgan": "^1.9.1",
     "puppeteer": "^2.0.0",
+    "user-agents": "^1.0.452",
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {

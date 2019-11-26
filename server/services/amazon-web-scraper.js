@@ -1,13 +1,12 @@
+/* eslint-disable no-undef */
 // A high-level API node library to control headless Chrome or Chromium
 const puppeteer = require('puppeteer');
-// Cheerio parses HTML markup and provides an API to traverse/manipualte
-// the DOM on the server
-const cheerio = require('cheerio');
+
+const { preparePage } = require('./chrome-headless-config');
 
 let browser = null;
 let page = null;
 
-/* Constants */
 const BASE_URL = 'https://amazon.com/';
 
 const chromeOptions = {
@@ -23,6 +22,9 @@ async function initialize() {
   console.log('Starting the scraper...');
   browser = await puppeteer.launch(chromeOptions);
   page = await browser.newPage();
+
+  // Set up headless chrome to be undetected
+  await preparePage(page);
 
   await page.goto(BASE_URL, { waitUntil: 'networkidle2' });
   console.log('Initialization completed');
@@ -45,35 +47,25 @@ async function initialize() {
 async function getProductDetails(link) {
   console.log(`Going to the Product Page... ${link}`);
 
-  let product = null;
+  let productDetails = null;
   try {
     await page.goto(link, { waitUntil: 'networkidle2' });
-    // Retrieve html from page
-    const html = await page.content();
 
-    // Enable JQuery for node
-    const $ = await cheerio.load(html);
+    productDetails = await page.evaluate(() => {
+      const title = document.querySelector('#productTitle').innerText;
+      const currentPrice = document.querySelector('#price_inside_buybox')
+        .innerText;
+      const imageUrl = document.querySelector('#landingImage').src;
 
-    // scrap product details
-    const title = $('#productTitle')
-      .text()
-      .trim();
-    const currentPrice = $('#price_inside_buybox')
-      .text()
-      .trim();
-    const imageUrl = $('#landingImage').attr('src');
+      return { title, currentPrice, imageUrl };
+    });
 
-    product = {
-      title,
-      link,
-      imageUrl,
-      currentPrice,
-    };
+    productDetails.link = link;
   } catch (error) {
     console.log(error);
   }
 
-  return product;
+  return productDetails;
 }
 
 /**
