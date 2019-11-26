@@ -1,14 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import {
   Dialog,
   DialogActions,
   DialogTitle,
   Divider,
   Typography,
-  // Link,
+  Link,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
 import SignUpForm from './SignUpForm';
 import CloseIconButton from '../CloseIconButton';
 
@@ -29,17 +30,24 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const linkToLogin = React.forwardRef((props, ref) => (
+  <RouterLink innerRef={ref} {...props} />
+));
+
 const SignUpDialog = props => {
   const classes = useStyles(props);
+  const history = useHistory();
 
-  const { open, handleClose } = props;
+  const handleClose = () => {
+    history.push('/');
+  };
 
   return (
     <div>
       <Dialog
-        open={open}
+        open
         classes={{ paper: classes.dialogPaper }}
-        disableBAckdropClick
+        disableBackdropClick
         fullWidth
         onEscapeKeyDown={handleClose}
       >
@@ -54,19 +62,18 @@ const SignUpDialog = props => {
         </DialogTitle>
 
         <SignUpForm className={classes.form} />
+
         <Divider className={classes.dividerRoot} />
+
         <Typography variant="h6" align="center">
           Already a member?&nbsp;
-          {/* <Link href="#"> Sign In</Link> */}
+          <Link component={linkToLogin} to="/login">
+            Sign In
+          </Link>
         </Typography>
       </Dialog>
     </div>
   );
-};
-
-SignUpDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
 };
 
 export default SignUpDialog;

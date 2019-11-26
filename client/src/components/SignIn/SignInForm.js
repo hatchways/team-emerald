@@ -1,9 +1,12 @@
-// import React, { useState, useRef } from 'react';
-import React from 'react';
-import { Input, InputLabel } from '@material-ui/core';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import { Box, Input, InputLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import ThemeButton from '../ThemeButton';
+import { login } from '../../actions/auth';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,57 +31,82 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function CreateSignInForm() {
-  // const [email, setEmail] = useState('');
+function SignInForm({ isAuthenticated, error, loginUser }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const classes = useStyles();
 
-  // const handleSubmit = event => {
-  //   event.preventDefault();
-  //   // eslint-disable-next-line no-unused-vars
-  //   const formData = {
-  //     email,
-  //   };
-  //   /* TODO: SUBSCRIBE TO REDUX STORE AND PASS FORMDATA TO ACTION CREATORS */
+  if (isAuthenticated) {
+    return <Redirect to="/shoppinglists" />;
+  }
 
-  //   // Clear Data
-  //   setEmail('');
-  // };
+  const handleSubmit = event => {
+    event.preventDefault();
+    const formData = {
+      email,
+      password,
+    };
+
+    loginUser(formData);
+  };
 
   return (
-    // onSubmit={handleSubmit}
-    <form className={classes.root}>
+    <form className={classes.root} onSubmit={handleSubmit}>
       <InputLabel className={classes.label}>Your e-mail address:</InputLabel>
       <Input
         placeholder="E-mail"
         name="email"
-        fullWidth
-        // value={email}
-        // onChange={e => setEmail(e.target.value)}
+        type="email"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
         classes={{ input: classes.input }}
+        fullWidth
         disableUnderline
       />
+
       <InputLabel className={classes.label}>Password:</InputLabel>
       <Input
         placeholder="Password"
         name="password"
-        fullWidth
-        // value={password}
-        // onChange={e => setPassword(e.target.value)}
+        type="password"
+        value={password}
+        inputProps={{
+          minLength: 6,
+        }}
+        onChange={e => setPassword(e.target.value)}
         classes={{ input: classes.input }}
+        fullWidth
         disableUnderline
       />
 
+      {error && <Box>{error}</Box>}
+
       <ThemeButton
-        text="Sign In"
+        text="Log In"
         type="submit"
         padding="2rem 3rem"
-        width="26rem"
+        width="24rem"
         height="6.3rem"
-        // disabled={!name}
+        disabled={!(email && password.length >= 6)}
       />
     </form>
   );
 }
 
-export default CreateSignInForm;
+SignInForm.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
+  loginUser: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  error: state.auth.error,
+});
+
+const mapDispatchToProps = {
+  loginUser: login,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignInForm);

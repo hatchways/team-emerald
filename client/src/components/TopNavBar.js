@@ -11,7 +11,6 @@ import {
 } from '@material-ui/core';
 
 import logo from '../images/logo.png';
-import SignIn from './SignInSignUp/CreateDialog';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -103,7 +102,6 @@ export default function TopNavBar() {
             />
             <span className={classes.profileButtonText}>Profile</span>
           </Button> */}
-          <SignIn />
         </Breadcrumbs>
       </Toolbar>
     </AppBar>

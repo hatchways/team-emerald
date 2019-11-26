@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 
-import TopNavBar from './components/TopNavBar';
-
 import theme from './themes/theme';
+
 import LandingPage from './pages/Landing';
 import Dashboard from './pages/Dashboard';
+
+import TopNavBar from './components/TopNavBar';
+import SignUpDialog from './components/SignUp/SignUpDialog';
+import SignInDialog from './components/SignIn/SignInDialog';
+
+import { authenticateUser } from './actions/auth';
 
 const styles = () => ({
   '@global': {
@@ -19,7 +26,11 @@ const styles = () => ({
   },
 });
 
-function App() {
+function App({ loadUser }) {
+  useEffect(() => {
+    loadUser();
+  }, [loadUser]);
+
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
@@ -27,9 +38,19 @@ function App() {
         <TopNavBar />
         <Route path="/" component={LandingPage} exact />
         <Route path="/shoppinglists" component={Dashboard} exact />
+        <Route path="/login" component={SignInDialog} exact />
+        <Route path="/register" component={SignUpDialog} exact />
       </BrowserRouter>
     </MuiThemeProvider>
   );
 }
 
-export default withStyles(styles)(App);
+App.propTypes = {
+  loadUser: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = {
+  loadUser: authenticateUser,
+};
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(App));

@@ -25,20 +25,34 @@ const sendTokenResponse = (user, statusCode, res) => {
     options.secure = true; // Only send cookies with https protocol
   }
 
-  const { name, email } = user;
-
   res
     .status(statusCode)
     .cookie('token', token, options)
     .json({
       success: true,
       authenticated: true,
-      user: {
-        name,
-        email,
-      },
+      user: user.toJSON(),
     });
 };
+
+/**
+ * @api {get} /api/v1/auth/
+ * @apiName getMe
+ * @apiGroup auth
+ * @apiPermission protected
+ *
+ * @apiDescription Get the current logged in user
+ */
+// eslint-disable-next-line no-unused-vars
+const getMe = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+
+  res.status(200).json({
+    success: true,
+    authenticated: true,
+    user: user.toJSON(),
+  });
+});
 
 /**
  * @api {post} /api/v1/auth/register
@@ -114,6 +128,7 @@ const logout = asyncHandler(async (req, res, next) => {
 });
 
 module.exports = {
+  getMe,
   register,
   login,
   logout,
