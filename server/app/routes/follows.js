@@ -1,16 +1,23 @@
 const express = require('express');
 
-const { getFollows, createFollow } = require('../controllers/follows');
+const {
+  getFollows,
+  createFollow,
+  deleteFollow,
+} = require('../controllers/follows');
 
 // protect checks for authenticated users
 const { protect } = require('../middleware/auth');
 
-// The mergeParams allow this router to access parameters passed
-// to other routers
+// The mergeParams allow this router to access
+// parameters passed from other routers
 const router = express.Router({ mergeParams: true });
 
-router.get('/', getFollows);
+router.route('/').get(getFollows);
 
-router.post('/:userId', protect, createFollow);
+router
+  .route('/:userId')
+  .post(protect, createFollow)
+  .delete(protect, deleteFollow);
 
 module.exports = router;

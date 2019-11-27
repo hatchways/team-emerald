@@ -14,7 +14,6 @@ const Follow = require('../models/Follow');
  */
 const getFollows = asyncHandler(async (req, res, next) => {
   if (req.params.userId) {
-    console.log('here');
     const user = await User.findById(req.params.userId);
 
     if (!user) {
@@ -83,10 +82,48 @@ const createFollow = asyncHandler(async (req, res, next) => {
     .execPopulate();
 
   // Return the data with the populated followee fields
-  return res.status(201).json({ data: savedFollow.followee });
+  return res.status(201).json({ success: true, data: savedFollow.followee });
+});
+
+/**
+ * @api {delete} /api/v1/follows/:userId
+ * @apiName deleteFollows
+ * @apiGroup follows
+ * @apiPermission protected
+ *
+ * @apiDescription Unfollow user
+ */
+const deleteFollow = asyncHandler(async (req, res, next) => {
+  // Check that the userId is valid
+  const user = await User.findById(req.params.userId);
+
+  if (!user) {
+    return next(
+      new ErrorResponse(`No user with the id of ${req.params.userId}`, 404),
+    );
+  }
+
+  // Check if the follow exists
+  const follow = await Follow.findOne({
+    follower: req.user.id,
+    followee: req.params.userId,
+  })
+    .populate({
+      path: 'followee',
+      select: 'name photoUrl',
+    })
+    .select('followee');
+
+  if (!follow) {
+    return next(new ErrorResponse(`Follow does not exist`, 400));
+  }
+
+  await follow.remove();
+  return res.status(200).json({ success: true, data: follow.followee });
 });
 
 module.exports = {
   getFollows,
   createFollow,
+  deleteFollow,
 };
