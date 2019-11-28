@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "NODE_ENV=development nodemon app/server.js",
+    "seed:db": "node app/_data/seeder.js -i",
+    "clean:db": "node app/_data/seeder.js -d",
     "lint": "eslint .",
     "prettier": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|md|graphql|mdx)\"",
     "format": "npm run prettier -- --write",
