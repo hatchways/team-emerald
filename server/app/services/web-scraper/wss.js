@@ -30,21 +30,23 @@ const webScrapeQueue = new Queue('web-scrape-service');
 
     Data for products already in database
     data: {
-      id: MONGODB_OBJECT_ID,
+      id: MONGODB_OBJECT_ID (String),
       link: LINK_TO_PRODUCT_PAGE,
       currentPrice: CURRENT_PRICE_OF_PRODUCT_IN_DB
     }
 */
 
 // Used for when users add new products to database
-const newProductOptions = {
+const newProductJobOptions = {
   priority: 1,
 };
 
+const repeat = { every: 20000 }; // Change to a longer duration later
+
 // Used to webscrape existing products in database at a later time
-const delayOptions = {
+const repeatJobOptions = {
   priority: 10,
-  delay: 20000, // Change to a longer duration later
+  repeat,
 };
 
 webScrapeQueue.process(async job => {
@@ -69,63 +71,80 @@ webScrapeQueue.on('completed', async (job, result) => {
 
   // if the product is new, save to database and add to queue
   if (job.data.newProduct) {
-    console.log(`Creating new product in database for ${productDetails.name}`);
-    // ADDED TEST LINE TO SHOW UPDATING WORKS
+    console.log(
+      `Creating new product in database for ${productDetails.name.substring(
+        0,
+        51,
+      )}\n`,
+    );
+    // TEST - increased currentPrice by $10 so a later fetch will update the price in DB
     productDetails.currentPrice += 10.0;
     let product = await Product.create(productDetails);
     product = product.toJSON();
 
-    webScrapeQueue.add(
+    await webScrapeQueue.add(
       {
         id: product.id,
         link: product.link,
         currentPrice: product.currentPrice,
       },
-      delayOptions,
+      { ...repeatJobOptions, jobId: product.id },
     );
   } else {
     try {
       const productInDb = await Product.findById(job.data.id);
 
-      let savedProduct = null;
-
       if (!productInDb) throw new Error('Product not found');
 
       // is fetched price is lower than the one in the database
-      console.log(productDetails.currentPrice, productInDb.currentPrice);
+      console.log(
+        `New Price: ${productDetails.currentPrice}, Old Price: ${productInDb.currentPrice}\n`,
+      );
       if (productDetails.currentPrice < productInDb.currentPrice) {
         console.log(
-          `Lower price found for ${productDetails.name} in database, Updating...`,
+          `Lower price found for ${productDetails.name.substring(
+            0,
+            51,
+          )} in database, Updating...\n`,
         );
-        // we update product in the database, and create a new Notification
-        // and notify the user if the user is in the database
-        savedProduct = await Product.findByIdAndUpdate(
+        // Update the product's price in the database
+        const savedProduct = await Product.findByIdAndUpdate(
           job.data.id,
-          productDetails,
+          {
+            currentPrice: productDetails.currentPrice,
+            previousPrice: productInDb.currentPrice,
+          },
           {
             new: true,
           },
         );
+
+        // Update job in queue with lower price
+        await job.update({ currentPrice: savedProduct.currentPrice });
+
+        /*  TODO:
+         *  1)  Create a Notification in database for the new product for each user subscribed
+         *      to the list containing said product.
+         *  2)  If user is connected to the server atm, send msg to user to fetch for notifications
+         */
       } else {
         console.log(
-          `Lower price NOT found for ${productDetails.name} in database`,
+          `Lower price NOT found for ${productDetails.name.substring(
+            0,
+            51,
+          )} in database\n`,
         );
       }
 
-      console.log(`Fetching product at a later time...`);
-      webScrapeQueue.add(
-        {
-          id: job.data.id,
-          link: savedProduct ? savedProduct.link : productInDb.link,
-          currentPrice: savedProduct
-            ? savedProduct.currentPrice
-            : productInDb.currentPrice,
-        },
-        delayOptions,
-      );
+      console.log(`Fetching product at a later time...\n`);
     } catch (error) {
-      console.log(error);
-      console.log('Product was not found in the database, not added to queue');
+      console.log(
+        'Product was not found in the database, removing job from queue...\n',
+      );
+      await webScrapeQueue.removeRepeatable({
+        jobId: job.opts.repeat.jobId,
+        ...repeat,
+      });
     }
   }
 });
@@ -135,7 +154,7 @@ webScrapeQueue.on('completed', async (job, result) => {
 const test = () => {
   const urls = [
     'https://www.amazon.com/Acer-Lightweight-i7-8565U-Back-lit-Keyboard/dp/B07JLBJZD3?smid=ATVPDKIKX0DER&pf_rd_p=76f0bb6a-acae-4563-a011-9d48589bd6bb&pf_rd_r=9CZQNXVGAK73FVAM482P',
-    // 'https://www.amazon.com/Legacy-Heating-CDFP-S-CB-M-Aluminum-Table/dp/B076GYTW6P?ref_=Oct_DLandingS_D_e7e1167a_63&smid=ATVPDKIKX0DER',
+    'https://www.amazon.com/Legacy-Heating-CDFP-S-CB-M-Aluminum-Table/dp/B076GYTW6P?ref_=Oct_DLandingS_D_e7e1167a_63&smid=ATVPDKIKX0DER',
   ];
 
   urls.forEach(url => {
@@ -144,7 +163,7 @@ const test = () => {
         link: url,
         newProduct: true,
       },
-      newProductOptions,
+      newProductJobOptions,
     );
   });
 };

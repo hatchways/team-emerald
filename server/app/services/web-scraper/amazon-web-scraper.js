@@ -45,7 +45,7 @@ async function initialize() {
  * @returns {Product|null} product - The Product object on success or null on failure
  */
 async function getProductDetails(link) {
-  console.log(`Going to the Product Page... ${link}`);
+  console.log(`Going to the Product Page... ${link.substring(0, 51)}\n`);
 
   let productDetails = null;
   try {
