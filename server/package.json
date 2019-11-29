@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "NODE_ENV=development nodemon app/server.js",
+    "wss:start": "redis-cli FLUSHALL && node app/services/web-scraper/wss.js",
     "seed:db": "node app/_data/seeder.js -i",
     "clean:db": "node app/_data/seeder.js -d",
     "lint": "eslint .",
