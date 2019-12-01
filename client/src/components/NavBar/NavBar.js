@@ -1,10 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { AppBar, Box, Toolbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import LoginRegister from './LoginRegister';
 import NavLinks from './NavLinks';
-// import Profile from './Profile/Profile';
+import Profile from './Profile/Profile';
 import SiteLogo from './SiteLogo';
 
 const useStyles = makeStyles(theme => ({
@@ -22,6 +24,8 @@ const useStyles = makeStyles(theme => ({
 function NavBar(props) {
   const classes = useStyles(props);
 
+  const { isAuthenticated } = props;
+
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar disableGutters>
@@ -31,13 +35,20 @@ function NavBar(props) {
         <Box>
           <NavLinks />
         </Box>
-        <Box>
-          <LoginRegister />
-          {/* <Profile /> */}
-        </Box>
+        <Box>{isAuthenticated ? <Profile /> : <LoginRegister />}</Box>
       </Toolbar>
     </AppBar>
   );
 }
 
-export default NavBar;
+NavBar.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
