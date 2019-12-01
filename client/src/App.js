@@ -10,7 +10,7 @@ import theme from './themes/theme';
 import LandingPage from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 
-import TopNavBar from './components/TopNavBar';
+import NavBar from './components/NavBar/NavBar';
 import SignUpDialog from './components/SignUp/SignUpDialog';
 import SignInDialog from './components/SignIn/SignInDialog';
 
@@ -35,7 +35,7 @@ function App({ loadUser }) {
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        <TopNavBar />
+        <NavBar />
         <Route path="/" component={LandingPage} exact />
         <Route path="/shoppinglists" component={Dashboard} exact />
         <Route path="/login" component={SignInDialog} exact />
