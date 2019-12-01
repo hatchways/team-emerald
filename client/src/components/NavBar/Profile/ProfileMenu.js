@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import {
   Button,
   ClickAwayListener,
@@ -9,6 +12,8 @@ import {
   Popper,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
+import { logout } from '../../../actions/auth';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,10 +30,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function ProfileMenu() {
+function ProfileMenu(props) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef(null);
+  const history = useHistory();
 
   const handleToggle = () => {
     setOpen(prevOpen => !prevOpen);
@@ -42,6 +48,17 @@ function ProfileMenu() {
     setOpen(false);
   };
 
+  const handleLogout = async () => {
+    const { isAuthenticated, logoutUser } = props;
+
+    if (!isAuthenticated) {
+      history.push('/');
+    } else {
+      await logoutUser();
+      history.push('/');
+    }
+  };
+
   function handleListKeyDown(event) {
     if (event.key === 'Tab') {
       event.preventDefault();
@@ -50,8 +67,9 @@ function ProfileMenu() {
   }
 
   // return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
+  const prevOpen = useRef(open);
+
+  useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
     }
@@ -93,7 +111,7 @@ function ProfileMenu() {
                   onKeyDown={handleListKeyDown}
                 >
                   {/* TODO: Connect ProfileMenu to auth action to logout */}
-                  <MenuItem onClick={handleClose}>Logout</MenuItem>
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </MenuList>
               </ClickAwayListener>
             </Paper>
@@ -104,4 +122,17 @@ function ProfileMenu() {
   );
 }
 
-export default ProfileMenu;
+ProfileMenu.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  logoutUser: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+const mapDispatchToProps = {
+  logoutUser: logout,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileMenu);
