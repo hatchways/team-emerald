@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import { Badge, Box, Button, Popper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -41,8 +44,15 @@ function Notifications(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [arrowRef, setArrowRef] = useState(null);
 
+  const history = useHistory();
+
   const handleClick = event => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
+    const { isAuthenticated } = props;
+    if (isAuthenticated) {
+      setAnchorEl(anchorEl ? null : event.currentTarget);
+    } else {
+      history.push('/login');
+    }
   };
 
   const handleArrowRef = node => {
@@ -91,4 +101,12 @@ function Notifications(props) {
   );
 }
 
-export default Notifications;
+Notifications.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps)(Notifications);
