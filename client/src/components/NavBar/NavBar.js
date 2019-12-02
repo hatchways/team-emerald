@@ -27,7 +27,7 @@ function NavBar(props) {
   const { isAuthenticated } = props;
 
   return (
-    <AppBar position="fixed" className={classes.appBar}>
+    <AppBar position="sticky" className={classes.appBar}>
       <Toolbar disableGutters>
         <Box style={{ marginRight: 'auto' }}>
           <SiteLogo />
