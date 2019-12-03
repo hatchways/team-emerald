@@ -22,8 +22,12 @@ const ListSchema = mongoose.Schema(
       required: true,
     },
     products: {
-      type: [mongoose.Schema.ObjectId],
-      ref: 'Product',
+      type: [
+        {
+          type: mongoose.Schema.ObjectId,
+          ref: 'Product',
+        },
+      ],
     },
   },
   options,

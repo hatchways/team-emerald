@@ -12,8 +12,7 @@ const List = require('../models/List');
 // eslint-disable-next-line no-unused-vars
 const getLists = asyncHandler(async (req, res, next) => {
   const { userId } = req.params;
-  console.log(userId);
-  const lists = await List.find({ userId });
+  const lists = await List.find({ user: userId });
   if (!lists) {
     return next(
       new ErrorResponse(
@@ -34,12 +33,14 @@ const getLists = asyncHandler(async (req, res, next) => {
  */
 // eslint-disable-next-line no-unused-vars
 const getList = asyncHandler(async (req, res, next) => {
-  const lists = await List.findById(req.user.id);
-
-  res.status(200).json({
-    success: true,
-    lists: lists.toJSON(),
-  });
+  const { listId } = req.params;
+  const lists = await List.findById(listId);
+  if (!lists) {
+    return next(
+      new ErrorResponse(`No lists with the id of ${req.params.listId}`, 404),
+    );
+  }
+  return res.status(200).json({ success: true, lists });
 });
 
 /**
@@ -53,7 +54,6 @@ const getList = asyncHandler(async (req, res, next) => {
 // eslint-disable-next-line no-unused-vars
 const postList = asyncHandler(async (req, res, next) => {
   const { name, coverUrl, user, products } = req.body;
-  console.log(coverUrl);
 
   // Create list
   const list = await List.create({
@@ -86,7 +86,7 @@ const updateList = asyncHandler(async (req, res, next) => {
     name,
     coverUrl,
     user,
-    products,
+    ...products,
   });
 
   res.status(200).json({
@@ -107,6 +107,7 @@ const updateList = asyncHandler(async (req, res, next) => {
 const deleteList = asyncHandler(async (req, res, next) => {
   const { id } = req.body;
   const list = await List.findById(id);
+  // could potentially use findByIdAndRemove() here?
 
   if (!list) {
     return next(

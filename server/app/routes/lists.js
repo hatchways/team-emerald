@@ -10,13 +10,15 @@ const {
 
 const { protect } = require('../middleware/auth');
 
-const router = express.Router({ mergeparams: true });
+const router = express.Router({ mergeParams: true });
 
-router.route('/').get(getLists);
-router.get('/:userId/lists/:listId', getList);
-router.post('/', protect, postList);
+router
+  .route('/')
+  .get(getLists)
+  .post(protect, postList);
 router
   .route('/:listId')
+  .get(getList)
   .put(protect, updateList)
   .delete(protect, deleteList);
 
