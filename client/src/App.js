@@ -13,6 +13,7 @@ import Dashboard from './pages/Dashboard';
 import TopNavBar from './components/TopNavBar';
 import SignUpDialog from './components/SignUp/SignUpDialog';
 import SignInDialog from './components/SignIn/SignInDialog';
+import SocketClient from './components/SocketClient';
 
 import { authenticateUser } from './actions/auth';
 
@@ -41,6 +42,7 @@ function App({ loadUser }) {
         <Route path="/login" component={SignInDialog} exact />
         <Route path="/register" component={SignUpDialog} exact />
       </BrowserRouter>
+      <SocketClient />
     </MuiThemeProvider>
   );
 }

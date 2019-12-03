@@ -18,6 +18,10 @@ const server = app.listen(
   ),
 );
 
+const { socketServer } = require('./socketService');
+
+socketServer.start(server);
+
 // Handle unhandled promise rejections
 /* eslint-disable-next-line no-unused-vars */
 process.on('unhandledRejection', (error, promise) => {
