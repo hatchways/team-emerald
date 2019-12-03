@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -25,6 +25,9 @@ const useStyles = makeStyles(theme => ({
       transform: 'translateY(0)',
     },
   }),
+  circularProgress: {
+    color: '#FFF',
+  },
 }));
 
 /**
@@ -35,7 +38,16 @@ const useStyles = makeStyles(theme => ({
  */
 function ThemeButton(props) {
   const classes = useStyles(props);
-  const { text, handleClick, disabled, padding, width, height, type } = props;
+  const {
+    text,
+    handleClick,
+    disabled,
+    padding,
+    width,
+    height,
+    type,
+    loading,
+  } = props;
 
   return (
     <Button
@@ -46,8 +58,15 @@ function ThemeButton(props) {
       padding={padding}
       width={width}
       height={height}
+      loading={loading}
     >
-      <Typography variant="button">{text}</Typography>
+      {loading ? (
+        <CircularProgress
+          classes={{ colorPrimary: classes.circularProgress }}
+        />
+      ) : (
+        <Typography variant="button">{text}</Typography>
+      )}
     </Button>
   );
 }
@@ -56,6 +75,7 @@ ThemeButton.defaultProps = {
   disabled: false,
   handleClick: null,
   type: 'button',
+  loading: false,
 };
 
 ThemeButton.propTypes = {
@@ -66,6 +86,7 @@ ThemeButton.propTypes = {
   disabled: PropTypes.bool,
   handleClick: PropTypes.func,
   type: PropTypes.string,
+  loading: PropTypes.bool,
 };
 
 export default ThemeButton;

@@ -7,6 +7,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import ThemeButton from '../ThemeButton';
 import { login } from '../../actions/auth';
+import { POST_LOGIN } from '../../actions/types';
+
+import { createLoadingSelector } from '../../api/selectors';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function SignInForm({ isAuthenticated, error, loginUser }) {
+function SignInForm({ isAuthenticated, error, loginUser, loading }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -90,7 +93,8 @@ function SignInForm({ isAuthenticated, error, loginUser }) {
         padding="2rem 3rem"
         width="24rem"
         height="6.3rem"
-        disabled={!(email && password.length >= 6)}
+        disabled={!(email && password.length >= 6) || loading}
+        loading={loading}
       />
     </form>
   );
@@ -98,12 +102,16 @@ function SignInForm({ isAuthenticated, error, loginUser }) {
 
 SignInForm.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
   error: PropTypes.string.isRequired,
   loginUser: PropTypes.func.isRequired,
 };
 
+const loadingSelector = createLoadingSelector([POST_LOGIN]);
+
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
+  loading: loadingSelector(state),
   error: state.auth.error,
 });
 
