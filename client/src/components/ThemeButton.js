@@ -58,7 +58,6 @@ function ThemeButton(props) {
       padding={padding}
       width={width}
       height={height}
-      loading={loading}
     >
       {loading ? (
         <CircularProgress
