@@ -1,12 +1,15 @@
 import axios from 'axios';
 
 import {
-  REGISTER_SUCCESS,
-  REGISTER_FAIL,
-  AUTH_SUCCESS,
-  AUTH_ERROR,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
+  POST_REGISTER_REQUEST,
+  POST_REGISTER_SUCCESS,
+  POST_REGISTER_FAILURE,
+  POST_AUTH_REQUEST,
+  POST_AUTH_SUCCESS,
+  POST_AUTH_FAILURE,
+  POST_LOGIN_REQUEST,
+  POST_LOGIN_SUCCESS,
+  POST_LOGIN_FAILURE,
   LOGOUT,
 } from './types';
 
@@ -14,14 +17,19 @@ import {
 // has an existing valid token
 export const authenticateUser = () => async dispatch => {
   try {
-    const res = await axios.get('/api/v1/auth');
     dispatch({
-      type: AUTH_SUCCESS,
+      type: POST_AUTH_REQUEST,
+    });
+
+    const res = await axios.get('/api/v1/auth');
+
+    dispatch({
+      type: POST_AUTH_SUCCESS,
       payload: res.data.user,
     });
   } catch (err) {
     dispatch({
-      type: AUTH_ERROR,
+      type: POST_AUTH_FAILURE,
     });
   }
 };
@@ -37,17 +45,21 @@ export const register = ({ name, email, password }) => async dispatch => {
   const body = { name, email, password };
 
   try {
+    dispatch({
+      type: POST_REGISTER_REQUEST,
+    });
+
     const res = await axios.post('/api/v1/auth/register', body, config);
 
     dispatch({
-      type: REGISTER_SUCCESS,
+      type: POST_REGISTER_SUCCESS,
       payload: {
         user: res.data.user,
       },
     });
   } catch (err) {
     dispatch({
-      type: REGISTER_FAIL,
+      type: POST_REGISTER_FAILURE,
       payload: {
         error: err.response.data.error,
       },
@@ -57,6 +69,10 @@ export const register = ({ name, email, password }) => async dispatch => {
 
 // Login User
 export const login = ({ email, password }) => async dispatch => {
+  dispatch({
+    type: POST_LOGIN_REQUEST,
+  });
+
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -69,14 +85,14 @@ export const login = ({ email, password }) => async dispatch => {
     const res = await axios.post('/api/v1/auth/login', body, config);
 
     dispatch({
-      type: LOGIN_SUCCESS,
+      type: POST_LOGIN_SUCCESS,
       payload: {
         user: res.data.user,
       },
     });
   } catch (err) {
     dispatch({
-      type: LOGIN_FAIL,
+      type: POST_LOGIN_FAILURE,
       payload: {
         error: err.response.data.error,
       },
