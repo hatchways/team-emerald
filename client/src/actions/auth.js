@@ -90,7 +90,7 @@ export const logout = () => async dispatch => {
     await axios.post('/api/v1/auth/logout');
     dispatch({ type: LOGOUT });
   } catch (err) {
-    // To be worked on for the logout functionality
-    console.log('err.response.data.error'); // eslint-disable-line
+    // If a user deletes his/her token and attempts to logout, it should reset the state
+    dispatch({ type: LOGOUT });
   }
 };

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useLocation } from 'react-router-dom';
 import { Box, Input, InputLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -36,9 +36,11 @@ function SignInForm({ isAuthenticated, error, loginUser }) {
   const [password, setPassword] = useState('');
 
   const classes = useStyles();
+  const location = useLocation();
 
   if (isAuthenticated) {
-    return <Redirect to="/shoppinglists" />;
+    const { from } = location.state || { from: { pathname: '/' } };
+    return <Redirect to={from.pathname} />;
   }
 
   const handleSubmit = event => {

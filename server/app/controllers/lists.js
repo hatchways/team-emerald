@@ -1,4 +1,4 @@
-// const ErrorResponse = require('../utils/errorResponse');
+const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const List = require('../models/List');
 
@@ -11,12 +11,18 @@ const List = require('../models/List');
  */
 // eslint-disable-next-line no-unused-vars
 const getLists = asyncHandler(async (req, res, next) => {
-  const lists = await List.findById(req.user.id);
-
-  res.status(200).json({
-    success: true,
-    lists: lists.toJSON(),
-  });
+  const { userId } = req.params;
+  console.log(userId);
+  const lists = await List.find({ userId });
+  if (!lists) {
+    return next(
+      new ErrorResponse(
+        `No lists with the user id of ${req.params.userId}`,
+        404,
+      ),
+    );
+  }
+  return res.status(200).json({ success: true, lists });
 });
 
 /**
@@ -40,7 +46,7 @@ const getList = asyncHandler(async (req, res, next) => {
  * @api {post} /api/v1/lists
  * @apiName postList
  * @apiGroup lists
- * @apiPermission none
+ * @apiPermission protected
  *
  * @apiDescription Creates user in database
  */
@@ -64,37 +70,52 @@ const postList = asyncHandler(async (req, res, next) => {
 });
 
 /**
- * @api {update} /api/v1/auth/logout
- * @apiName logout
- * @apiGroup auth
+ * @api {update} /api/v1/lists/:listId
+ * @apiName updateList
+ * @apiGroup lists
  * @apiPermission protected
  *
- * @apiDescription Logs user out and clears cookie
+ * @apiDescription Update a single list
  */
 // eslint-disable-next-line no-unused-vars
 const updateList = asyncHandler(async (req, res, next) => {
-  res.clearCookie('token');
+  const { name, coverUrl, user, products, id } = req.body;
+
+  // Create list
+  const list = await List.findByIdAndUpdate(id, {
+    name,
+    coverUrl,
+    user,
+    products,
+  });
 
   res.status(200).json({
     success: true,
+    list: list.toJSON(),
   });
 });
 
 /**
- * @api {delete} /api/v1/auth/logout
- * @apiName logout
- * @apiGroup auth
+ * @api {delete} /api/v1/lists/:listId
+ * @apiName deleteList
+ * @apiGroup lists
  * @apiPermission protected
  *
- * @apiDescription Logs user out and clears cookie
+ * @apiDescription Delete a list
  */
 // eslint-disable-next-line no-unused-vars
 const deleteList = asyncHandler(async (req, res, next) => {
-  res.clearCookie('token');
+  const { id } = req.body;
+  const list = await List.findById(id);
 
-  res.status(200).json({
-    success: true,
-  });
+  if (!list) {
+    return next(
+      new ErrorResponse(`No list with the id of ${req.body.id}`, 404),
+    );
+  }
+
+  await list.remove();
+  return res.status(200).json({ success: true, data: list });
 });
 
 module.exports = {
@@ -109,4 +130,4 @@ module.exports = {
 // GET /api/v1/users/:userId/lists/:listId
 // POST /api/v1/lists
 // PUT /api/v1/lists/:listId
-// DELETE /api/v1/lists/:listId (edited)
+// DELETE /api/v1/lists/:listId

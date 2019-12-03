@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
 import {
   Dialog,
   DialogActions,
@@ -37,6 +37,7 @@ const linkToLogin = React.forwardRef((props, ref) => (
 const SignUpDialog = props => {
   const classes = useStyles(props);
   const history = useHistory();
+  const location = useLocation();
 
   const handleClose = () => {
     history.push('/');
@@ -67,7 +68,18 @@ const SignUpDialog = props => {
 
         <Typography variant="h6" align="center">
           Already a member?&nbsp;
-          <Link component={linkToLogin} to="/login">
+          <Link
+            component={linkToLogin}
+            to={{
+              pathname: '/login',
+              state: {
+                from: {
+                  pathname:
+                    (location.state && location.state.from.pathname) || '/',
+                },
+              },
+            }}
+          >
             Sign In
           </Link>
         </Typography>

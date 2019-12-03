@@ -26,6 +26,10 @@ const UserSchema = mongoose.Schema(
         'Please add a valid email',
       ],
     },
+    photoUrl: {
+      type: String,
+      default: '',
+    },
     password: {
       type: String,
       required: [true, 'Please add a password'],
@@ -40,7 +44,7 @@ const UserSchema = mongoose.Schema(
 // to a JSON object
 UserSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    // returnedObject.id = returnedObject._id.toString();
+    returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
     delete returnedObject.createdAt;
