@@ -70,7 +70,7 @@ const postList = asyncHandler(async (req, res, next) => {
 });
 
 /**
- * @api {update} /api/v1/lists/:listId
+ * @api {put} /api/v1/lists/:listId
  * @apiName updateList
  * @apiGroup lists
  * @apiPermission protected
