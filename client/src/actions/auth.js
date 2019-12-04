@@ -4,12 +4,14 @@ import {
   POST_REGISTER_REQUEST,
   POST_REGISTER_SUCCESS,
   POST_REGISTER_FAILURE,
+  POST_REGISTER_CLEAR,
   POST_AUTH_REQUEST,
   POST_AUTH_SUCCESS,
   POST_AUTH_FAILURE,
   POST_LOGIN_REQUEST,
   POST_LOGIN_SUCCESS,
   POST_LOGIN_FAILURE,
+  POST_LOGIN_CLEAR,
   LOGOUT,
 } from './types';
 
@@ -114,4 +116,12 @@ export const logout = () => async dispatch => {
     // If a user deletes his/her token and attempts to logout, it should reset the state
     dispatch({ type: LOGOUT });
   }
+};
+
+export const clearLoginErrors = () => async dispatch => {
+  dispatch({ type: POST_LOGIN_CLEAR });
+};
+
+export const clearRegisterErrors = () => async dispatch => {
+  dispatch({ type: POST_REGISTER_CLEAR });
 };

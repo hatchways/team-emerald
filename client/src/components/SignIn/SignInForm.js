@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect, useLocation } from 'react-router-dom';
@@ -6,10 +6,13 @@ import { Box, Input, InputLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import ThemeButton from '../ThemeButton';
-import { login } from '../../actions/auth';
+import { login, clearLoginErrors } from '../../actions/auth';
 import { POST_LOGIN } from '../../actions/types';
 
-import { createLoadingSelector } from '../../api/selectors';
+import {
+  createErrorMessageSelector,
+  createLoadingSelector,
+} from '../../api/selectors';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,12 +37,22 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function SignInForm({ isAuthenticated, error, loginUser, loading }) {
+function SignInForm({
+  isAuthenticated,
+  error,
+  loginUser,
+  loading,
+  clearErrors,
+}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const classes = useStyles();
   const location = useLocation();
+
+  useEffect(() => {
+    clearErrors();
+  }, [clearErrors]);
 
   if (isAuthenticated) {
     const { from } = location.state || { from: { pathname: '/' } };
@@ -102,21 +115,24 @@ function SignInForm({ isAuthenticated, error, loginUser, loading }) {
 
 SignInForm.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
-  loading: PropTypes.bool.isRequired,
   error: PropTypes.string.isRequired,
+  clearErrors: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
   loginUser: PropTypes.func.isRequired,
 };
 
+const errorSelector = createErrorMessageSelector([POST_LOGIN]);
 const loadingSelector = createLoadingSelector([POST_LOGIN]);
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
+  error: errorSelector(state),
   loading: loadingSelector(state),
-  error: state.auth.error,
 });
 
 const mapDispatchToProps = {
   loginUser: login,
+  clearErrors: clearLoginErrors,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignInForm);
