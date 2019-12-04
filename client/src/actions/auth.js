@@ -25,11 +25,16 @@ export const authenticateUser = () => async dispatch => {
 
     dispatch({
       type: POST_AUTH_SUCCESS,
-      payload: res.data.user,
+      payload: {
+        user: res.data.user,
+      },
     });
   } catch (err) {
     dispatch({
       type: POST_AUTH_FAILURE,
+      payload: {
+        error: err.response.data.error,
+      },
     });
   }
 };
