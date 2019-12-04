@@ -1,11 +1,8 @@
 import {
-  POST_REGISTER_REQUEST,
   POST_REGISTER_SUCCESS,
   POST_REGISTER_FAILURE,
-  POST_AUTH_REQUEST,
   POST_AUTH_SUCCESS,
   POST_AUTH_FAILURE,
-  POST_LOGIN_REQUEST,
   POST_LOGIN_SUCCESS,
   POST_LOGIN_FAILURE,
   LOGOUT,
@@ -14,19 +11,11 @@ import {
 const initialState = {
   isAuthenticated: false,
   user: null,
-  error: '',
 };
 
 export default function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case POST_REGISTER_REQUEST:
-    case POST_AUTH_REQUEST:
-    case POST_LOGIN_REQUEST:
-      return {
-        ...state,
-        error: '',
-      };
     case POST_REGISTER_SUCCESS:
     case POST_AUTH_SUCCESS:
     case POST_LOGIN_SUCCESS:
@@ -40,7 +29,6 @@ export default function(state = initialState, action) {
     case POST_LOGIN_FAILURE:
       return {
         ...state,
-        ...payload,
         isAuthenticated: false,
         user: null,
       };
@@ -49,7 +37,6 @@ export default function(state = initialState, action) {
         ...state,
         isAuthenticated: false,
         user: null,
-        error: '',
       };
     default:
       return state;
