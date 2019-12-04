@@ -9,8 +9,10 @@ import theme from './themes/theme';
 
 import LandingPage from './pages/Landing';
 import Dashboard from './pages/Dashboard';
+import Follows from './pages/Follows';
 
-import TopNavBar from './components/TopNavBar';
+import NavBar from './components/NavBar/NavBar';
+import PrivateRoute from './components/routing/PrivateRoute';
 import SignUpDialog from './components/SignUp/SignUpDialog';
 import SignInDialog from './components/SignIn/SignInDialog';
 import SocketClient from './components/SocketClient';
@@ -36,9 +38,10 @@ function App({ loadUser }) {
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        <TopNavBar />
+        <NavBar />
         <Route path="/" component={LandingPage} exact />
-        <Route path="/shoppinglists" component={Dashboard} exact />
+        <PrivateRoute path="/shoppinglists" component={Dashboard} exact />
+        <PrivateRoute path="/follows" component={Follows} exact />
         <Route path="/login" component={SignInDialog} exact />
         <Route path="/register" component={SignUpDialog} exact />
       </BrowserRouter>

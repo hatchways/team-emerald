@@ -35,14 +35,14 @@ export default function(state = initialState, action) {
         ...state,
         ...payload,
         isAuthenticated: false,
-        loading: true,
+        loading: false,
         user: null,
       };
     case LOGOUT:
       return {
         ...state,
         isAuthenticated: false,
-        loading: true,
+        loading: false,
         user: null,
         error: '',
       };
