@@ -45,19 +45,44 @@ async function initialize() {
  * @returns {Product|null} product - The Product object on success or null on failure
  */
 async function getProductDetails(link) {
-  console.log(`Going to the Product Page... ${link}`);
+  console.log(`Going to the Product Page... ${link.substring(0, 51)}\n`);
 
   let productDetails = null;
   try {
     await page.goto(link, { waitUntil: 'networkidle2' });
 
     productDetails = await page.evaluate(() => {
-      const title = document.querySelector('#productTitle').innerText;
-      const currentPrice = document.querySelector('#price_inside_buybox')
-        .innerText;
-      const imageUrl = document.querySelector('#landingImage').src;
+      const currentPriceSelectors = [
+        '#price_inside_buybox',
+        '#priceblock_dealprice',
+      ];
+      const previousPriceSelectors = [
+        '.priceBlockStrikePriceString',
+        '#priceblock_ourprice',
+      ];
 
-      return { title, currentPrice, imageUrl };
+      const name = document.querySelector('#productTitle').textContent.trim();
+      const imageUrl = document.querySelector('#landingImage').src || '';
+
+      let currentPrice;
+      for (const selector of currentPriceSelectors) {
+        const element = document.querySelector(selector);
+        if (element) {
+          currentPrice = element.textContent.trim();
+          break;
+        }
+      }
+
+      let previousPrice;
+      for (const selector of previousPriceSelectors) {
+        const element = document.querySelector(selector);
+        if (element) {
+          previousPrice = element.textContent.trim();
+          break;
+        }
+      }
+
+      return { name, imageUrl, currentPrice, previousPrice };
     });
 
     productDetails.link = link;
