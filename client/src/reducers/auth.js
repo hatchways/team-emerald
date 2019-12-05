@@ -1,4 +1,5 @@
 import {
+  PUT_USER_PROFILE_IMAGE_SUCCESS,
   POST_REGISTER_SUCCESS,
   POST_REGISTER_FAILURE,
   POST_AUTH_SUCCESS,
@@ -16,6 +17,11 @@ const initialState = {
 export default function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
+    case PUT_USER_PROFILE_IMAGE_SUCCESS:
+      return {
+        ...state,
+        user: Object.assign(state.user, { ...payload }),
+      };
     case POST_REGISTER_SUCCESS:
     case POST_AUTH_SUCCESS:
     case POST_LOGIN_SUCCESS:

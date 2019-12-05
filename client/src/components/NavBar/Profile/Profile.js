@@ -1,10 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Avatar, Box } from '@material-ui/core';
+import { Avatar, Box, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import ProfileMenu from './ProfileMenu';
+
+import { updateProfileImage } from '../../../actions/users';
+import { PUT_USER_PROFILE_IMAGE } from '../../../actions/types';
+
+import { createLoadingSelector } from '../../../api/selectors';
 
 const defaultProfileImage = `${process.env.PUBLIC_URL}/assets/default-profile.png`;
 
@@ -13,6 +18,9 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  loading: {
+    marginRight: '2rem',
   },
   avatar: {
     marginRight: '2rem',
@@ -28,34 +36,57 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function Profile(props) {
+// eslint-disable-next-line no-shadow
+function Profile({ id, loading, photoUrl, updateProfileImage }) {
   const classes = useStyles();
 
-  const { photoUrl } = props;
+  const handleOnChange = event => {
+    const file = event.target.files[0];
+    updateProfileImage(id, file);
+  };
 
   return (
     <Box className={classes.root}>
-      <label htmlFor="avatar-input">
-        <input accept="image/*" id="avatar-input" hidden type="file" />
-        <Avatar
-          src={!photoUrl ? defaultProfileImage : photoUrl}
-          alt="Profile Image"
-          className={classes.avatar}
-        />
-      </label>
+      {loading ? (
+        <CircularProgress className={classes.loading} />
+      ) : (
+        <label htmlFor="avatar-input">
+          <input
+            accept="image/*"
+            id="avatar-input"
+            hidden
+            type="file"
+            onChange={handleOnChange}
+          />
+          <Avatar
+            src={!photoUrl ? defaultProfileImage : photoUrl}
+            alt="Profile Image"
+            className={classes.avatar}
+          />
+        </label>
+      )}
       <ProfileMenu />
     </Box>
   );
 }
 
 Profile.propTypes = {
+  id: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
   photoUrl: PropTypes.string.isRequired,
+  updateProfileImage: PropTypes.func.isRequired,
 };
 
+const loadingSelector = createLoadingSelector([PUT_USER_PROFILE_IMAGE]);
+
 const mapStateToProps = state => ({
+  id: state.auth.user.id,
   photoUrl: state.auth.user.photoUrl,
+  loading: loadingSelector(state),
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  updateProfileImage,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
