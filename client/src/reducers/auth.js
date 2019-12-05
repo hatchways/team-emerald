@@ -20,7 +20,7 @@ export default function(state = initialState, action) {
     case PUT_USER_PROFILE_IMAGE_SUCCESS:
       return {
         ...state,
-        user: Object.assign(state.user, { ...payload }),
+        user: { ...state.user, ...payload },
       };
     case POST_REGISTER_SUCCESS:
     case POST_AUTH_SUCCESS:

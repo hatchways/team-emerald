@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 // eslint-disable-next-line no-shadow
-function Profile({ id, loading, photoUrl, updateProfileImage }) {
+function Profile({ user: { id, photoUrl }, loading, updateProfileImage }) {
   const classes = useStyles();
 
   const handleOnChange = event => {
@@ -71,17 +71,18 @@ function Profile({ id, loading, photoUrl, updateProfileImage }) {
 }
 
 Profile.propTypes = {
-  id: PropTypes.string.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    photoUrl: PropTypes.string.isRequired,
+  }).isRequired,
   loading: PropTypes.bool.isRequired,
-  photoUrl: PropTypes.string.isRequired,
   updateProfileImage: PropTypes.func.isRequired,
 };
 
 const loadingSelector = createLoadingSelector([PUT_USER_PROFILE_IMAGE]);
 
 const mapStateToProps = state => ({
-  id: state.auth.user.id,
-  photoUrl: state.auth.user.photoUrl,
+  user: state.auth.user,
   loading: loadingSelector(state),
 });
 
