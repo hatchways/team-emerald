@@ -51,7 +51,7 @@ function SignInForm({
   const location = useLocation();
 
   useEffect(() => {
-    clearErrors();
+    clearErrors(); // Clear previous errors when the component mounts
   }, [clearErrors]);
 
   if (isAuthenticated) {
@@ -121,6 +121,11 @@ SignInForm.propTypes = {
   loginUser: PropTypes.func.isRequired,
 };
 
+/* The errorSelector and loadingSelector are used to get the error and loading
+ * states for the POST_LOGIN actions. Note that they are functions, and are
+ * passed the state object in the mapStateToProps function to access the error
+ * and loading states.
+ */
 const errorSelector = createErrorMessageSelector([POST_LOGIN]);
 const loadingSelector = createLoadingSelector([POST_LOGIN]);
 
