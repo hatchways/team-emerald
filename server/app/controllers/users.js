@@ -4,7 +4,7 @@ const User = require('../models/User');
 const { upload } = require('../../services/aws-s3/aws-s3');
 
 /**
- * @api {put} /api/v1/users/:userId/profileImage
+ * @api {put} /api/v1/users/:userId/profile-image
  * @apiName updateProfileImage
  * @apiGroup users
  * @apiPermission protected
