@@ -15,7 +15,6 @@ const updateProfileImage = asyncHandler(async (req, res, next) => {
   const { userId } = req.params;
   const user = await User.findById(userId);
 
-  console.log(user);
   if (!user) {
     return next(
       new ErrorResponse(`Resource not found with id of ${userId}`, 404),
