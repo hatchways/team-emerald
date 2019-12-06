@@ -9,7 +9,7 @@ import ProfileMenu from './ProfileMenu';
 import { updateProfileImage } from '../../../actions/users';
 import { PUT_USER_PROFILE_IMAGE } from '../../../actions/types';
 
-import { createLoadingSelector } from '../../../api/selectors';
+import { createLoadingSelector } from '../../../reducers/loading';
 
 const defaultProfileImage = `${process.env.PUBLIC_URL}/assets/default-profile.png`;
 
