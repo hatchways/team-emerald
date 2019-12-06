@@ -1,7 +1,7 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const User = require('../models/User');
-const { upload } = require('../../services/aws-s3/aws-s3');
+const { upload } = require('../services/aws-s3/aws-s3');
 
 /**
  * @api {put} /api/v1/users/:userId/profile-image
