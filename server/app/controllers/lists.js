@@ -15,10 +15,7 @@ const getLists = asyncHandler(async (req, res, next) => {
   const lists = await List.find({ user: userId });
   if (!lists) {
     return next(
-      new ErrorResponse(
-        `No lists with the user id of ${req.params.userId}`,
-        404,
-      ),
+      new ErrorResponse(`No lists with the user id of ${userId}`, 404),
     );
   }
   return res.status(200).json({ success: true, lists });
@@ -49,7 +46,7 @@ const getList = asyncHandler(async (req, res, next) => {
  * @apiGroup lists
  * @apiPermission protected
  *
- * @apiDescription Creates user in database
+ * @apiDescription Creates list in database
  */
 // eslint-disable-next-line no-unused-vars
 const postList = asyncHandler(async (req, res, next) => {
@@ -78,22 +75,24 @@ const postList = asyncHandler(async (req, res, next) => {
  * @apiDescription Update a single list
  */
 // eslint-disable-next-line no-unused-vars
-const updateList = asyncHandler(async (req, res, next) => {
-  const { name, coverUrl, user, products, id } = req.body;
 
-  // Create list
-  const list = await List.findByIdAndUpdate(id, {
-    name,
-    coverUrl,
-    user,
-    ...products,
-  });
+// ATM NOT USING ROUTE
+// const updateList = asyncHandler(async (req, res, next) => {
+//   const { name, coverUrl, user, products, id } = req.body;
 
-  res.status(200).json({
-    success: true,
-    list: list.toJSON(),
-  });
-});
+//   // Create list
+//   const list = await List.findByIdAndUpdate(id, {
+//     name,
+//     coverUrl,
+//     user,
+//     ...products,
+//   });
+
+//   res.status(200).json({
+//     success: true,
+//     list: list.toJSON(),
+//   });
+// });
 
 /**
  * @api {delete} /api/v1/lists/:listId
@@ -108,6 +107,7 @@ const deleteList = asyncHandler(async (req, res, next) => {
   const { id } = req.body;
   const list = await List.findById(id);
   // could potentially use findByIdAndRemove() here?
+  // might not need this route. Need to work more on it if we implement
 
   if (!list) {
     return next(
@@ -123,7 +123,7 @@ module.exports = {
   getLists,
   getList,
   postList,
-  updateList,
+  // updateList,
   deleteList,
 };
 
