@@ -13,7 +13,7 @@ const ListSchema = mongoose.Schema({
   },
   coverUrl: {
     type: String,
-    required: [true, 'Please add a cover URL'],
+    default: '',
   },
   user: {
     type: mongoose.Schema.ObjectId,
