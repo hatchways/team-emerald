@@ -23,7 +23,7 @@ import PrivateRoute from './components/routing/PrivateRoute';
 
 import { authenticateUser } from './actions/auth';
 
-import { createLoadingSelector } from './api/selectors';
+import { createLoadingSelector } from './reducers/loading';
 
 import { POST_AUTH } from './actions/types';
 

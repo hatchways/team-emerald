@@ -9,10 +9,8 @@ import ThemeButton from '../ThemeButton';
 import { login, clearLoginErrors } from '../../actions/auth';
 import { POST_LOGIN } from '../../actions/types';
 
-import {
-  createErrorMessageSelector,
-  createLoadingSelector,
-} from '../../api/selectors';
+import { createLoadingSelector } from '../../reducers/loading';
+import { createErrorMessageSelector } from '../../reducers/error';
 
 const useStyles = makeStyles(theme => ({
   root: {

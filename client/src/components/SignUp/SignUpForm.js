@@ -9,10 +9,8 @@ import ThemeButton from '../ThemeButton';
 import { register, clearRegisterErrors } from '../../actions/auth';
 import { POST_REGISTER } from '../../actions/types';
 
-import {
-  createErrorMessageSelector,
-  createLoadingSelector,
-} from '../../api/selectors';
+import { createLoadingSelector } from '../../reducers/loading';
+import { createErrorMessageSelector } from '../../reducers/error';
 
 const useStyles = makeStyles(theme => ({
   root: {
