@@ -1,13 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Avatar, Box, CircularProgress } from '@material-ui/core';
+import { Avatar, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { updateProfileImage } from '../../../actions/users';
-import { PUT_USER_PROFILE_IMAGE } from '../../../actions/types';
-
-import { createLoadingSelector } from '../../../reducers/loading';
+import ProfileImageDialog from '../../ProfileImage/ProfileImageDialog';
 
 const defaultProfileImage = `${process.env.PUBLIC_URL}/assets/default-profile.png`;
 
@@ -16,7 +13,6 @@ const useStyles = makeStyles(() => ({
     marginRight: '2rem',
   },
   avatar: {
-    marginRight: '2rem',
     cursor: 'pointer',
 
     width: '6rem',
@@ -29,57 +25,35 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-// eslint-disable-next-line no-shadow
-function ProfileImage({ user: { id, photoUrl }, loading, updateProfileImage }) {
+function ProfileImage({ photoUrl }) {
+  const [open, setOpen] = useState(false);
   const classes = useStyles();
 
-  const handleOnChange = event => {
-    const file = event.target.files[0];
-    updateProfileImage(id, file);
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
     <Box>
-      {loading ? (
-        <CircularProgress className={classes.loading} />
-      ) : (
-        <label htmlFor="avatar-input">
-          <input
-            accept="image/*"
-            id="avatar-input"
-            hidden
-            type="file"
-            onChange={handleOnChange}
-          />
-          <Avatar
-            src={!photoUrl ? defaultProfileImage : photoUrl}
-            alt="Profile Image"
-            className={classes.avatar}
-          />
-        </label>
-      )}
+      {open && <ProfileImageDialog handleClose={handleClose} />}
+      <Avatar
+        src={!photoUrl ? defaultProfileImage : photoUrl}
+        alt="Profile Image"
+        className={classes.avatar}
+        onClick={() => setOpen(true)}
+      />
     </Box>
   );
 }
 
 ProfileImage.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    photoUrl: PropTypes.string.isRequired,
-  }).isRequired,
-  loading: PropTypes.bool.isRequired,
-  updateProfileImage: PropTypes.func.isRequired,
+  photoUrl: PropTypes.string.isRequired,
 };
-
-const loadingSelector = createLoadingSelector([PUT_USER_PROFILE_IMAGE]);
 
 const mapStateToProps = state => ({
-  user: state.auth.user,
-  loading: loadingSelector(state),
+  photoUrl: state.auth.user.photoUrl,
 });
 
-const mapDispatchToProps = {
-  updateProfileImage,
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileImage);
