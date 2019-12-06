@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   box: {
     backgroundColor: 'white',
     minHeight: '13rem',
@@ -20,27 +20,21 @@ const useStyles = makeStyles(() => ({
     maxWidth: '11rem',
     margin: '10px',
   },
-  // name: {
-  //   fontFamily: 'Helvetica',
-  //   fontSize: '2rem',
-  // },
   info: {
     alignSelf: 'center',
   },
   link: {
     color: 'grey',
   },
-  prices: {
-    flexDirection: 'row',
-  },
   previousPrice: {
     textDecoration: 'line-through',
     letterSpacing: '0.1rem',
+    fontSize: '1.4rem',
   },
   currentPrice: {
     color: 'red',
-    letterSpacing: 0,
     fontSize: '1.8rem',
+    fontWeight: theme.typography.fontWeightBold,
   },
 }));
 
@@ -51,20 +45,19 @@ function Product(props) {
   return (
     <Box className={classes.box}>
       <Box>
-        <img src={imgUrl} alt="hello" className={classes.image} />
+        <img src={imgUrl} alt="ProductImage" className={classes.image} />
       </Box>
       <Box className={classes.info}>
         <Typography variant="h6">{name}</Typography>
         <Typography className={classes.link} variant="body2">
           {link.length > 48 ? abbreviatedLink : link}
         </Typography>
-        <Box className={classes.prices}>
+        <Box>
           <Typography display="inline" className={classes.previousPrice}>
             ${previousPrice}
           </Typography>
           <Typography display="inline" className={classes.currentPrice}>
-            &nbsp;&nbsp;$
-            {currentPrice}
+            &nbsp;&nbsp; ${currentPrice}
           </Typography>
         </Box>
       </Box>

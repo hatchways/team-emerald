@@ -38,60 +38,59 @@ const mockData = [
     link: 'https://www.candles4less.com/assets/images/lavender-4x6-candles.jpg',
     imgUrl:
       'https://www.candles4less.com/assets/images/lavender-4x6-candles.jpg',
-    currentPrice: 23,
-    previousPrice: 21,
+    currentPrice: 21,
+    previousPrice: 23,
   },
   {
     name: 'DND Set',
     link: 'https://www.candles4less.com/assets/images/lavender-4x6-candles.jpg',
     imgUrl:
       'https://www.candles4less.com/assets/images/lavender-4x6-candles.jpg',
-    currentPrice: 100,
-    previousPrice: 99,
+    currentPrice: 99,
+    previousPrice: 115,
   },
   {
     name: 'Soccer Ball',
     link: 'https://www.candles4less.com/assets/images/lavender-4x6-candles.jpg',
     imgUrl:
       'https://www.candles4less.com/assets/images/lavender-4x6-candles.jpg',
-    currentPrice: 50,
-    previousPrice: 33,
+    currentPrice: 33,
+    previousPrice: 55,
   },
   {
     name: 'PlayStation',
     link: 'https://www.candles4less.com/assets/images/lavender-4x6-candles.jpg',
     imgUrl:
       'https://www.candles4less.com/assets/images/lavender-4x6-candles.jpg',
-    currentPrice: 100000000,
-    previousPrice: 99999999,
+    currentPrice: 999999,
+    previousPrice: 100000000,
   },
 ];
+
+function mapProductsToList(data, classes) {
+  return data.map(product => {
+    const { name, link, imgUrl, currentPrice, previousPrice } = product;
+    return (
+      <Box className={classes.box}>
+        <Product
+          name={name}
+          link={link}
+          imgUrl={imgUrl}
+          currentPrice={currentPrice}
+          previousPrice={previousPrice}
+        />
+        <RemoveButton type="button" text="remove" width="10rem" height="4rem" />
+      </Box>
+    );
+  });
+}
 
 function ListOfProducts(props) {
   const classes = useStyles(props);
 
   return (
     <Paper className={classes.paper}>
-      {mockData.map(product => {
-        const { name, link, imgUrl, currentPrice, previousPrice } = product;
-        return (
-          <Box className={classes.box}>
-            <Product
-              name={name}
-              link={link}
-              imgUrl={imgUrl}
-              currentPrice={currentPrice}
-              previousPrice={previousPrice}
-            />
-            <RemoveButton
-              type="button"
-              text="remove"
-              width="10rem"
-              height="4rem"
-            />
-          </Box>
-        );
-      })}
+      {mapProductsToList(mockData, classes)}
     </Paper>
   );
 }

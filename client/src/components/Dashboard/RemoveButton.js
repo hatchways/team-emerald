@@ -5,8 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
   root: props => ({
-    backgroundColor: '#FFFFFF',
-    color: '#000000',
+    backgroundColor: '#FFF',
+    color: '#000',
     display: 'block',
     margin: '1rem 1rem',
     alignSelf: 'center',
@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
     border: '1px solid lightgrey',
     transition: 'all 0.2s',
     '&:hover': {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: '#FFF',
       boxShadow: '0px 5px 30px rgba(208,219,233,0.5)',
       transform: 'translateY(-3px)',
     },
@@ -30,14 +30,13 @@ const useStyles = makeStyles(() => ({
 
 function RemoveButton(props) {
   const classes = useStyles(props);
-  const { text, handleClick, disabled, padding, width, height, type } = props;
+  const { text, handleClick, padding, width, height, type } = props;
 
   return (
     <Button
       type={type}
       className={classes.root}
       onClick={handleClick}
-      disabled={disabled}
       padding={padding}
       width={width}
       height={height}
@@ -48,7 +47,6 @@ function RemoveButton(props) {
 }
 
 RemoveButton.defaultProps = {
-  disabled: false,
   handleClick: null,
   type: 'button',
 };
@@ -58,7 +56,6 @@ RemoveButton.propTypes = {
   padding: PropTypes.string.isRequired,
   width: PropTypes.string.isRequired,
   height: PropTypes.string.isRequired,
-  disabled: PropTypes.bool,
   handleClick: PropTypes.func,
   type: PropTypes.string,
 };

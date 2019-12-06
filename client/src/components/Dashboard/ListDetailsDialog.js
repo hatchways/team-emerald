@@ -62,7 +62,6 @@ function CreateListDetailsDialog(props) {
       <Box display="flex" flexDirection="column" alignItems="center">
         <ListofProducts />
         <ThemeButton
-          className={classes.themeButton}
           text="add new item"
           padding="2rem 3rem"
           width="26rem"
