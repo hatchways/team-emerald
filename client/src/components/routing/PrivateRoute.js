@@ -3,16 +3,12 @@ import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-const PrivateRoute = ({
-  component: Component,
-  auth: { isAuthenticated, loading },
-  ...rest
-}) => (
+const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
   <Route
     {...rest}
     // prettier-ignore
     render={props =>
-      !isAuthenticated && !loading ? (
+      !isAuthenticated ? (
         <Redirect
           to={{
             pathname: '/login',
@@ -29,15 +25,12 @@ const PrivateRoute = ({
 );
 
 PrivateRoute.propTypes = {
-  auth: PropTypes.shape({
-    isAuthenticated: PropTypes.bool.isRequired,
-    loading: PropTypes.bool.isRequired,
-  }).isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
   component: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth,
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(mapStateToProps)(PrivateRoute);

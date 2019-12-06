@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect, useLocation } from 'react-router-dom';
@@ -6,7 +6,11 @@ import { Box, Input, InputLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import ThemeButton from '../ThemeButton';
-import { register } from '../../actions/auth';
+import { register, clearRegisterErrors } from '../../actions/auth';
+import { POST_REGISTER } from '../../actions/types';
+
+import { createLoadingSelector } from '../../reducers/loading';
+import { createErrorMessageSelector } from '../../reducers/error';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,13 +35,23 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function SignUpForm({ isAuthenticated, error, registerUser }) {
+function SignUpForm({
+  isAuthenticated,
+  error,
+  registerUser,
+  loading,
+  clearErrors,
+}) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const classes = useStyles();
   const location = useLocation();
+
+  useEffect(() => {
+    clearErrors(); // Clear previous errors when the component mounts
+  }, [clearErrors]);
 
   if (isAuthenticated) {
     const { from } = location.state || { from: { pathname: '/' } };
@@ -103,7 +117,8 @@ function SignUpForm({ isAuthenticated, error, registerUser }) {
         padding="2rem 3rem"
         width="24rem"
         height="6.3rem"
-        disabled={!(name && email && password.length >= 6)}
+        disabled={!(name && email && password.length >= 6) || loading}
+        loading={loading}
       />
     </form>
   );
@@ -112,16 +127,28 @@ function SignUpForm({ isAuthenticated, error, registerUser }) {
 SignUpForm.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   error: PropTypes.string.isRequired,
+  clearErrors: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
   registerUser: PropTypes.func.isRequired,
 };
 
+/* The errorSelector and loadingSelector are used to get the error and loading
+ * states for the POST_REGISTER actions. Note that they are functions, and are
+ * passed the state object in the mapStateToProps function to access the error
+ * and loading states.
+ */
+const errorSelector = createErrorMessageSelector([POST_REGISTER]);
+const loadingSelector = createLoadingSelector([POST_REGISTER]);
+
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  error: state.auth.error,
+  error: errorSelector(state),
+  loading: loadingSelector(state),
 });
 
 const mapDispatchToProps = {
   registerUser: register,
+  clearErrors: clearRegisterErrors,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);
