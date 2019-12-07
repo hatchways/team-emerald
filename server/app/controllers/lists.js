@@ -1,23 +1,39 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const List = require('../models/List');
+// eslint-disable-next-line no-unused-vars
+const Product = require('../models/Product');
+const { upload } = require('../services/aws-s3/aws-s3');
 
 /**
  * @api {get} api/v1/users/:userId/lists
  * @apiName getLists
  * @apiGroup lists
+ * @apiPermission protected
  *
  * @apiDescription Get all of the lists for a user
  */
 // eslint-disable-next-line no-unused-vars
 const getLists = asyncHandler(async (req, res, next) => {
   const { userId } = req.params;
-  const lists = await List.find({ user: userId });
-  if (!lists) {
+  const user = req.user.toJSON();
+
+  if (user.id !== userId) {
     return next(
-      new ErrorResponse(`No lists with the user id of ${userId}`, 404),
+      new ErrorResponse(
+        `User with id ${user.id} not authorized to get lists`,
+        401,
+      ),
     );
   }
+
+  const lists = await List.find({ followers: userId })
+    .select('-followers')
+    .populate({
+      path: 'products',
+      select: 'name link imageUrl currentPrice previousPrice',
+    });
+
   return res.status(200).json({ success: true, lists });
 });
 
@@ -25,19 +41,32 @@ const getLists = asyncHandler(async (req, res, next) => {
  * @api {get} api/v1/users/:userId/lists/:listId
  * @apiName getList
  * @apiGroup lists
+ * @apiPermission protected
  *
  * @apiDescription Get one list for the user
  */
 // eslint-disable-next-line no-unused-vars
 const getList = asyncHandler(async (req, res, next) => {
-  const { listId } = req.params;
-  const lists = await List.findById(listId);
-  if (!lists) {
+  const { userId, listId } = req.params;
+  const user = req.user.toJSON();
+
+  if (user.id !== userId) {
     return next(
-      new ErrorResponse(`No lists with the id of ${req.params.listId}`, 404),
+      new ErrorResponse(
+        `User with id ${user.id} not authorized to get list with id ${listId}`,
+        401,
+      ),
     );
   }
-  return res.status(200).json({ success: true, lists });
+
+  const list = await List.findById(listId)
+    .select('-followers')
+    .populate({
+      path: 'products',
+      select: 'name link imageUrl currentPrice previousPrice',
+    });
+
+  return res.status(200).json({ success: true, list });
 });
 
 /**
@@ -48,87 +77,53 @@ const getList = asyncHandler(async (req, res, next) => {
  *
  * @apiDescription Creates list in database
  */
-// eslint-disable-next-line no-unused-vars
 const postList = asyncHandler(async (req, res, next) => {
-  const { name, coverUrl, user, products } = req.body;
+  let list;
 
-  // Create list
-  const list = await List.create({
-    name,
-    coverUrl,
-    user,
-    products,
-  });
+  const { name } = req.body;
+  const user = req.user.toJSON();
 
-  res.status(200).json({
-    success: true,
-    list: list.toJSON(),
-  });
-});
+  if (!req.files) {
+    list = await List.create({ name, creator: user.id, followers: [user.id] });
+  } else {
+    const { file } = req.files;
+    console.log(req.files);
+    // Check that the file is a photo
+    if (!file.mimetype.startsWith('image')) {
+      return next(new ErrorResponse(`Please upload an image file`, 400));
+    }
 
-/**
- * @api {put} /api/v1/lists/:listId
- * @apiName updateList
- * @apiGroup lists
- * @apiPermission protected
- *
- * @apiDescription Update a single list
- */
-// eslint-disable-next-line no-unused-vars
+    // Check that the file is at most 1 MB
+    if (file.size > process.env.MAX_FILE_UPLOAD) {
+      return next(
+        new ErrorResponse(
+          `Please upload an image less than ${process.env.MAX_FILE_UPLOAD}`,
+          400,
+        ),
+      );
+    }
 
-// ATM NOT USING ROUTE
-// const updateList = asyncHandler(async (req, res, next) => {
-//   const { name, coverUrl, user, products, id } = req.body;
+    let s3res;
+    try {
+      // Upload image to S3
+      s3res = await upload(file);
 
-//   // Create list
-//   const list = await List.findByIdAndUpdate(id, {
-//     name,
-//     coverUrl,
-//     user,
-//     ...products,
-//   });
-
-//   res.status(200).json({
-//     success: true,
-//     list: list.toJSON(),
-//   });
-// });
-
-/**
- * @api {delete} /api/v1/lists/:listId
- * @apiName deleteList
- * @apiGroup lists
- * @apiPermission protected
- *
- * @apiDescription Delete a list
- */
-// eslint-disable-next-line no-unused-vars
-const deleteList = asyncHandler(async (req, res, next) => {
-  const { id } = req.body;
-  const list = await List.findById(id);
-  // could potentially use findByIdAndRemove() here?
-  // might not need this route. Need to work more on it if we implement
-
-  if (!list) {
-    return next(
-      new ErrorResponse(`No list with the id of ${req.body.id}`, 404),
-    );
+      list = await List.create({
+        name,
+        coverUrl: s3res.Location,
+        creator: user.id,
+        followers: [user.id],
+      });
+    } catch (error) {
+      return next(new ErrorResponse(`Server Error`, 500));
+    }
   }
 
-  await list.remove();
-  return res.status(200).json({ success: true, data: list });
+  return res.status(201).json({ success: true, list });
 });
 
 module.exports = {
   getLists,
   getList,
   postList,
-  // updateList,
-  deleteList,
 };
-
-// GET /api/v1/users/:userId/lists
-// GET /api/v1/users/:userId/lists/:listId
-// POST /api/v1/lists
-// PUT /api/v1/lists/:listId
-// DELETE /api/v1/lists/:listId

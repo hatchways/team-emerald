@@ -14,12 +14,19 @@ const ListSchema = mongoose.Schema(
     },
     coverUrl: {
       type: String,
-      required: [true, 'Please add a cover URL'],
     },
-    user: {
+    creator: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
       required: true,
+    },
+    followers: {
+      type: [
+        {
+          type: mongoose.Schema.ObjectId,
+          ref: 'User',
+        },
+      ],
     },
     products: {
       type: [
