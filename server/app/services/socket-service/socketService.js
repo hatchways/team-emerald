@@ -2,8 +2,11 @@
 /* eslint-disable consistent-return */
 const SocketIo = require('socket.io');
 const SocketClient = require('socket.io-client');
+const cookie = require('cookie');
+const jwt = require('jsonwebtoken');
+
 const httpServer = require('http').createServer();
-const User = require('./models/User');
+const User = require('../../models/User');
 
 const ENDPOINT = process.env.SOCKET_CHANNEL_ENDPOINT || 'http://localhost';
 const PORT = process.env.SOCKET_CHANNEL_PORT || 3002;
@@ -30,32 +33,37 @@ socketServer.start = server => {
       if (!socket.authenticated) return socket.disconnect(true);
     }, 2000);
 
-    // Use user email to determin the identity of client
-    socket.on('authenticate', ({ email }) => {
-      if (!email) return socket.disconnect(true);
+    // Use the token cookie to authenticate the client
+    socket.on('authenticate', async () => {
+      const { token } = cookie.parse(socket.handshake.headers.cookie);
 
-      User.findOne({ email }, (err, user) => {
-        if (err) {
-          console.log(err);
-          return socket.disconnect(true);
-        }
+      if (!token) {
+        return socket.disconnect(true);
+      }
 
-        if (!user) return socket.disconnect(true);
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const { id } = decoded;
+
+        await User.findById(id);
 
         // eslint-disable-next-line no-param-reassign
         socket.authenticated = true;
 
-        socket.on('disconnect', () => {
-          delete socketServer.clients[user._id];
-        });
-
         // Add current connection to list of connected clients
-        socketServer.clients[user._id] = socket;
+        socketServer.clients[id] = socket;
 
         if (process.env.NODE_ENV !== 'production') {
           console.log(Object.keys(socketServer.clients));
         }
-      });
+
+        socket.on('disconnect', () => {
+          delete socketServer.clients[id];
+        });
+      } catch (error) {
+        console.log(error);
+        return socket.disconnect(true);
+      }
     });
   });
 

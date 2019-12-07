@@ -1,15 +1,13 @@
 import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import socketIOClient from 'socket.io-client';
 import { connect } from 'react-redux';
 
 const SOCKETSERVER_DEV_ENDPOINT = 'http://localhost:3001/';
 
-function SocketClient({ user }) {
+function SocketClient({ isAuthenticated }) {
   useEffect(() => {
-    if (!user) return;
-
-    const { email } = user;
-    if (!email) return;
+    if (!isAuthenticated) return;
 
     // socket will default to host url in production
     const socket =
@@ -17,18 +15,23 @@ function SocketClient({ user }) {
         ? socketIOClient()
         : socketIOClient(SOCKETSERVER_DEV_ENDPOINT);
 
-    socket.emit('authenticate', { email });
-    // eslint-disable-next-line no-alert
+    socket.emit('authenticate');
+
     socket.on('notification', () => {
       /* Fetch notifications through http API */
+      console.log('Received Notification');
     });
-  }, [user]);
+  }, [isAuthenticated]);
 
   return null;
 }
 
+SocketClient.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+};
+
 const mapStateToProps = state => ({
-  user: state.auth.user,
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(mapStateToProps)(SocketClient);

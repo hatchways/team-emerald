@@ -18,7 +18,7 @@ const server = app.listen(
   ),
 );
 
-const { socketServer } = require('./socketService');
+const { socketServer } = require('./services/socket-service/socketService');
 
 socketServer.start(server);
 
