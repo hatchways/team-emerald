@@ -1,29 +1,28 @@
 [
   {
     "_id": "5dde90e6e1566052753ff874",
-    "name": "Cuisinart TOB-200N Rotisserie Convection Toaster Oven, , Stainless Steel",
-    "link": "https://www.amazon.com/Cuisinart-TOB-200N-Rotisserie-Convection-Stainless/dp/B06WLHXYQL?pf_rd_p=b27c6b9f-10c0-440e-af04-efdeaad05d30&pd_rd_wg=ZpiWH&pf_rd_r=RF1ZG56F0XJX6JD5DS8J&ref_=pd_gw_cr_simh&pd_rd_w=07CJG&pd_rd_r=4398a9e1-1afd-457d-8e81-9c2735f0c609",
-    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/71z9h90IsbL._AC_SL1500_.jpg",
-    "currentPrice": 150.99,
-    "previousPrice": 365.00,
-    "lists": []
+    "name": "Fossil Men's Grant Stainless Steel and Leather Chronograph Quartz Watch",
+    "link": "https://www.amazon.com/Fossil-Quartz-Stainless-Leather-Chronograph/dp/B017SN1OI8/ref=sr_1_5?keywords=watches&qid=1575734769&sr=8-5",
+    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/91VLjTjyW2L._AC_UX679_.jpg",
+    "currentPrice": 76.98,
+    "previousPrice": 149.99,
+    "lists": ["5debc73be403b547c1dc4696"]
   },
   {
     "_id": "5dde90e6e1566052753ff875",
-    "name": "TOSHIBA 50LF711U20 50-inch 4K Ultra HD Smart LED TV HDR - Fire TV Edition",
-    "link": "https://www.amazon.com/TOSHIBA-50LF711U20-50-inch-Ultra-Smart/dp/B07S8XNWWF/ref=gbps_img_m-6_aa31_53e45212?smid=ANSF0RE9FUP82&pf_rd_p=5c4db6fb-989e-47b1-b280-5ada9d6caa31&pf_rd_s=merchandised-search-6&pf_rd_t=101&pf_rd_i=384082011&pf_rd_m=ATVPDKIKX0DER&pf_rd_r=HV4ZYQSZ5MYVDFX9BNQ9",
-    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/51r9qgq3oYL._AC_.jpg",
-    "currentPrice": 299.99,
-    "previousPrice": 380.00,
-    "lists": []
+    "name": "Michael Kors Men's Slim Runway Quartz Watch with Stainless Steel Strap",
+    "link": "https://www.amazon.com/Michael-Kors-Runway-Black-MK8507/dp/B01HEVAPSO/ref=sxin_2_osp125-8f907d52_cov?ascsubtag=8f907d52-0a9a-4b18-af9b-c028b06a2b5d&creativeASIN=B01HEVAPSO&cv_ct_id=amzn1.osp.8f907d52-0a9a-4b18-af9b-c028b06a2b5d&cv_ct_pg=search&cv_ct_wn=osp-search&keywords=watches&linkCode=oas&pd_rd_i=B01HEVAPSO&pd_rd_r=1c04cf2a-29b8-4e78-8240-f23274df1a12&pd_rd_w=DxDMj&pd_rd_wg=adcoQ&pf_rd_p=53eff971-6e12-4016-9864-b6dfd929b2b3&pf_rd_r=4CC1Z13GZM0GFXA2YR8X&qid=1575734902&tag=rsonsite-20",
+    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/81b63Ck2AiL._AC_UL1500_.jpg",
+    "currentPrice": 146.25,
+    "previousPrice": 195.00,
+    "lists": ["5debc73be403b547c1dc4696"]
   },
   {
     "_id": "5dde90e6e1566052753ff876",
-    "name": "Samsung SSD 860 EVO 1TB 2.5 Inch SATA III Internal SSD (MZ-76E1T0B/AM)",
-    "link": "https://www.amazon.com/Samsung-Inch-Internal-MZ-76E1T0B-AM/dp/B078DPCY3T/ref=gbps_img_m-6_aa31_a378e0f5?smid=ATVPDKIKX0DER&pf_rd_p=5c4db6fb-989e-47b1-b280-5ada9d6caa31&pf_rd_s=merchandised-search-6&pf_rd_t=101&pf_rd_i=384082011&pf_rd_m=ATVPDKIKX0DER&pf_rd_r=53ZVBVFAX5YQ7K5F5V7T",
-    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/91JA5-hAnoL._AC_SL1500_.jpg",
-    "currentPrice": 139.99,
-    "previousPrice": 199.99,
-    "lists": []
+    "name": "HONBAY Convertible Sectional Sofa Couch, L-Shaped Couch with Modern Linen Fabric for Small Space Dark Grey",
+    "link": "https://www.amazon.com/HONBAY-Convertible-Sectional-L-Shaped-Modern/dp/B07LBRDCTT/ref=sr_1_3?keywords=furniture+sofa&qid=1575735200&sr=8-3",
+    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/81A9PkJnamL._AC_SY450_.jpg",
+    "currentPrice": 319.99,
+    "lists": ["5debc675e403b547c1dc4695"]
   }
 ]

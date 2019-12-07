@@ -1,0 +1,32 @@
+[
+  {
+    "_id": "5debc675e403b547c1dc4695",
+    "followers": [
+      "5dde4dc1532ccb37ffcc1ee9"
+    ],
+    "products": ["5dde90e6e1566052753ff876"],
+    "name": "Furniture",
+    "coverUrl": "https://team-emerald-deals-mate.s3.amazonaws.com/images/0f14d93d-5a09-409a-88b1-252e37cbb0c5",
+    "creator": "5dde4dc1532ccb37ffcc1ee9"
+  },
+  {
+    "_id": "5debc73be403b547c1dc4696",
+    "followers": [
+      "5dde4dc1532ccb37ffcc1ee9"
+    ],
+    "products": ["5dde90e6e1566052753ff874", "5dde90e6e1566052753ff875"],
+    "name": "Luxury",
+    "coverUrl":"https://team-emerald-deals-mate.s3.amazonaws.com/images/6e25b6b9-32dc-4a9e-a4e8-5c216088692b",
+    "creator": "5dde4dc1532ccb37ffcc1ee9"
+  },
+  {
+    "_id": "5debc9c2632fc849f38e53d4",
+    "followers": [
+      "5dde4dc1532ccb37ffcc1ee9"
+    ],
+    "products": [],
+    "name": "Clothes",
+    "coverUrl":"https://team-emerald-deals-mate.s3.amazonaws.com/images/cf0d2ebe-f8b0-489c-83ce-a633da9e98f5",
+    "creator": "5dde4dc1532ccb37ffcc1ee9"
+  }
+]
