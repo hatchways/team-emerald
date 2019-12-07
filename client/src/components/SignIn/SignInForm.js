@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect, useLocation } from 'react-router-dom';
@@ -6,7 +6,11 @@ import { Box, Input, InputLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import ThemeButton from '../ThemeButton';
-import { login } from '../../actions/auth';
+import { login, clearLoginErrors } from '../../actions/auth';
+import { POST_LOGIN } from '../../actions/types';
+
+import { createLoadingSelector } from '../../reducers/loading';
+import { createErrorMessageSelector } from '../../reducers/error';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,12 +35,22 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function SignInForm({ isAuthenticated, error, loginUser }) {
+function SignInForm({
+  isAuthenticated,
+  error,
+  loginUser,
+  loading,
+  clearErrors,
+}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const classes = useStyles();
   const location = useLocation();
+
+  useEffect(() => {
+    clearErrors(); // Clear previous errors when the component mounts
+  }, [clearErrors]);
 
   if (isAuthenticated) {
     const { from } = location.state || { from: { pathname: '/' } };
@@ -90,7 +104,8 @@ function SignInForm({ isAuthenticated, error, loginUser }) {
         padding="2rem 3rem"
         width="24rem"
         height="6.3rem"
-        disabled={!(email && password.length >= 6)}
+        disabled={!(email && password.length >= 6) || loading}
+        loading={loading}
       />
     </form>
   );
@@ -99,16 +114,28 @@ function SignInForm({ isAuthenticated, error, loginUser }) {
 SignInForm.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   error: PropTypes.string.isRequired,
+  clearErrors: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
   loginUser: PropTypes.func.isRequired,
 };
 
+/* The errorSelector and loadingSelector are used to get the error and loading
+ * states for the POST_LOGIN actions. Note that they are functions, and are
+ * passed the state object in the mapStateToProps function to access the error
+ * and loading states.
+ */
+const errorSelector = createErrorMessageSelector([POST_LOGIN]);
+const loadingSelector = createLoadingSelector([POST_LOGIN]);
+
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  error: state.auth.error,
+  error: errorSelector(state),
+  loading: loadingSelector(state),
 });
 
 const mapDispatchToProps = {
   loginUser: login,
+  clearErrors: clearLoginErrors,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignInForm);
