@@ -1,11 +1,12 @@
 const express = require('express');
 
-const { createProduct, unlinkProduct } = require('../controllers/products');
-const { protect } = require('../middleware/auth');
+// Include other resource routers
+const productsRouter = require('./products');
 
 const router = express.Router();
 
-router.post('/:listId/products/', protect, createProduct);
-router.delete('/:listId/products/:productId', protect, unlinkProduct);
+// Reroute into other resource routers
+router.use('/:listId/products/', productsRouter);
+router.use('/:listId/products/:productId', productsRouter);
 
 module.exports = router;
