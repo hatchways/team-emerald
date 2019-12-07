@@ -30,7 +30,7 @@ const ProductSchema = mongoose.Schema(
     lists: {
       type: [
         {
-          type: mongoose.Schema.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
           ref: 'List',
         },
       ],
