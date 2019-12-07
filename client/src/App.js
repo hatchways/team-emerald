@@ -1,8 +1,13 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
-import { BrowserRouter, Route } from 'react-router-dom';
+import {
+  Box,
+  CircularProgress,
+  CssBaseline,
+  MuiThemeProvider,
+} from '@material-ui/core';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 
 import theme from './themes/theme';
@@ -19,6 +24,10 @@ import SocketClient from './components/SocketClient';
 
 import { authenticateUser } from './actions/auth';
 
+import { createLoadingSelector } from './reducers/loading';
+
+import { POST_AUTH } from './actions/types';
+
 const styles = () => ({
   '@global': {
     // MUI typography elements use REMs, so you can scale the global
@@ -29,7 +38,7 @@ const styles = () => ({
   },
 });
 
-function App({ loadUser }) {
+function App({ loadUser, loading }) {
   useEffect(() => {
     loadUser();
   }, [loadUser]);
@@ -39,11 +48,19 @@ function App({ loadUser }) {
       <CssBaseline />
       <BrowserRouter>
         <NavBar />
-        <Route path="/" component={LandingPage} exact />
-        <PrivateRoute path="/shoppinglists" component={Dashboard} exact />
-        <PrivateRoute path="/follows" component={Follows} exact />
-        <Route path="/login" component={SignInDialog} exact />
-        <Route path="/register" component={SignUpDialog} exact />
+        {loading ? (
+          <Box display="flex" justifyContent="center">
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Switch>
+            <Route path="/" component={LandingPage} exact />
+            <PrivateRoute path="/shoppinglists" component={Dashboard} exact />
+            <PrivateRoute path="/follows" component={Follows} exact />
+            <Route path="/login" component={SignInDialog} exact />
+            <Route path="/register" component={SignUpDialog} exact />
+          </Switch>
+        )}
       </BrowserRouter>
       <SocketClient />
     </MuiThemeProvider>
@@ -52,10 +69,20 @@ function App({ loadUser }) {
 
 App.propTypes = {
   loadUser: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
+
+const loadingSelector = createLoadingSelector([POST_AUTH]);
+
+const mapStateToProps = state => ({
+  loading: loadingSelector(state),
+});
 
 const mapDispatchToProps = {
   loadUser: authenticateUser,
 };
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(App));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withStyles(styles)(App));

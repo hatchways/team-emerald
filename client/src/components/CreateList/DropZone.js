@@ -66,6 +66,7 @@ function DropZone(props) {
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
     multiple: false, // disable select or drop multiple files
+    maxSize: 1048576,
     onDrop,
   });
 

@@ -1,50 +1,48 @@
 import {
-  REGISTER_SUCCESS,
-  REGISTER_FAIL,
-  AUTH_SUCCESS,
-  AUTH_ERROR,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
+  PUT_USER_PROFILE_IMAGE_SUCCESS,
+  POST_REGISTER_SUCCESS,
+  POST_REGISTER_FAILURE,
+  POST_AUTH_SUCCESS,
+  POST_AUTH_FAILURE,
+  POST_LOGIN_SUCCESS,
+  POST_LOGIN_FAILURE,
   LOGOUT,
 } from '../actions/types';
 
 const initialState = {
   isAuthenticated: false,
-  loading: true,
   user: null,
-  error: '',
 };
 
 export default function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case REGISTER_SUCCESS:
-    case AUTH_SUCCESS:
-    case LOGIN_SUCCESS:
+    case PUT_USER_PROFILE_IMAGE_SUCCESS:
+      return {
+        ...state,
+        user: { ...state.user, ...payload },
+      };
+    case POST_REGISTER_SUCCESS:
+    case POST_AUTH_SUCCESS:
+    case POST_LOGIN_SUCCESS:
       return {
         ...state,
         ...payload,
         isAuthenticated: true,
-        loading: false,
-        error: '',
       };
-    case REGISTER_FAIL:
-    case AUTH_ERROR:
-    case LOGIN_FAIL:
+    case POST_REGISTER_FAILURE:
+    case POST_AUTH_FAILURE:
+    case POST_LOGIN_FAILURE:
       return {
         ...state,
-        ...payload,
         isAuthenticated: false,
-        loading: false,
         user: null,
       };
     case LOGOUT:
       return {
         ...state,
         isAuthenticated: false,
-        loading: false,
         user: null,
-        error: '',
       };
     default:
       return state;
