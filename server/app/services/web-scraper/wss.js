@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 
 const amazon = require('./amazon-web-scraper');
 const List = require('../../models/List');
+const Notification = require('../../models/Notification');
 const Product = require('../../models/Product');
 const { Admin } = require('../socket-service/socketService');
 
@@ -96,6 +97,13 @@ webScrapeQueue.on('completed', async (job, result) => {
       { ...repeatJobOptions, jobId: product.id },
     );
 
+    await Notification.create({
+      user: userId,
+      product: product.id,
+      currentPrice: product.currentPrice,
+      previousPrice: product.previousPrice,
+    });
+
     adminSocket.notifyUserById(userId);
   } else {
     try {
@@ -129,11 +137,6 @@ webScrapeQueue.on('completed', async (job, result) => {
         // Update job in queue with lower price
         await job.update({ currentPrice: savedProduct.currentPrice });
 
-        /*  TODO:
-         *  1)  Create a Notification in database for the new product for each user subscribed
-         *      to the list containing said product.
-         */
-
         /* Get all the lists the product is part of, then send a notification
          * to each of the followers of those lists.
          */
@@ -143,11 +146,32 @@ webScrapeQueue.on('completed', async (job, result) => {
         });
 
         let followers = await Promise.all(getFollowers);
+
         // Each list has its own array of followers, so we flatten the array
         followers = followers.flat();
-        followers.forEach(follower =>
-          adminSocket.notifyUserById(follower.toString()),
+
+        // Convert each ObjectId to a string
+        followers = followers.map(follower => follower.toString());
+
+        // Remove duplicates
+        followers = Array.from(new Set(followers));
+
+        // Create notification for each follower
+        await Promise.all(
+          followers.map(async follower => {
+            return Notification.create({
+              user: follower,
+              product: savedProduct.id,
+              currentPrice: savedProduct.currentPrice,
+              previousPrice: savedProduct.previousPrice,
+            });
+          }),
         );
+
+        followers.forEach(follower => {
+          // Emit message to connected followers to retrieve notifications
+          adminSocket.notifyUserById(follower);
+        });
       } else {
         console.log(
           `Lower price NOT found for ${productDetails.name.substring(
