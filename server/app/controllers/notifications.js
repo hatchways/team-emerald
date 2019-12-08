@@ -28,7 +28,12 @@ const getNotifications = asyncHandler(async (req, res, next) => {
   const notifications = await Notification.find({
     user: userId,
     viewed: false,
-  });
+  })
+    .select('-user')
+    .populate({
+      path: 'product',
+      select: 'name link imageUrl',
+    });
 
   return res.status(200).json({ success: true, notifications });
 });
