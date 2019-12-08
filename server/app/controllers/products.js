@@ -43,6 +43,7 @@ const createProduct = asyncHandler(async (req, res, next) => {
       link,
       listId,
       newProduct: true,
+      userId: user.id,
     },
     newProductJobOptions,
   );

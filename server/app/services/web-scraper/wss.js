@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const amazon = require('./amazon-web-scraper');
 const List = require('../../models/List');
 const Product = require('../../models/Product');
+const { Admin } = require('../socket-service/socketService');
 
 /* **************************************************************************************** */
 // Connect to Database
@@ -17,6 +18,9 @@ dotenv.config({
 
 connectDB();
 /* **************************************************************************************** */
+
+// Socket that connects to the Server and sends notifications to clients
+const adminSocket = Admin();
 
 const webScrapeQueue = new Queue(process.env.WSS);
 
@@ -45,7 +49,7 @@ const repeatJobOptions = {
 
 webScrapeQueue.process(async job => {
   // web-scrape link for product details
-  const { id, link, listId, newProduct } = job.data;
+  const { id, link, listId, newProduct, userId } = job.data;
   const productDetails = await amazon.getProductDetails(link);
 
   productDetails.lists = [listId];
@@ -54,6 +58,7 @@ webScrapeQueue.process(async job => {
     id,
     productDetails,
     newProduct,
+    userId,
   };
 
   return result;
@@ -67,7 +72,7 @@ webScrapeQueue.on('completed', async (job, result) => {
   productDetails.previousPrice = currency(productDetails.previousPrice).value;
 
   // if the product is new, save to database and add to queue
-  const { id, newProduct, listId } = job.data;
+  const { id, newProduct, listId, userId } = job.data;
   if (newProduct) {
     console.log(
       `Creating new product in database for ${productDetails.name.substring(
@@ -90,6 +95,8 @@ webScrapeQueue.on('completed', async (job, result) => {
       },
       { ...repeatJobOptions, jobId: product.id },
     );
+
+    adminSocket.notifyUserById(userId);
   } else {
     try {
       const productInDb = await Product.findById(id);
@@ -125,8 +132,22 @@ webScrapeQueue.on('completed', async (job, result) => {
         /*  TODO:
          *  1)  Create a Notification in database for the new product for each user subscribed
          *      to the list containing said product.
-         *  2)  If user is connected to the server atm, send msg to user to fetch for notifications
          */
+
+        /* Get all the lists the product is part of, then send a notification
+         * to each of the followers of those lists.
+         */
+        const getFollowers = savedProduct.lists.map(async lId => {
+          const list = await List.findById(lId);
+          return list.followers;
+        });
+
+        let followers = await Promise.all(getFollowers);
+        // Each list has its own array of followers, so we flatten the array
+        followers = followers.flat();
+        followers.forEach(follower =>
+          adminSocket.notifyUserById(follower.toString()),
+        );
       } else {
         console.log(
           `Lower price NOT found for ${productDetails.name.substring(
