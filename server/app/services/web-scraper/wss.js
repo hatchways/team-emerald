@@ -48,6 +48,11 @@ const repeatJobOptions = {
   repeat,
 };
 
+/* A worker is a node program that defines a process function. This function is
+ * called everytime the worker is idling and there are jobs to process on the
+ * queue. The product's details is scraped from Amazon and the results are
+ * returned for the listener.
+ */
 webScrapeQueue.process(async job => {
   // web-scrape link for product details
   const { id, link, listId, newProduct, userId } = job.data;
@@ -65,6 +70,13 @@ webScrapeQueue.process(async job => {
   return result;
 });
 
+/* A listener that listens for the completion of a job. The listener then runs
+ * the defined function based on the job and result arguments. After the
+ * product's details are scraped from Amazon, the product is either added to
+ * the database or updated, a notification is conditionally created, and a
+ * message is sent to the connected clients to retrieve notifications from the
+ * server.
+ */
 webScrapeQueue.on('completed', async (job, result) => {
   const { productDetails } = result;
 
