@@ -3,30 +3,30 @@
     "_id": "5dde4dc1532ccb37ffcc1ee9",
     "name": "John Doe",
     "email": "johndoe@gmail.com",
-    "password": "$2a$10$TTMmrvUKZdigpodX1eJpJu8WHg.cpze0NjBhaVvGdLYQi51T7LXEq"
+    "password": "123456"
   },
   {
     "_id": "5dde93a10f92c354511e013a",
     "name": "Jane Doe",
     "email": "janedoe@gmail.com",
-    "password": "$2a$10$tZyuzG0owHFyZrI3FSZaTuiUrjd9pWso9iOvweXMSqwq4o2bctAgG"
+    "password": "123456"
   },
   {
     "_id": "5dde93d90f92c354511e013b",
     "name": "Simon",
     "email": "simon@gmail.com",
-    "password": "$2a$10$h8N1r6Z9QxZWiuI6szPKJud.j3ejxesCPdyqEbxobvCzmGscWiTe2"
+    "password": "123456"
   },
   {
     "_id": "5dde94050f92c354511e013c",
     "name": "Erik",
     "email": "erik@gmail.com",
-    "password": "$2a$10$YK5oM6fv8sRJFZJdl1WXeezxHH4wrlJ.b6aY3456jSwSJS1y6niUa"
+    "password": "123456"
   },
   {
     "_id": "5dde942d49ee4b55c52b01b7",
     "name": "Victor",
     "email": "victor@gmail.com",
-    "password": "$2a$10$05UzEzMju9PAkNUFz.7X1OvAJ9YRFEtIJEF/dAZFO1yvrgpVwflrK"
+    "password": "123456"
   }
 ]

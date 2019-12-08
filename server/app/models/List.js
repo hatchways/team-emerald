@@ -14,16 +14,28 @@ const ListSchema = mongoose.Schema(
     },
     coverUrl: {
       type: String,
-      required: [true, 'Please add a cover URL'],
+      default: '',
     },
-    user: {
+    creator: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
       required: true,
     },
+    followers: {
+      type: [
+        {
+          type: mongoose.Schema.ObjectId,
+          ref: 'User',
+        },
+      ],
+    },
     products: {
-      type: [mongoose.Schema.ObjectId],
-      ref: 'Product',
+      type: [
+        {
+          type: mongoose.Schema.ObjectId,
+          ref: 'Product',
+        },
+      ],
     },
   },
   options,
@@ -33,7 +45,7 @@ const ListSchema = mongoose.Schema(
 // to a JSON object
 ListSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    // returnedObject.id = returnedObject._id.toString();
+    returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
     delete returnedObject.createdAt;
