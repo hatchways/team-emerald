@@ -1,9 +1,18 @@
 /* eslint-disable no-underscore-dangle */
+const Queue = require('bull');
+
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 
 const List = require('../models/List');
 const Product = require('../models/Product');
+
+// Used for when users add new products to database
+const newProductJobOptions = {
+  priority: 1,
+};
+
+const webScrapeQueue = new Queue(process.env.WSS);
 
 /**
  * @api {post} /api/v1/lists/:listId/products
@@ -13,30 +22,32 @@ const Product = require('../models/Product');
  *
  * @apiDescription Create a product entry
  */
+/* eslint-disable-next-line no-unused-vars */
 const createProduct = asyncHandler(async (req, res, next) => {
   const { listId } = req.params;
-  const { payload } = req.body;
-
-  if (!payload) {
-    return next(new ErrorResponse('Missing payload', 400));
-  }
+  const { link } = req.body;
+  const user = req.user.toJSON();
 
   const list = await List.findById(listId);
-  if (!list) return next(new ErrorResponse('Not Found', 404));
 
-  const product = new Product({
-    ...payload,
-    lists: [listId],
-  });
+  if (!list) {
+    return next(new ErrorResponse(`List with ${listId} not found`, 404));
+  }
 
-  return product.save((err, entry) => {
-    if (err) return next(new ErrorResponse(err, 400));
+  if (list.creator.toString() !== user.id) {
+    return next(new ErrorResponse('Not authorized', 401));
+  }
 
-    return list.update({ $push: { products: entry._id } }, updateListErr => {
-      if (updateListErr) return next(new ErrorResponse(err, 400));
-      return res.status(201).json(entry);
-    });
-  });
+  await webScrapeQueue.add(
+    {
+      link,
+      listId,
+      newProduct: true,
+    },
+    newProductJobOptions,
+  );
+
+  return res.status(200).json({ success: true });
 });
 
 /**
