@@ -17,9 +17,10 @@ import Dashboard from './pages/Dashboard';
 import Follows from './pages/Follows';
 
 import NavBar from './components/NavBar/NavBar';
+import PrivateRoute from './components/routing/PrivateRoute';
 import SignUpDialog from './components/SignUp/SignUpDialog';
 import SignInDialog from './components/SignIn/SignInDialog';
-import PrivateRoute from './components/routing/PrivateRoute';
+import SocketClient from './components/SocketClient';
 
 import { authenticateUser } from './actions/auth';
 
@@ -61,6 +62,7 @@ function App({ loadUser, loading }) {
           </Switch>
         )}
       </BrowserRouter>
+      <SocketClient />
     </MuiThemeProvider>
   );
 }
