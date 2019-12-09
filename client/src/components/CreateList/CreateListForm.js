@@ -1,9 +1,17 @@
-import React, { useState, useRef } from 'react';
-import { Input, Typography } from '@material-ui/core';
+import React, { useEffect, useState, useRef } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Box, Input, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import DropZone from './DropZone';
 import ThemeButton from '../ThemeButton';
+
+import { createList, clearPostListErrors } from '../../actions/lists';
+import { POST_LIST } from '../../actions/types';
+
+import { createLoadingSelector } from '../../reducers/loading';
+import { createErrorMessageSelector } from '../../reducers/error';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function CreateListForm() {
+function CreateListForm(props) {
   const [name, setName] = useState('');
 
   const dropZoneFilesRef = useRef(null);
@@ -33,14 +41,17 @@ function CreateListForm() {
 
   const classes = useStyles();
 
+  // eslint-disable-next-line no-shadow
+  const { createList, clearErrors, error, loading } = props;
+
+  useEffect(() => {
+    clearErrors(); // Clear previous errors when the component mounts
+  }, [clearErrors]);
+
   const handleSubmit = event => {
     event.preventDefault();
-    // eslint-disable-next-line no-unused-vars
-    const formData = {
-      name,
-      cover: dropZoneFilesRef.current[0],
-    };
-    /* TODO: SUBSCRIBE TO REDUX STORE AND PASS FORMDATA TO ACTION CREATORS */
+
+    createList(name, dropZoneFilesRef.current[0]);
 
     // Clear Data
     setName('');
@@ -70,16 +81,39 @@ function CreateListForm() {
 
       <DropZone filesRef={dropZoneFilesRef} setFilesRef={dropZoneSetFilesRef} />
 
+      {error && <Box>{error}</Box>}
+
       <ThemeButton
         text="Create List"
         type="submit"
         padding="2rem 3rem"
         width="26rem"
         height="6.3rem"
-        disabled={!name}
+        disabled={!name || loading}
+        loading={loading}
       />
     </form>
   );
 }
 
-export default CreateListForm;
+CreateListForm.propTypes = {
+  createList: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
+  error: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
+
+const errorSelector = createErrorMessageSelector([POST_LIST]);
+const loadingSelector = createLoadingSelector([POST_LIST]);
+
+const mapStateToProps = state => ({
+  error: errorSelector(state),
+  loading: loadingSelector(state),
+});
+
+const mapDispatchToProps = {
+  createList,
+  clearErrors: clearPostListErrors,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateListForm);

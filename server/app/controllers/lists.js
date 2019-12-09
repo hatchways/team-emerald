@@ -87,7 +87,7 @@ const postList = asyncHandler(async (req, res, next) => {
     list = await List.create({ name, creator: user.id, followers: [user.id] });
   } else {
     const { file } = req.files;
-    console.log(req.files);
+
     // Check that the file is a photo
     if (!file.mimetype.startsWith('image')) {
       return next(new ErrorResponse(`Please upload an image file`, 400));
