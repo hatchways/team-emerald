@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
 function CreateListDetailsDialog(props) {
   const classes = useStyles(props);
 
-  const { open, handleClose } = props;
+  const { open, handleClose, list } = props;
 
   return (
     <Dialog
@@ -53,14 +53,17 @@ function CreateListDetailsDialog(props) {
       </DialogActions>
       <DialogTitle className={classes.alignCenter}>
         <Typography variant="h5" component="div">
-          Name of the List
+          {list && list.name}
         </Typography>
-        <Typography className={classes.numberOfItems}>
-          Number of items
+        <Typography variant="body2" className={classes.numberOfItems}>
+          {list &&
+            `${list.products.length} item${
+              list.products.length > 1 ? 's' : ''
+            }`}
         </Typography>
       </DialogTitle>
       <Box display="flex" flexDirection="column" alignItems="center">
-        <ListofProducts />
+        {list && <ListofProducts products={list.products} />}
         <ThemeButton
           text="add new item"
           padding="2rem 3rem"
@@ -72,9 +75,20 @@ function CreateListDetailsDialog(props) {
   );
 }
 
+CreateListDetailsDialog.defaultProps = {
+  list: null,
+};
+
 CreateListDetailsDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  list: PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+    coverUrl: PropTypes.string,
+    creator: PropTypes.string,
+    products: PropTypes.arrayOf(PropTypes.object),
+  }),
 };
 
 export default CreateListDetailsDialog;

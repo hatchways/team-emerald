@@ -48,7 +48,7 @@ function mapListsToCards(shoppingLists, classes, handleOpen) {
     <Card key={sl.id}>
       <CardActionArea
         className={classes.cardActionArea}
-        onClick={handleOpen} // eslint-disable-line
+        onClick={() => handleOpen(sl)}
       >
         <CardMedia
           component="img"
@@ -72,10 +72,11 @@ function mapListsToCards(shoppingLists, classes, handleOpen) {
 function Shoppinglists(props) {
   const classes = useStyles(props);
   const [open, setOpen] = useState(false);
+  const [listToDisplay, setlistToDisplay] = useState(null);
 
-  // eslint-disable-next-line no-unused-vars
-  const handleClickOpen = () => {
+  const handleClickOpen = list => {
     setOpen(true);
+    setlistToDisplay(list);
   };
 
   const handleClose = () => {
@@ -101,9 +102,13 @@ function Shoppinglists(props) {
           <Typography variant="h6">My Shopping Lists:</Typography>
 
           <div className={classes.cardContainer}>
-            {mapListsToCards(lists, classes)}
+            {mapListsToCards(lists, classes, handleClickOpen)}
             <CreateList />
-            <ListDetailsDialog open={open} handleClose={handleClose} />
+            <ListDetailsDialog
+              open={open}
+              handleClose={handleClose}
+              list={listToDisplay}
+            />
           </div>
         </Box>
       )}
