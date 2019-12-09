@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import CloseIconButton from '../CloseIconButton';
 import ListofProducts from './ListofProducts';
+import AddItemDialogForm from './AddItemDialogForm';
 import ThemeButton from '../ThemeButton';
 
 const useStyles = makeStyles(() => ({
@@ -33,18 +34,18 @@ const useStyles = makeStyles(() => ({
 }));
 
 function CreateListDetailsDialog(props) {
-  const [openProduct, setOpen] = useState(false);
+  const [openProduct, setOpenProduct] = useState(false);
 
   const classes = useStyles(props);
 
   const { open, handleClose, list } = props;
 
   const handleClickDialogOpen = () => {
-    setOpen(true);
+    setOpenProduct(true);
   };
 
   const handleDialogClose = () => {
-    setOpen(false);
+    setOpenProduct(false);
   };
 
   return (
@@ -79,7 +80,9 @@ function CreateListDetailsDialog(props) {
           padding="2rem 3rem"
           width="26rem"
           height="6.3rem"
+          handleClick={handleClickDialogOpen}
         />
+        <AddItemDialogForm open={openProduct} handleClose={handleDialogClose} />
       </Box>
     </Dialog>
   );
