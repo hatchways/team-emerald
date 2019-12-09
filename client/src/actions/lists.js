@@ -1,11 +1,40 @@
 import axios from 'axios';
 
 import {
+  GET_LISTS_REQUEST,
+  GET_LISTS_SUCCESS,
+  GET_LISTS_FAILURE,
+  GET_LISTS_CLEAR,
   POST_LIST_REQUEST,
   POST_LIST_SUCCESS,
   POST_LIST_FAILURE,
   POST_LIST_CLEAR,
 } from './types';
+
+export const getLists = () => async (dispatch, getState) => {
+  const { auth } = getState();
+  try {
+    dispatch({
+      type: GET_LISTS_REQUEST,
+    });
+
+    const res = await axios.get(`api/v1/users/${auth.user.id}/lists`);
+
+    dispatch({
+      type: GET_LISTS_SUCCESS,
+      payload: {
+        lists: res.data.lists,
+      },
+    });
+  } catch (err) {
+    dispatch({
+      type: GET_LISTS_FAILURE,
+      payload: {
+        error: err.response.data.error,
+      },
+    });
+  }
+};
 
 export const createList = (name, file) => async dispatch => {
   try {
@@ -41,6 +70,10 @@ export const createList = (name, file) => async dispatch => {
       },
     });
   }
+};
+
+export const clearGetListsErrors = () => async dispatch => {
+  dispatch({ type: GET_LISTS_CLEAR });
 };
 
 export const clearPostListErrors = () => async dispatch => {
