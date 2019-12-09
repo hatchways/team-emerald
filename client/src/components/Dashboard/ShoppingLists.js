@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 
 import CreateList from '../CreateList/CreateList';
+import ListDetailsDialog from './ListDetailsDialog';
 
 // mock data to test out the component's functionality
 // the actual data will be passed as props from the redux store
@@ -50,12 +51,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function mapListsToCards(shoppingLists, classes) {
+function mapListsToCards(shoppingLists, classes, handleOpen) {
   return shoppingLists.map(sl => (
     <Card>
       <CardActionArea
         className={classes.cardActionArea}
-        onClick={() => console.log('Add New Item Form Dialog should trigger')} // eslint-disable-line
+        onClick={handleOpen} // eslint-disable-line
       >
         <CardMedia
           component="img"
@@ -78,14 +79,24 @@ function mapListsToCards(shoppingLists, classes) {
 
 function Shoppinglists(props) {
   const classes = useStyles(props);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Container className={classes.root}>
       <Typography variant="h6">My Shopping Lists:</Typography>
 
       <div className={classes.cardContainer}>
-        {mapListsToCards(mockData, classes)}
+        {mapListsToCards(mockData, classes, handleClickOpen)}
         <CreateList />
+        <ListDetailsDialog open={open} handleClose={handleClose} />
       </div>
     </Container>
   );
