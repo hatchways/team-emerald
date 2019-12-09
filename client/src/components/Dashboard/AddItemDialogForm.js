@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
-  Divider,
   Input,
+  InputLabel,
   MenuItem,
   Select,
   Typography,
@@ -20,37 +20,37 @@ const mockData = [
 ];
 
 const useStyles = makeStyles(theme => ({
-  container: {
+  root: {
     display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+
+    height: '70rem',
+  },
+  box: {
+    backgroundColor: 'white',
+    boxShadow: theme.boxShadowTheme,
   },
   label: {
-    margin: '5rem',
+    color: 'black',
   },
   input: {
-    height: '3rem',
-    maxWidth: '40rem',
-    paddingLeft: theme.spacing(5),
+    textAlign: 'center',
     fontSize: '1.6rem',
-  },
-  styledBox: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    width: '88rem',
-    maxWidth: '88rem',
-    backgroundColor: 'white',
-    borderRadius: 40,
+    width: '55rem',
+    height: '6rem',
     boxShadow: theme.boxShadowTheme,
   },
   select: {
-    width: '18rem',
-    maxWidth: '100%',
-    padding: '1rem',
+    fontSize: '1.6rem',
+    width: '52.5rem',
+    height: '6rem',
+    textAlignLast: 'center',
   },
   placeholderFontColor: {
     color: theme.palette.grey[500],
+    fontSize: '1.6rem',
   },
 }));
 
@@ -62,10 +62,10 @@ function mapListsToMenuItems(shoppingLists) {
   ));
 }
 
-function AddItemForm() {
+function AddItemDialogForm(props) {
   const [link, setLink] = useState('');
   const [list, setList] = useState('');
-  const classes = useStyles();
+  const classes = useStyles(props);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -86,26 +86,21 @@ function AddItemForm() {
 
   return (
     <>
-      <Typography variant="h5" align="center" className={classes.label}>
-        Add new item:
-      </Typography>
-      <form className={classes.container} onSubmit={handleSubmit}>
-        <Box className={classes.styledBox}>
-          <Input
-            classes={{ input: classes.input }}
-            onChange={handleInputChange}
-            value={link}
-            placeholder="Paste your link here"
-            disableUnderline
-          />
-
-          <Divider orientation="vertical" />
-
+      <form className={classes.root} onSubmit={handleSubmit}>
+        <InputLabel className={classes.label}>Paste link to item:</InputLabel>
+        <Input
+          classes={{ input: classes.input }}
+          onChange={handleInputChange}
+          value={link}
+          placeholder="Paste your link here"
+          disableUnderline
+        />
+        <InputLabel className={classes.label}>Select list:</InputLabel>
+        <Box className={classes.box}>
           <Select
             value={list}
             classes={{ root: classes.select }}
             onChange={handleSelectChange}
-            autoWidth
             displayEmpty
             disableUnderline
           >
@@ -114,26 +109,26 @@ function AddItemForm() {
                 variant="body2"
                 className={classes.placeholderFontColor}
               >
-                Select List
+                Select
               </Typography>
             </MenuItem>
             {/* rename mockData argument with something else when we 
                 connect this component with the redux store */}
             {mapListsToMenuItems(mockData)}
           </Select>
-
-          <ThemeButton
-            text="add item"
-            type="submit"
-            padding="0rem 0rem"
-            width="14.2rem"
-            height="4.8rem"
-            disabled={!(link && list)}
-          />
         </Box>
+
+        <ThemeButton
+          text="add item"
+          type="submit"
+          padding="0rem 0rem"
+          width="24rem"
+          height="7rem"
+          disabled={!(link && list)}
+        />
       </form>
     </>
   );
 }
 
-export default AddItemForm;
+export default AddItemDialogForm;

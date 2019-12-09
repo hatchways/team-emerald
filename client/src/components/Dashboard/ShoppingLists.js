@@ -10,7 +10,8 @@ import {
 } from '@material-ui/core';
 
 import CreateList from '../CreateList/CreateList';
-import ListDetailsDialog from './ListDetailsDialog';
+// import ListDetailsDialog from './ListDetailsDialog';
+import AddItemDialog from './AddItemDialog';
 
 // mock data to test out the component's functionality
 // the actual data will be passed as props from the redux store
@@ -96,7 +97,8 @@ function Shoppinglists(props) {
       <div className={classes.cardContainer}>
         {mapListsToCards(mockData, classes, handleClickOpen)}
         <CreateList />
-        <ListDetailsDialog open={open} handleClose={handleClose} />
+        {/* <ListDetailsDialog open={open} handleClose={handleClose} /> */}
+        <AddItemDialog open={open} handleClose={handleClose} />
       </div>
     </Container>
   );
