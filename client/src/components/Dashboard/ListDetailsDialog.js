@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -33,9 +33,19 @@ const useStyles = makeStyles(() => ({
 }));
 
 function CreateListDetailsDialog(props) {
+  const [openProduct, setOpen] = useState(false);
+
   const classes = useStyles(props);
 
   const { open, handleClose } = props;
+
+  const handleClickDialogOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Dialog
