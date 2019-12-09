@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  Box,
   Card,
   CardActionArea,
   CardContent,
   CardMedia,
+  CircularProgress,
   Container,
   Typography,
 } from '@material-ui/core';
@@ -12,25 +16,13 @@ import {
 import CreateList from '../CreateList/CreateList';
 import ListDetailsDialog from './ListDetailsDialog';
 
-// mock data to test out the component's functionality
-// the actual data will be passed as props from the redux store
-const mockData = [
-  {
-    img: 'https://www.candles4less.com/assets/images/lavender-4x6-candles.jpg',
-    title: 'Scented Candles',
-    items: ['item1', 'item2', 'item3'],
-  },
-  {
-    img: 'https://www.candles4less.com/assets/images/lavender-4x6-candles.jpg',
-    title: 'Scented Candles',
-    items: ['item1', 'item2'],
-  },
-  {
-    img: 'https://www.candles4less.com/assets/images/lavender-4x6-candles.jpg',
-    title: 'Scented Candles',
-    items: ['item1'],
-  },
-];
+import { getLists, clearGetListsErrors } from '../../actions/lists';
+import { GET_LISTS } from '../../actions/types';
+
+import { createLoadingSelector } from '../../reducers/loading';
+import { createErrorMessageSelector } from '../../reducers/error';
+
+const defaultImage = `${process.env.PUBLIC_URL}/assets/image-upload-icon.png`;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -53,23 +45,23 @@ const useStyles = makeStyles(theme => ({
 
 function mapListsToCards(shoppingLists, classes, handleOpen) {
   return shoppingLists.map(sl => (
-    <Card>
+    <Card key={sl.id}>
       <CardActionArea
         className={classes.cardActionArea}
         onClick={handleOpen} // eslint-disable-line
       >
         <CardMedia
           component="img"
-          src={sl.img}
-          title={sl.title}
+          src={sl.coverUrl ? sl.coverUrl : defaultImage}
+          title={sl.name}
           className={classes.cardMedia}
         />
         <CardContent>
           <Typography noWrap variant="body1" align="center">
-            {sl.title}
+            {sl.name}
           </Typography>
           <Typography variant="body2" color="textSecondary" align="center">
-            {`${sl.items.length} item${sl.items.length > 1 ? 's' : ''}`}
+            {`${sl.products.length} item${sl.products.length > 1 ? 's' : ''}`}
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -81,6 +73,7 @@ function Shoppinglists(props) {
   const classes = useStyles(props);
   const [open, setOpen] = useState(false);
 
+  // eslint-disable-next-line no-unused-vars
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -89,17 +82,55 @@ function Shoppinglists(props) {
     setOpen(false);
   };
 
+  // eslint-disable-next-line no-unused-vars, no-shadow
+  const { getLists, clearErrors, error, lists, loading } = props;
+
+  useEffect(() => {
+    clearErrors(); // Clear previous errors when the component mounts
+    getLists();
+  }, [clearErrors, getLists]);
+
   return (
     <Container className={classes.root}>
-      <Typography variant="h6">My Shopping Lists:</Typography>
+      {loading ? (
+        <Box display="flex" justifyContent="center">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box>
+          <Typography variant="h6">My Shopping Lists:</Typography>
 
-      <div className={classes.cardContainer}>
-        {mapListsToCards(mockData, classes, handleClickOpen)}
-        <CreateList />
-        <ListDetailsDialog open={open} handleClose={handleClose} />
-      </div>
+          <div className={classes.cardContainer}>
+            {mapListsToCards(lists, classes)}
+            <CreateList />
+            <ListDetailsDialog open={open} handleClose={handleClose} />
+          </div>
+        </Box>
+      )}
     </Container>
   );
 }
 
-export default Shoppinglists;
+Shoppinglists.propTypes = {
+  getLists: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
+  error: PropTypes.string.isRequired,
+  lists: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loading: PropTypes.bool.isRequired,
+};
+
+const errorSelector = createErrorMessageSelector([GET_LISTS]);
+const loadingSelector = createLoadingSelector([GET_LISTS]);
+
+const mapStateToProps = state => ({
+  lists: state.list.lists,
+  error: errorSelector(state),
+  loading: loadingSelector(state),
+});
+
+const mapDispatchToProps = {
+  getLists,
+  clearErrors: clearGetListsErrors,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Shoppinglists);
