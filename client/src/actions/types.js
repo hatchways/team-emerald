@@ -46,3 +46,11 @@ export const PUT_USER_PROFILE_IMAGE_FAILURE = createFailureActionType(
 export const PUT_USER_PROFILE_IMAGE_CLEAR = createClearActionType(
   PUT_USER_PROFILE_IMAGE,
 );
+
+// list
+
+export const POST_LIST = 'POST_LIST';
+export const POST_LIST_REQUEST = createRequestActionType(POST_LIST);
+export const POST_LIST_SUCCESS = createSuccessActionType(POST_LIST);
+export const POST_LIST_FAILURE = createFailureActionType(POST_LIST);
+export const POST_LIST_CLEAR = createClearActionType(POST_LIST);
