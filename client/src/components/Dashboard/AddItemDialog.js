@@ -9,7 +9,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
-// import AddItemDialogForm from './AddItemDialogForm';
+import AddItemDialogForm from './AddItemDialogForm';
 import CloseIconButton from '../CloseIconButton';
 
 const useStyles = makeStyles(theme => ({
@@ -53,13 +53,13 @@ const AddItemDialog = props => {
         </Typography>
       </DialogTitle>
 
-      {/* <AddItemDialogForm /> */}
+      <AddItemDialogForm />
     </Dialog>
   );
 };
 
 AddItemDialog.propTypes = {
-  open: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
 };
 

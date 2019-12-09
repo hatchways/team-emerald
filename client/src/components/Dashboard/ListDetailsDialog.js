@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
 function CreateListDetailsDialog(props) {
   const classes = useStyles(props);
 
-  const { open, handleClose, list } = props;
+  const { open, handleClose, handleOpenAddItem, list } = props;
 
   return (
     <Dialog
@@ -69,6 +69,7 @@ function CreateListDetailsDialog(props) {
           padding="2rem 3rem"
           width="26rem"
           height="6.3rem"
+          handleClick={handleOpenAddItem}
         />
       </Box>
     </Dialog>
@@ -82,6 +83,7 @@ CreateListDetailsDialog.defaultProps = {
 CreateListDetailsDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  handleOpenAddItem: PropTypes.func.isRequired,
   list: PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string,

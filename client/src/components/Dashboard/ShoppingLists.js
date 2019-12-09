@@ -15,6 +15,7 @@ import {
 
 import CreateList from '../CreateList/CreateList';
 import ListDetailsDialog from './ListDetailsDialog';
+import AddItemDialog from './AddItemDialog';
 
 import { getLists, clearGetListsErrors } from '../../actions/lists';
 import { GET_LISTS } from '../../actions/types';
@@ -43,12 +44,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function mapListsToCards(shoppingLists, classes, handleOpen) {
+function mapListsToCards(shoppingLists, classes, handleOpenList) {
   return shoppingLists.map(sl => (
     <Card key={sl.id}>
       <CardActionArea
         className={classes.cardActionArea}
-        onClick={() => handleOpen(sl)}
+        onClick={() => handleOpenList(sl)}
       >
         <CardMedia
           component="img"
@@ -71,16 +72,25 @@ function mapListsToCards(shoppingLists, classes, handleOpen) {
 
 function Shoppinglists(props) {
   const classes = useStyles(props);
-  const [open, setOpen] = useState(false);
+  const [openList, setOpenList] = useState(false);
+  const [openAddItem, setOpenAddItem] = useState(false);
   const [listToDisplay, setlistToDisplay] = useState(null);
 
-  const handleClickOpen = list => {
-    setOpen(true);
+  const handleClickOpenList = list => {
+    setOpenList(true);
     setlistToDisplay(list);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseList = () => {
+    setOpenList(false);
+  };
+
+  const handleClickOpenAddItem = () => {
+    setOpenAddItem(true);
+  };
+
+  const handleCloseAddItem = () => {
+    setOpenAddItem(false);
   };
 
   // eslint-disable-next-line no-unused-vars, no-shadow
@@ -102,12 +112,17 @@ function Shoppinglists(props) {
           <Typography variant="h6">My Shopping Lists:</Typography>
 
           <div className={classes.cardContainer}>
-            {mapListsToCards(lists, classes, handleClickOpen)}
+            {mapListsToCards(lists, classes, handleClickOpenList)}
             <CreateList />
             <ListDetailsDialog
-              open={open}
-              handleClose={handleClose}
+              open={openList}
+              handleClose={handleCloseList}
+              handleOpenAddItem={handleClickOpenAddItem}
               list={listToDisplay}
+            />
+            <AddItemDialog
+              open={openAddItem}
+              handleClose={handleCloseAddItem}
             />
           </div>
         </Box>
