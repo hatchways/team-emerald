@@ -1,9 +1,9 @@
 const express = require('express');
 const { protect } = require('../middleware/auth');
-const { getPublicUser } = require('../controllers/public-profiles');
+const { getPublicProfile } = require('../controllers/public-profiles');
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
-router.get('/:userId', protect, getPublicUser);
+router.route('/:userId').get(protect, getPublicProfile);
 
 module.exports = router;

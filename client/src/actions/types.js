@@ -73,10 +73,10 @@ export const GET_PUBLIC_LISTS_SUCCESS = createSuccessActionType(
 export const GET_PUBLIC_LISTS_FAILURE = createFailureActionType(
   GET_PUBLIC_LISTS,
 );
-export const GET_PUBLIC_LISTS_CLEAR = createFailureActionType(GET_PUBLIC_LISTS);
+export const GET_PUBLIC_LISTS_CLEAR = createClearActionType(GET_PUBLIC_LISTS);
 
 export const GET_PUBLIC_USER = 'GET_PUBLIC_USER';
 export const GET_PUBLIC_USER_REQUEST = createRequestActionType(GET_PUBLIC_USER);
-export const GET_PUBLIC_USER_SUCCESS = createRequestActionType(GET_PUBLIC_USER);
-export const GET_PUBLIC_USER_FAILURE = createRequestActionType(GET_PUBLIC_USER);
-export const GET_PUBLIC_USER_CLEAR = createRequestActionType(GET_PUBLIC_USER);
+export const GET_PUBLIC_USER_SUCCESS = createSuccessActionType(GET_PUBLIC_USER);
+export const GET_PUBLIC_USER_FAILURE = createFailureActionType(GET_PUBLIC_USER);
+export const GET_PUBLIC_USER_CLEAR = createClearActionType(GET_PUBLIC_USER);

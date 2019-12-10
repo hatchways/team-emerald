@@ -15,8 +15,7 @@ import {
 export const getPublicProfile = userId => async dispatch => {
   try {
     dispatch({ type: GET_PUBLIC_USER_REQUEST });
-
-    const res = await axios.get(`api/v1/public/${userId}`);
+    const res = await axios.get(`/api/v1/public/${userId}`);
 
     dispatch({
       type: GET_PUBLIC_USER_SUCCESS,
@@ -25,10 +24,10 @@ export const getPublicProfile = userId => async dispatch => {
       },
     });
   } catch (err) {
-    return dispatch({
+    dispatch({
       type: GET_PUBLIC_USER_FAILURE,
       payload: {
-        error: err.response.data.error,
+        error: err.response ? err.response.data.error : {},
       },
     });
   }
@@ -37,8 +36,7 @@ export const getPublicProfile = userId => async dispatch => {
     dispatch({
       type: GET_PUBLIC_LISTS_REQUEST,
     });
-
-    const res = await axios.get(`api/v1/public/${userId}/lists`);
+    const res = await axios.get(`/api/v1/users/${userId}/lists`);
 
     dispatch({
       type: GET_PUBLIC_LISTS_SUCCESS,
@@ -50,7 +48,7 @@ export const getPublicProfile = userId => async dispatch => {
     dispatch({
       type: GET_PUBLIC_LISTS_FAILURE,
       payload: {
-        error: err.response.data.error,
+        error: err.response ? err.response.data.error : {},
       },
     });
   }

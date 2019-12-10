@@ -4,17 +4,16 @@ const User = require('../models/User');
 
 /**
  * @api {get} /api/v1/public/:userId
- * @apiName getPublicUser
+ * @apiName getPublicProfile
  * @apiGroup public-profile
  * @apiPermission none
  *
  * @apiDescription Get the user's public profile
  */
 // eslint-disable-next-line no-unused-vars
-const getPublicUser = asyncHandler(async (req, res, next) => {
+const getPublicProfile = asyncHandler(async (req, res, next) => {
   const { userId } = req.params;
   const user = await User.findById(userId);
-
   if (!user) {
     return next(new ErrorResponse('Resource not found.', 404));
   }
@@ -29,5 +28,5 @@ const getPublicUser = asyncHandler(async (req, res, next) => {
 });
 
 module.exports = {
-  getPublicUser,
+  getPublicProfile,
 };

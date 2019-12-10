@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  Avatar,
   Box,
   Card,
   CardActionArea,
@@ -29,7 +30,7 @@ const defaultImage = `${process.env.PUBLIC_URL}/assets/image-upload-icon.png`;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    marginTop: theme.spacing(10),
+    minHeight: '80vh',
   },
   cardContainer: {
     display: 'flex',
@@ -43,6 +44,12 @@ const useStyles = makeStyles(theme => ({
   },
   cardMedia: {
     height: '80%',
+  },
+  avatar: {
+    width: '14rem',
+    height: '14rem',
+    marginLeft: theme.spacing(2),
+    marginBottom: theme.spacing(4),
   },
 }));
 
@@ -73,14 +80,10 @@ function mapListsToCards(shoppingLists, classes, handleOpen) {
 }
 
 function ShoppinglistsPublic(props) {
-  const hrefParams = window.location.href.split('/');
-  const userId =
-    hrefParams[hrefParams.length - 2] === 'public'
-      ? hrefParams[hrefParams.length - 1]
-      : '';
   const classes = useStyles(props);
   const [open, setOpen] = useState(false);
   const [listToDisplay, setlistToDisplay] = useState(null);
+  const { userId } = props;
 
   const handleClickOpen = list => {
     setOpen(true);
@@ -93,7 +96,7 @@ function ShoppinglistsPublic(props) {
 
   // eslint-disable-next-line no-unused-vars, no-shadow
   const {
-    name,
+    user,
     getPublicProfile,
     clearGetPublicListsErrors,
     clearGetPublicUserErrors,
@@ -104,14 +107,14 @@ function ShoppinglistsPublic(props) {
   } = props;
 
   useEffect(() => {
-    // clearGetPublicUserErrors();
-    // clearGetPublicListsErrors();
+    clearGetPublicListsErrors();
+    clearGetPublicUserErrors();
     if (userId) getPublicProfile(userId);
   }, [
+    userId,
+    getPublicProfile,
     clearGetPublicListsErrors,
     clearGetPublicUserErrors,
-    getPublicProfile,
-    userId,
   ]);
 
   return (
@@ -122,16 +125,33 @@ function ShoppinglistsPublic(props) {
         </Box>
       ) : (
         <Box>
-          <Typography variant="h6">{`${name}'s Shopping Lists:`}</Typography>
-
-          <div className={classes.cardContainer}>
-            {mapListsToCards(lists, classes, handleClickOpen)}
-            <ListDetailsDialog
-              open={open}
-              handleClose={handleClose}
-              list={listToDisplay}
+          {user && user.photoUrl ? (
+            <Avatar
+              src={user.photoUrl}
+              alt="Profile Image"
+              className={classes.avatar}
             />
-          </div>
+          ) : null}
+
+          {user && user.name ? (
+            <Typography variant="h6" className={classes.typography}>
+              {`${user.name[0].toUpperCase()}${user.name.slice(
+                1,
+              )}'s Shopping Lists:`}
+            </Typography>
+          ) : null}
+
+          {user ? (
+            <div className={classes.cardContainer}>
+              {mapListsToCards(lists, classes, handleClickOpen)}
+              <ListDetailsDialog
+                open={open}
+                handleClose={handleClose}
+                list={listToDisplay}
+                isPublic
+              />
+            </div>
+          ) : null}
         </Box>
       )}
     </Container>
@@ -139,7 +159,9 @@ function ShoppinglistsPublic(props) {
 }
 
 ShoppinglistsPublic.propTypes = {
-  name: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  user: PropTypes.object,
   getPublicProfile: PropTypes.func.isRequired,
   clearGetPublicUserErrors: PropTypes.func.isRequired,
   clearGetPublicListsErrors: PropTypes.func.isRequired,
@@ -148,11 +170,15 @@ ShoppinglistsPublic.propTypes = {
   loading: PropTypes.bool.isRequired,
 };
 
+ShoppinglistsPublic.defaultProps = {
+  user: null,
+};
+
 const errorSelector = createErrorMessageSelector([GET_PUBLIC_LISTS]);
 const loadingSelector = createLoadingSelector([GET_PUBLIC_LISTS]);
 
 const mapStateToProps = state => ({
-  name: state.publicProfile.user ? state.publicProfile.user.name : '',
+  user: state.publicProfile.user,
   lists: state.publicProfile.lists,
   error: errorSelector(state),
   loading: loadingSelector(state),

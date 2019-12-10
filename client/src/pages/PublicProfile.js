@@ -11,13 +11,16 @@ const useStyles = makeStyles({
   },
 });
 
-export default function PublicProfile() {
+// eslint-disable-next-line react/prop-types
+export default function PublicProfile({ match }) {
   const classes = useStyles();
+  // eslint-disable-next-line react/prop-types
+  const { userId } = match.params;
 
   return (
-    <div id="Dashboard" className={classes.dashboard}>
+    <div id="PublicProfile" className={classes.dashboard}>
       <Toolbar />
-      <ShoppingListsPublic />
+      <ShoppingListsPublic userId={userId} />
     </div>
   );
 }

@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
 function CreateListDetailsDialog(props) {
   const classes = useStyles(props);
 
-  const { open, handleClose, list } = props;
+  const { open, handleClose, list, isPublic } = props;
 
   return (
     <Dialog
@@ -64,12 +64,14 @@ function CreateListDetailsDialog(props) {
       </DialogTitle>
       <Box display="flex" flexDirection="column" alignItems="center">
         {list && <ListofProducts products={list.products} />}
-        <ThemeButton
-          text="add new item"
-          padding="2rem 3rem"
-          width="26rem"
-          height="6.3rem"
-        />
+        {isPublic ? null : (
+          <ThemeButton
+            text="add new item"
+            padding="2rem 3rem"
+            width="26rem"
+            height="6.3rem"
+          />
+        )}
       </Box>
     </Dialog>
   );
@@ -89,6 +91,11 @@ CreateListDetailsDialog.propTypes = {
     creator: PropTypes.string,
     products: PropTypes.arrayOf(PropTypes.object),
   }),
+  isPublic: PropTypes.bool,
+};
+
+CreateListDetailsDialog.defaultProps = {
+  isPublic: false,
 };
 
 export default CreateListDetailsDialog;

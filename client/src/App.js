@@ -58,7 +58,7 @@ function App({ loadUser, loading }) {
             <Route path="/" component={LandingPage} exact />
             <PrivateRoute path="/shoppinglists" component={Dashboard} exact />
             <PrivateRoute path="/follows" component={Follows} exact />
-            <Route path="/public/*" component={PublicProfile} exact />
+            <PrivateRoute path="/public/:userId" component={PublicProfile} />
             <Route path="/login" component={SignInDialog} exact />
             <Route path="/register" component={SignUpDialog} exact />
           </Switch>

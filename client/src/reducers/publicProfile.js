@@ -8,7 +8,7 @@ const initialState = {
   lists: [],
 };
 
-export default function listReducer(state = initialState, action) {
+export default function publicProfileReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case GET_PUBLIC_USER_SUCCESS:
