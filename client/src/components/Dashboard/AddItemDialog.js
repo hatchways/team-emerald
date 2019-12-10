@@ -19,8 +19,8 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '3rem',
   },
   dialogPaper: {
-    minHeight: '74rem',
-    maxHeight: '74rem',
+    minHeight: '62.2rem',
+    maxHeight: '62.2rem',
     minWidth: '72rem',
     maxWidth: '72rem',
     paddingBottom: theme.spacing(4),

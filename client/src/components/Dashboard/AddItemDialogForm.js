@@ -29,6 +29,11 @@ const useStyles = makeStyles(theme => ({
     height: '70rem',
   },
   box: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: '7rem',
+    padding: '0 0',
     backgroundColor: 'white',
     boxShadow: theme.boxShadowTheme,
   },
@@ -39,20 +44,21 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     fontSize: '1.6rem',
     width: '55rem',
-    height: '6rem',
+    height: '7rem',
+    padding: '0 0',
     boxShadow: theme.boxShadowTheme,
   },
   select: {
     fontSize: '1.6rem',
     width: '52.5rem',
-    // height: '6rem',
-    padding: '2rem',
     textAlignLast: 'center',
+    '&:focus': {
+      backgroundColor: 'white',
+    },
   },
   placeholderFontColor: {
     color: theme.palette.grey[500],
     fontSize: '1.6rem',
-    // padding: '2rem',
   },
 }));
 
