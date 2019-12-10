@@ -32,10 +32,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function CreateListDetailsDialog(props) {
+function ListDetailsDialog(props) {
   const classes = useStyles(props);
 
-  const { open, handleClose, list, isPublic } = props;
+  const { open, handleClose, handleOpenAddItem, list, isPublic } = props;
 
   return (
     <Dialog
@@ -64,14 +64,20 @@ function CreateListDetailsDialog(props) {
       </DialogTitle>
       <Box display="flex" flexDirection="column" alignItems="center">
         {list && (
-          <ListofProducts products={list.products} isPublic={isPublic} />
+          <ListofProducts
+            products={list.products}
+            listId={list.id}
+            isPublic={isPublic}
+          />
         )}
+
         {isPublic ? null : (
           <ThemeButton
             text="add new item"
             padding="2rem 3rem"
             width="26rem"
             height="6.3rem"
+            handleClick={handleOpenAddItem}
           />
         )}
       </Box>
@@ -79,13 +85,14 @@ function CreateListDetailsDialog(props) {
   );
 }
 
-CreateListDetailsDialog.defaultProps = {
+ListDetailsDialog.defaultProps = {
   list: null,
 };
 
-CreateListDetailsDialog.propTypes = {
+ListDetailsDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  handleOpenAddItem: PropTypes.func.isRequired,
   list: PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string,
@@ -96,8 +103,8 @@ CreateListDetailsDialog.propTypes = {
   isPublic: PropTypes.bool,
 };
 
-CreateListDetailsDialog.defaultProps = {
+ListDetailsDialog.defaultProps = {
   isPublic: false,
 };
 
-export default CreateListDetailsDialog;
+export default ListDetailsDialog;

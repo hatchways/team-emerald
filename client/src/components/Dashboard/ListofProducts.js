@@ -1,9 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Paper, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
 import Product from '../Product';
 import RemoveButton from './RemoveButton';
+import { removeProductFromList } from '../../actions/products';
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -30,11 +33,9 @@ const useStyles = makeStyles(() => ({
 
 function ListOfProducts(props) {
   const classes = useStyles(props);
+  const { listId, products, handleRemove, isPublic } = props;
 
-  const { products, isPublic } = props;
-
-  // eslint-disable-next-line no-shadow
-  function mapProductsToList(products, classes) {
+  function mapProductsToList() {
     return products.map(product => {
       const { id, name, link, imageUrl, currentPrice, previousPrice } = product;
       return (
@@ -47,7 +48,12 @@ function ListOfProducts(props) {
             previousPrice={previousPrice}
           />
           {isPublic ? null : (
-            <RemoveButton text="remove" width="10rem" height="4rem" />
+            <RemoveButton
+              text="remove"
+              width="10rem"
+              height="4rem"
+              handleClick={() => handleRemove(listId, id)}
+            />
           )}
         </Box>
       );
@@ -56,13 +62,15 @@ function ListOfProducts(props) {
 
   return (
     <Paper className={classes.paper}>
-      {mapProductsToList(products, classes)}
+      {mapProductsToList(listId, products, handleRemove, classes)}
     </Paper>
   );
 }
 
 ListOfProducts.propTypes = {
+  listId: PropTypes.string.isRequired,
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
+  handleRemove: PropTypes.func.isRequired,
   isPublic: PropTypes.bool,
 };
 
@@ -70,4 +78,8 @@ ListOfProducts.defaultProps = {
   isPublic: false,
 };
 
-export default ListOfProducts;
+const mapDispatchToProps = {
+  handleRemove: removeProductFromList,
+};
+
+export default connect(null, mapDispatchToProps)(ListOfProducts);

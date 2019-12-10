@@ -61,6 +61,20 @@ export const POST_LIST_SUCCESS = createSuccessActionType(POST_LIST);
 export const POST_LIST_FAILURE = createFailureActionType(POST_LIST);
 export const POST_LIST_CLEAR = createClearActionType(POST_LIST);
 
+// product
+
+export const ADD_PRODUCT = 'ADD_PRODUCT';
+export const ADD_PRODUCT_REQUEST = createRequestActionType(ADD_PRODUCT);
+export const ADD_PRODUCT_SUCCESS = createSuccessActionType(ADD_PRODUCT);
+export const ADD_PRODUCT_FAILURE = createFailureActionType(ADD_PRODUCT);
+export const ADD_PRODUCT_CLEAR = createClearActionType(ADD_PRODUCT);
+
+export const DELETE_PRODUCT = 'DELETE_PRODUCT';
+export const DELETE_PRODUCT_REQUEST = createRequestActionType(DELETE_PRODUCT);
+export const DELETE_PRODUCT_SUCCESS = createSuccessActionType(DELETE_PRODUCT);
+export const DELETE_PRODUCT_FAILURE = createFailureActionType(DELETE_PRODUCT);
+export const DELETE_PRODUCT_CLEAR = createClearActionType(DELETE_PRODUCT);
+
 // public-profile
 
 export const GET_PUBLIC_LISTS = 'GET_PUBLIC_LISTS';
