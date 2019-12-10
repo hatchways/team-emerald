@@ -63,7 +63,9 @@ function CreateListDetailsDialog(props) {
         </Typography>
       </DialogTitle>
       <Box display="flex" flexDirection="column" alignItems="center">
-        {list && <ListofProducts products={list.products} />}
+        {list && (
+          <ListofProducts products={list.products} isPublic={isPublic} />
+        )}
         {isPublic ? null : (
           <ThemeButton
             text="add new item"

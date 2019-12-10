@@ -28,28 +28,31 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function mapProductsToList(products, classes) {
-  return products.map(product => {
-    const { id, name, link, imageUrl, currentPrice, previousPrice } = product;
-    return (
-      <Box className={classes.box} key={id}>
-        <Product
-          name={name}
-          link={link}
-          imgUrl={imageUrl}
-          currentPrice={currentPrice}
-          previousPrice={previousPrice}
-        />
-        <RemoveButton text="remove" width="10rem" height="4rem" />
-      </Box>
-    );
-  });
-}
-
 function ListOfProducts(props) {
   const classes = useStyles(props);
 
-  const { products } = props;
+  const { products, isPublic } = props;
+
+  // eslint-disable-next-line no-shadow
+  function mapProductsToList(products, classes) {
+    return products.map(product => {
+      const { id, name, link, imageUrl, currentPrice, previousPrice } = product;
+      return (
+        <Box className={classes.box} key={id}>
+          <Product
+            name={name}
+            link={link}
+            imgUrl={imageUrl}
+            currentPrice={currentPrice}
+            previousPrice={previousPrice}
+          />
+          {isPublic ? null : (
+            <RemoveButton text="remove" width="10rem" height="4rem" />
+          )}
+        </Box>
+      );
+    });
+  }
 
   return (
     <Paper className={classes.paper}>
@@ -60,6 +63,11 @@ function ListOfProducts(props) {
 
 ListOfProducts.propTypes = {
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isPublic: PropTypes.bool,
+};
+
+ListOfProducts.defaultProps = {
+  isPublic: false,
 };
 
 export default ListOfProducts;

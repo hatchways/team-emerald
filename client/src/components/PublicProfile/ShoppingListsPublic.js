@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  Avatar,
   Box,
   Card,
   CardActionArea,
@@ -15,7 +14,9 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import ListDetailsDialog from './ListDetailsDialog';
+import ListDetailsDialog from '../Dashboard/ListDetailsDialog';
+import TopPanel from './TopPanel';
+
 import {
   getPublicProfile,
   clearGetPublicListsErrors,
@@ -44,12 +45,6 @@ const useStyles = makeStyles(theme => ({
   },
   cardMedia: {
     height: '80%',
-  },
-  avatar: {
-    width: '14rem',
-    height: '14rem',
-    marginLeft: theme.spacing(2),
-    marginBottom: theme.spacing(4),
   },
 }));
 
@@ -125,23 +120,15 @@ function ShoppinglistsPublic(props) {
         </Box>
       ) : (
         <Box>
-          {user && user.photoUrl ? (
-            <Avatar
-              src={user.photoUrl}
-              alt="Profile Image"
-              className={classes.avatar}
-            />
-          ) : null}
+          {user ? <TopPanel /> : null}
 
-          {user && user.name ? (
+          {user ? (
             <Typography variant="h6" className={classes.typography}>
-              {`${user.name[0].toUpperCase()}${user.name.slice(
-                1,
-              )}'s Shopping Lists:`}
+              {`${user.name.toUpperCase()}'s Shopping Lists:`}
             </Typography>
           ) : null}
 
-          {user ? (
+          {lists ? (
             <div className={classes.cardContainer}>
               {mapListsToCards(lists, classes, handleClickOpen)}
               <ListDetailsDialog
