@@ -23,7 +23,9 @@ export default function listReducer(state = initialState, action) {
     case DELETE_PRODUCT_SUCCESS:
       return {
         ...state,
-        lists: state.lists.filter(list => list.id !== payload.list.id),
+        lists: state.lists.map(list =>
+          list.id === payload.list.id ? payload.list : list,
+        ),
       };
     default:
       return state;

@@ -62,6 +62,7 @@ export const POST_LIST_FAILURE = createFailureActionType(POST_LIST);
 export const POST_LIST_CLEAR = createClearActionType(POST_LIST);
 
 // product
+
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const DELETE_PRODUCT_REQUEST = createRequestActionType(DELETE_PRODUCT);
 export const DELETE_PRODUCT_SUCCESS = createSuccessActionType(DELETE_PRODUCT);

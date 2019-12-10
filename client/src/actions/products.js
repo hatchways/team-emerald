@@ -11,14 +11,14 @@ export const removeProductFromList = (listId, productId) => async dispatch => {
     dispatch({
       type: DELETE_PRODUCT_REQUEST,
     });
-    const res = await axios.get(
+    const res = await axios.delete(
       `/api/v1/lists/${listId}/products/${productId}`,
     );
-    // Change ListReducer to filter out said product
+
     dispatch({
       type: DELETE_PRODUCT_SUCCESS,
       payload: {
-        lists: res.data.lists,
+        list: res.data.list,
       },
     });
   } catch (err) {
