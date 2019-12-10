@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
-  Divider,
   Input,
+  InputLabel,
   MenuItem,
   Select,
   Typography,
@@ -19,40 +19,45 @@ import { addProductToList } from '../../actions/products';
 import { createLoadingSelector } from '../../reducers/loading';
 
 const useStyles = makeStyles(theme => ({
-  container: {
+  root: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+
+    height: '70rem',
+  },
+  box: {
+    display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
+    height: '7rem',
+    padding: '0 0',
+    backgroundColor: 'white',
+    boxShadow: theme.boxShadowTheme,
   },
   label: {
-    margin: '5rem',
+    color: 'black',
   },
   input: {
-    height: '3rem',
-    maxWidth: '40rem',
-    paddingLeft: theme.spacing(5),
+    textAlign: 'center',
     fontSize: '1.6rem',
-  },
-  styledBox: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    width: '88rem',
-    maxWidth: '88rem',
-    backgroundColor: 'white',
-    borderRadius: 40,
+    width: '55rem',
+    height: '7rem',
+    padding: '0 0',
     boxShadow: theme.boxShadowTheme,
   },
   select: {
-    width: '18rem',
-    maxWidth: '100%',
-    padding: '1rem',
+    fontSize: '1.6rem',
+    width: '52.5rem',
+    textAlignLast: 'center',
     '&:focus': {
       backgroundColor: 'white',
     },
   },
   placeholderFontColor: {
     color: theme.palette.grey[500],
+    fontSize: '1.6rem',
   },
 }));
 
@@ -64,10 +69,10 @@ function mapListsToMenuItems(shoppingLists) {
   ));
 }
 
-function AddItemForm(props) {
+function AddItemDialogForm(props) {
   const [link, setLink] = useState('');
   const [list, setList] = useState('');
-  const classes = useStyles();
+  const classes = useStyles(props);
 
   const { lists, loading, addProduct } = props;
 
@@ -84,26 +89,21 @@ function AddItemForm(props) {
 
   return (
     <>
-      <Typography variant="h5" align="center" className={classes.label}>
-        Add new item:
-      </Typography>
-      <form className={classes.container} onSubmit={handleSubmit}>
-        <Box className={classes.styledBox}>
-          <Input
-            classes={{ input: classes.input }}
-            onChange={handleInputChange}
-            value={link}
-            placeholder="Paste your link here"
-            disableUnderline
-          />
-
-          <Divider orientation="vertical" />
-
+      <form className={classes.root} onSubmit={handleSubmit}>
+        <InputLabel className={classes.label}>Paste link to item:</InputLabel>
+        <Input
+          classes={{ input: classes.input }}
+          onChange={handleInputChange}
+          value={link}
+          placeholder="Paste your link here"
+          disableUnderline
+        />
+        <InputLabel className={classes.label}>Select list:</InputLabel>
+        <Box className={classes.box}>
           <Select
             value={list}
             classes={{ root: classes.select }}
             onChange={handleSelectChange}
-            autoWidth
             displayEmpty
             disableUnderline
           >
@@ -112,28 +112,28 @@ function AddItemForm(props) {
                 variant="body2"
                 className={classes.placeholderFontColor}
               >
-                Select List
+                Select
               </Typography>
             </MenuItem>
             {mapListsToMenuItems(lists)}
           </Select>
-
-          <ThemeButton
-            text="add"
-            type="submit"
-            padding="0rem 0rem"
-            width="14.2rem"
-            height="4.8rem"
-            disabled={!(link && list)}
-            loading={loading}
-          />
         </Box>
+
+        <ThemeButton
+          text="add item"
+          type="submit"
+          padding="0rem 0rem"
+          width="24rem"
+          height="7rem"
+          disabled={!(link && list)}
+          loading={loading}
+        />
       </form>
     </>
   );
 }
 
-AddItemForm.propTypes = {
+AddItemDialogForm.propTypes = {
   lists: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
   addProduct: PropTypes.func.isRequired,
@@ -150,4 +150,4 @@ const mapDispatchToProps = {
   addProduct: addProductToList,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddItemForm);
+export default connect(mapStateToProps, mapDispatchToProps)(AddItemDialogForm);

@@ -61,16 +61,52 @@ const createProduct = asyncHandler(async (req, res, next) => {
  */
 const unlinkProduct = asyncHandler(async (req, res, next) => {
   const { listId, productId } = req.params;
+  const user = req.user.toJSON();
 
+  // Check if list exists
   const list = await List.findById(listId);
-  if (!list) return next(new ErrorResponse('Not Found', 404));
+  if (!list) {
+    return next(new ErrorResponse(`List with id ${listId} not found`, 404));
+  }
 
-  await Product.updateOne({ _id: productId }, { $pull: { lists: listId } });
+  // Check if the user can remove from the list
+  if (list.creator.toString() !== user.id) {
+    return next(
+      new ErrorResponse(
+        `User with ${user.id} not authorized to remove products from list`,
+        401,
+      ),
+    );
+  }
 
-  return list.updateOne({ $pull: { products: productId } }, (err, response) => {
-    if (err) return next(new ErrorResponse(err, 400));
-    return res.status(200).json(response);
-  });
+  // Check if product exists
+  let product = await Product.findById(productId);
+  if (!product) {
+    return next(
+      new ErrorResponse(`Product with id ${productId} not found`, 404),
+    );
+  }
+
+  if (product.lists.length === 1 && product.lists.includes(listId)) {
+    await Product.findByIdAndDelete(productId);
+  } else {
+    product = await Product.findByIdAndUpdate(productId, {
+      $pull: { lists: listId },
+    });
+  }
+
+  const savedList = await List.findByIdAndUpdate(
+    listId,
+    { $pull: { products: productId } },
+    { new: true },
+  )
+    .select('-followers')
+    .populate({
+      path: 'products',
+      select: 'name link imageUrl currentPrice previousPrice',
+    });
+
+  return res.status(200).json({ list: savedList });
 });
 
 module.exports = {

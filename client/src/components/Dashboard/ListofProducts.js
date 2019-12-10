@@ -1,9 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Paper, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
 import Product from '../Product';
 import RemoveButton from './RemoveButton';
+import { removeProductFromList } from '../../actions/products';
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -28,7 +31,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function mapProductsToList(products, classes) {
+function mapProductsToList(listId, products, handleRemove, classes) {
   return products.map(product => {
     const { id, name, link, imageUrl, currentPrice, previousPrice } = product;
     return (
@@ -40,7 +43,12 @@ function mapProductsToList(products, classes) {
           currentPrice={currentPrice}
           previousPrice={previousPrice}
         />
-        <RemoveButton text="remove" width="10rem" height="4rem" />
+        <RemoveButton
+          text="remove"
+          width="10rem"
+          height="4rem"
+          handleClick={() => handleRemove(listId, id)}
+        />
       </Box>
     );
   });
@@ -49,17 +57,23 @@ function mapProductsToList(products, classes) {
 function ListOfProducts(props) {
   const classes = useStyles(props);
 
-  const { products } = props;
+  const { listId, products, handleRemove } = props;
 
   return (
     <Paper className={classes.paper}>
-      {mapProductsToList(products, classes)}
+      {mapProductsToList(listId, products, handleRemove, classes)}
     </Paper>
   );
 }
 
 ListOfProducts.propTypes = {
+  listId: PropTypes.string.isRequired,
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
+  handleRemove: PropTypes.func.isRequired,
 };
 
-export default ListOfProducts;
+const mapDispatchToProps = {
+  handleRemove: removeProductFromList,
+};
+
+export default connect(null, mapDispatchToProps)(ListOfProducts);
