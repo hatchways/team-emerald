@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
@@ -10,14 +12,6 @@ import {
 } from '@material-ui/core';
 
 import ThemeButton from '../ThemeButton';
-
-// mock data to test out the component's functionality
-// the actual data will be passed as props from the redux store
-const mockData = [
-  { id: 1, title: 'The Best Scented Candles' },
-  { id: 2, title: 'Towels' },
-  { id: 3, title: 'Kale' },
-];
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -65,7 +59,7 @@ const useStyles = makeStyles(theme => ({
 function mapListsToMenuItems(shoppingLists) {
   return shoppingLists.map(sl => (
     <MenuItem key={sl.id} value={sl.id}>
-      {sl.title}
+      {sl.name}
     </MenuItem>
   ));
 }
@@ -74,6 +68,8 @@ function AddItemDialogForm(props) {
   const [link, setLink] = useState('');
   const [list, setList] = useState('');
   const classes = useStyles(props);
+
+  const { lists } = props;
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -120,9 +116,7 @@ function AddItemDialogForm(props) {
                 Select
               </Typography>
             </MenuItem>
-            {/* rename mockData argument with something else when we 
-                connect this component with the redux store */}
-            {mapListsToMenuItems(mockData)}
+            {mapListsToMenuItems(lists)}
           </Select>
         </Box>
 
@@ -139,4 +133,12 @@ function AddItemDialogForm(props) {
   );
 }
 
-export default AddItemDialogForm;
+AddItemDialogForm.propTypes = {
+  lists: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
+const mapStateToProps = state => ({
+  lists: state.list.lists,
+});
+
+export default connect(mapStateToProps)(AddItemDialogForm);
