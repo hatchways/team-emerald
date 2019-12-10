@@ -13,6 +13,11 @@ import {
 
 import ThemeButton from '../ThemeButton';
 
+import { ADD_PRODUCT } from '../../actions/types';
+import { addProductToList } from '../../actions/products';
+
+import { createLoadingSelector } from '../../reducers/loading';
+
 const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
@@ -42,6 +47,9 @@ const useStyles = makeStyles(theme => ({
     width: '18rem',
     maxWidth: '100%',
     padding: '1rem',
+    '&:focus': {
+      backgroundColor: 'white',
+    },
   },
   placeholderFontColor: {
     color: theme.palette.grey[500],
@@ -61,19 +69,13 @@ function AddItemForm(props) {
   const [list, setList] = useState('');
   const classes = useStyles();
 
-  const { lists } = props;
+  const { lists, loading, addProduct } = props;
 
   const handleSubmit = event => {
     event.preventDefault();
-    const formData = {
-      link,
-      list,
-    };
-
-    /* TODO: Call redux action to add product link to list on the backend */
-
-    // Console logging to test
-    console.log(formData); // eslint-disable-line
+    addProduct(list, link);
+    setLink('');
+    setList('');
   };
 
   const handleInputChange = e => setLink(e.target.value);
@@ -123,6 +125,7 @@ function AddItemForm(props) {
             width="14.2rem"
             height="4.8rem"
             disabled={!(link && list)}
+            loading={loading}
           />
         </Box>
       </form>
@@ -132,12 +135,19 @@ function AddItemForm(props) {
 
 AddItemForm.propTypes = {
   lists: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loading: PropTypes.bool.isRequired,
+  addProduct: PropTypes.func.isRequired,
 };
+
+const loadingSelector = createLoadingSelector([ADD_PRODUCT]);
 
 const mapStateToProps = state => ({
   lists: state.list.lists,
+  loading: loadingSelector(state),
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  addProduct: addProductToList,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddItemForm);

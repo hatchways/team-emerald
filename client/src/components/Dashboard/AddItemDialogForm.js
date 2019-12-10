@@ -13,6 +13,11 @@ import {
 
 import ThemeButton from '../ThemeButton';
 
+import { ADD_PRODUCT } from '../../actions/types';
+import { addProductToList } from '../../actions/products';
+
+import { createLoadingSelector } from '../../reducers/loading';
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -69,19 +74,13 @@ function AddItemDialogForm(props) {
   const [list, setList] = useState('');
   const classes = useStyles(props);
 
-  const { lists } = props;
+  const { lists, loading, addProduct } = props;
 
   const handleSubmit = event => {
     event.preventDefault();
-    const formData = {
-      link,
-      list,
-    };
-
-    /* TODO: Call redux action to add product link to list on the backend */
-
-    // Console logging to test
-    console.log(formData); // eslint-disable-line
+    addProduct(list, link);
+    setLink('');
+    setList('');
   };
 
   const handleInputChange = e => setLink(e.target.value);
@@ -127,6 +126,7 @@ function AddItemDialogForm(props) {
           width="24rem"
           height="7rem"
           disabled={!(link && list)}
+          loading={loading}
         />
       </form>
     </>
@@ -135,10 +135,19 @@ function AddItemDialogForm(props) {
 
 AddItemDialogForm.propTypes = {
   lists: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loading: PropTypes.bool.isRequired,
+  addProduct: PropTypes.func.isRequired,
 };
+
+const loadingSelector = createLoadingSelector([ADD_PRODUCT]);
 
 const mapStateToProps = state => ({
   lists: state.list.lists,
+  loading: loadingSelector(state),
 });
 
-export default connect(mapStateToProps)(AddItemDialogForm);
+const mapDispatchToProps = {
+  addProduct: addProductToList,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddItemDialogForm);
