@@ -60,3 +60,23 @@ export const POST_LIST_REQUEST = createRequestActionType(POST_LIST);
 export const POST_LIST_SUCCESS = createSuccessActionType(POST_LIST);
 export const POST_LIST_FAILURE = createFailureActionType(POST_LIST);
 export const POST_LIST_CLEAR = createClearActionType(POST_LIST);
+
+// public-profile
+
+export const GET_PUBLIC_LISTS = 'GET_PUBLIC_LISTS';
+export const GET_PUBLIC_LISTS_REQUEST = createRequestActionType(
+  GET_PUBLIC_LISTS,
+);
+export const GET_PUBLIC_LISTS_SUCCESS = createSuccessActionType(
+  GET_PUBLIC_LISTS,
+);
+export const GET_PUBLIC_LISTS_FAILURE = createFailureActionType(
+  GET_PUBLIC_LISTS,
+);
+export const GET_PUBLIC_LISTS_CLEAR = createFailureActionType(GET_PUBLIC_LISTS);
+
+export const GET_PUBLIC_USER = 'GET_PUBLIC_USER';
+export const GET_PUBLIC_USER_REQUEST = createRequestActionType(GET_PUBLIC_USER);
+export const GET_PUBLIC_USER_SUCCESS = createRequestActionType(GET_PUBLIC_USER);
+export const GET_PUBLIC_USER_FAILURE = createRequestActionType(GET_PUBLIC_USER);
+export const GET_PUBLIC_USER_CLEAR = createRequestActionType(GET_PUBLIC_USER);

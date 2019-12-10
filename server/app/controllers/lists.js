@@ -41,7 +41,7 @@ const getLists = asyncHandler(async (req, res, next) => {
  * @api {get} api/v1/users/:userId/lists/:listId
  * @apiName getList
  * @apiGroup lists
- * @apiPermission protected
+ * @apiPermission none
  *
  * @apiDescription Get one list for the user
  */
