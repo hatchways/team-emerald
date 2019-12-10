@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function CreateListDetailsDialog(props) {
+function ListDetailsDialog(props) {
   const classes = useStyles(props);
 
   const { open, handleClose, handleOpenAddItem, list } = props;
@@ -63,7 +63,7 @@ function CreateListDetailsDialog(props) {
         </Typography>
       </DialogTitle>
       <Box display="flex" flexDirection="column" alignItems="center">
-        {list && <ListofProducts products={list.products} />}
+        {list && <ListofProducts products={list.products} listId={list.id} />}
         <ThemeButton
           text="add new item"
           padding="2rem 3rem"
@@ -76,11 +76,11 @@ function CreateListDetailsDialog(props) {
   );
 }
 
-CreateListDetailsDialog.defaultProps = {
+ListDetailsDialog.defaultProps = {
   list: null,
 };
 
-CreateListDetailsDialog.propTypes = {
+ListDetailsDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   handleOpenAddItem: PropTypes.func.isRequired,
@@ -93,4 +93,4 @@ CreateListDetailsDialog.propTypes = {
   }),
 };
 
-export default CreateListDetailsDialog;
+export default ListDetailsDialog;

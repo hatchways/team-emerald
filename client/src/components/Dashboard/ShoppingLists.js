@@ -74,11 +74,11 @@ function Shoppinglists(props) {
   const classes = useStyles(props);
   const [openList, setOpenList] = useState(false);
   const [openAddItem, setOpenAddItem] = useState(false);
-  const [listToDisplay, setlistToDisplay] = useState(null);
+  const [listToDisplay, setListToDisplay] = useState(null);
 
   const handleClickOpenList = list => {
     setOpenList(true);
-    setlistToDisplay(list);
+    setListToDisplay(list);
   };
 
   const handleCloseList = () => {
@@ -100,6 +100,12 @@ function Shoppinglists(props) {
     clearErrors(); // Clear previous errors when the component mounts
     getLists();
   }, [clearErrors, getLists]);
+
+  useEffect(() => {
+    if (listToDisplay) {
+      setListToDisplay(lists.find(list => list.id === listToDisplay.id));
+    }
+  }, [listToDisplay, lists]);
 
   return (
     <Container className={classes.root}>

@@ -48,7 +48,6 @@ function RemoveButton(props) {
 
 RemoveButton.defaultProps = {
   padding: '0 0 0 0',
-  handleClick: null,
   type: 'button',
 };
 
@@ -57,7 +56,7 @@ RemoveButton.propTypes = {
   width: PropTypes.string.isRequired,
   height: PropTypes.string.isRequired,
   padding: PropTypes.string,
-  handleClick: PropTypes.func,
+  handleClick: PropTypes.func.isRequired,
   type: PropTypes.string,
 };
 export default RemoveButton;
