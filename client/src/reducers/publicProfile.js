@@ -1,11 +1,13 @@
 import {
   GET_PUBLIC_LISTS_SUCCESS,
   GET_PUBLIC_USER_SUCCESS,
+  GET_PUBLIC_FOLLOWS_SUCCESS,
 } from '../actions/types';
 
 const initialState = {
   user: null,
   lists: [],
+  follows: [],
 };
 
 export default function publicProfileReducer(state = initialState, action) {
@@ -20,6 +22,11 @@ export default function publicProfileReducer(state = initialState, action) {
       return {
         ...state,
         lists: payload.lists,
+      };
+    case GET_PUBLIC_FOLLOWS_SUCCESS:
+      return {
+        ...state,
+        follows: payload.follows,
       };
     default:
       return state;
