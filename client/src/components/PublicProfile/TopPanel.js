@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import FollowButton from './FollowButton';
+import FollowButton from '../FollowButton';
 
 const defaultImage = `${process.env.PUBLIC_URL}/assets/image-upload-icon.png`;
 
@@ -22,9 +22,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function TopPanel({ people, userId }) {
+function TopPanel({ discover, userId }) {
   const classes = useStyles();
-  const profile = people[userId];
+  const profile = discover[userId];
 
   return (
     <div className={classes.container}>
@@ -35,7 +35,7 @@ function TopPanel({ people, userId }) {
       />
       <span>
         <FollowButton userId={userId} />
-        {/* Followers and Followings */}
+        {/* TO DO: pop-up menus that shows the followers and following for the user's public profile */}
       </span>
     </div>
   );
@@ -43,12 +43,12 @@ function TopPanel({ people, userId }) {
 
 TopPanel.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  people: PropTypes.object.isRequired,
+  discover: PropTypes.object.isRequired,
   userId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
-  people: state.people,
+  discover: state.discover,
 });
 
 const mapDispatchToProps = {};

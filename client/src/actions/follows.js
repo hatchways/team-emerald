@@ -17,32 +17,7 @@ import {
   GET_PUBLICPROFILE_FOLLOWS_SUCCESS,
   GET_PUBLICPROFILE_FOLLOWS_FAILURE,
   GET_PUBLICPROFILE_FOLLOWS_CLEAR,
-  GET_PEOPLE_REQUEST,
-  GET_PEOPLE_SUCCESS,
-  GET_PEOPLE_FAILURE,
 } from './types';
-
-export const getPeople = () => async dispatch => {
-  try {
-    dispatch({
-      type: GET_PEOPLE_REQUEST,
-    });
-
-    const res = await axios('/api/v1/users');
-
-    dispatch({
-      type: GET_PEOPLE_SUCCESS,
-      payload: res.data,
-    });
-  } catch (err) {
-    dispatch({
-      type: GET_PEOPLE_FAILURE,
-      payload: {
-        error: err.response ? err.response.data.error : '',
-      },
-    });
-  }
-};
 
 export const getFollows = (userId, options = {}) => async dispatch => {
   const { publicProfile } = options;

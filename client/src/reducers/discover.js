@@ -1,4 +1,3 @@
-/* eslint-disable prefer-object-spread */
 import {
   GET_PEOPLE_SUCCESS,
   GET_FOLLOWS_SUCCESS,
@@ -18,10 +17,10 @@ function normalizeFollowees(follows) {
   );
 }
 
-function normalizePeopleAndApplyFollows(people, follows) {
+function normalizePeopleAndApplyFollows(discover, follows) {
   return Object.assign(
     {},
-    ...people.map(person => ({
+    ...discover.map(person => ({
       [person.id]: {
         ...person,
         isFollowed: Boolean(follows[person.id]),
@@ -30,10 +29,10 @@ function normalizePeopleAndApplyFollows(people, follows) {
   );
 }
 
-function mergeFolloweesArrayToPeople(people, follows) {
+function mergeFolloweesArrayToPeople(discover, follows) {
   return Object.assign(
     {},
-    people,
+    discover,
     ...follows.map(entry => ({
       [entry.followee.id]: { ...entry.followee, isFollowed: true },
     })),
@@ -51,14 +50,17 @@ export default function peopleReducer(state = initialState, action) {
     case GET_FOLLOWS_SUCCESS:
       return mergeFolloweesArrayToPeople(state, payload);
     case CREATE_FOLLOW_SUCCESS:
+      // eslint-disable-next-line prefer-object-spread
       return Object.assign({}, state, {
         [payload.id]: { ...state[payload.id], isFollowed: true },
       });
     case DELETE_FOLLOW_SUCCESS:
+      // eslint-disable-next-line prefer-object-spread
       return Object.assign({}, state, {
         [payload.id]: { ...state[payload.id], isFollowed: false },
       });
     case GET_PUBLICPROFILE_USER_SUCCESS:
+      // eslint-disable-next-line prefer-object-spread
       return Object.assign({}, state, {
         [payload.id]: {
           ...payload,

@@ -4,30 +4,33 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Container } from '@material-ui/core';
 
-import { getPeople } from '../actions/people';
+import { getFollows, clearGetFollowsErrors } from '../actions/follows';
 
 function Follows(props) {
   // eslint-disable-next-line no-shadow
-  const { people, getPeople } = props;
+  const { discover, getFollows, clearGetFollowsErrors } = props;
 
   useEffect(() => {
-    getPeople();
-  }, [getPeople]);
+    clearGetFollowsErrors();
+    getFollows();
+  }, [getFollows, clearGetFollowsErrors]);
   return <Container>Follows</Container>;
 }
 
 Follows.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  people: PropTypes.object.isRequired,
-  getPeople: PropTypes.func.isRequired,
+  discover: PropTypes.object.isRequired,
+  getFollows: PropTypes.func.isRequired,
+  clearGetFollowsErrors: PropTypes.func.isRequired,
 };
 
 const mapSateToProps = state => ({
-  people: state.people,
+  discover: state.discover,
 });
 
 const mapDispatchToProps = {
-  getPeople,
+  getFollows,
+  clearGetFollowsErrors,
 };
 
 export default connect(mapSateToProps, mapDispatchToProps)(Follows);

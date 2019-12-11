@@ -4,14 +4,14 @@ import auth from './auth';
 import error from './error';
 import list from './list';
 import loading from './loading';
-import publicProfile from './publicProfile';
-import people from './people';
+import publicProfile from './public-profile';
+import discover from './discover';
 
 export default combineReducers({
   auth,
   error,
   list,
   publicProfile,
-  people,
+  discover,
   loading,
 });

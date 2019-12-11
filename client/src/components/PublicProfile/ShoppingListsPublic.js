@@ -82,7 +82,7 @@ function ShoppinglistsPublic(props) {
 
   const {
     userId,
-    people,
+    discover,
     getPublicProfile,
     clearGetPublicListsErrors,
     clearGetPublicUserErrors,
@@ -120,12 +120,12 @@ function ShoppinglistsPublic(props) {
         </Box>
       ) : (
         <Box>
-          {userId && people[userId] ? (
+          {userId && discover[userId] ? (
             <>
               <TopPanel userId={userId} />
 
               <Typography variant="h6" className={classes.typography}>
-                {`${people[userId].name.toUpperCase()}'s Shopping Lists:`}
+                {`${discover[userId].name.toUpperCase()}'s Shopping Lists:`}
               </Typography>
             </>
           ) : null}
@@ -150,7 +150,7 @@ function ShoppinglistsPublic(props) {
 ShoppinglistsPublic.propTypes = {
   userId: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  people: PropTypes.object.isRequired,
+  discover: PropTypes.object.isRequired,
   getPublicProfile: PropTypes.func.isRequired,
   clearGetPublicUserErrors: PropTypes.func.isRequired,
   clearGetPublicListsErrors: PropTypes.func.isRequired,
@@ -164,7 +164,7 @@ const loadingSelector = createLoadingSelector([GET_PUBLICPROFILE_LISTS]);
 
 const mapStateToProps = state => ({
   lists: state.publicProfile.lists,
-  people: state.people,
+  discover: state.discover,
   error: errorSelector(state),
   loading: loadingSelector(state),
 });

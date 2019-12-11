@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { createFollow, deleteFollow } from '../../actions/people';
+import { createFollow, deleteFollow } from '../actions/follows';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,18 +24,18 @@ function FollowButton(props) {
   const classes = useStyles();
 
   // eslint-disable-next-line no-shadow
-  const { userId, people, createFollow, deleteFollow } = props;
+  const { userId, discover, createFollow, deleteFollow } = props;
 
   const clickToFollow = () => createFollow(userId);
   const clickToUnfollow = () => deleteFollow(userId);
 
-  return people[userId] && people[userId].isFollowed ? (
+  return discover[userId] && discover[userId].isFollowed ? (
     <Button
       disableRipple
       size="medium"
       variant="outlined"
       color="secondary"
-      disabled={people[userId] === undefined}
+      disabled={discover[userId] === undefined}
       classes={classes}
       onClick={clickToUnfollow}
     >
@@ -47,7 +47,7 @@ function FollowButton(props) {
       size="medium"
       variant="outlined"
       color="primary"
-      disabled={people[userId] === undefined}
+      disabled={discover[userId] === undefined}
       classes={classes}
       onClick={clickToFollow}
     >
@@ -59,13 +59,13 @@ function FollowButton(props) {
 FollowButton.propTypes = {
   userId: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  people: PropTypes.object.isRequired,
+  discover: PropTypes.object.isRequired,
   createFollow: PropTypes.func.isRequired,
   deleteFollow: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  people: state.people,
+  discover: state.discover,
 });
 
 const mapDispatchToProps = {

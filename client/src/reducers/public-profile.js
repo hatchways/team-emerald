@@ -1,7 +1,4 @@
-import {
-  GET_PUBLICPROFILE_LISTS_SUCCESS,
-  GET_PUBLICPROFILE_USER_SUCCESS,
-} from '../actions/types';
+import { GET_PUBLICPROFILE_LISTS_SUCCESS } from '../actions/types';
 
 const initialState = {
   lists: [],
@@ -11,10 +8,6 @@ const initialState = {
 export default function publicProfileReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case GET_PUBLICPROFILE_USER_SUCCESS:
-      return {
-        ...state,
-      };
     case GET_PUBLICPROFILE_LISTS_SUCCESS:
       return {
         ...state,
