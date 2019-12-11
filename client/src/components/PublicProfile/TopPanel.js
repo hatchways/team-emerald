@@ -22,18 +22,19 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function TopPanel({ user }) {
+function TopPanel({ people, userId }) {
   const classes = useStyles();
+  const profile = people[userId];
 
   return (
     <div className={classes.container}>
       <Avatar
-        src={user.photoUrl ? user.photoUrl : defaultImage}
+        src={profile.photoUrl ? profile.photoUrl : defaultImage}
         alt="Profile Image"
         className={classes.avatar}
       />
       <span>
-        <FollowButton />
+        <FollowButton userId={userId} />
         {/* Followers and Followings */}
       </span>
     </div>
@@ -42,15 +43,12 @@ function TopPanel({ user }) {
 
 TopPanel.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  user: PropTypes.object,
-};
-
-TopPanel.defaultProps = {
-  user: null,
+  people: PropTypes.object.isRequired,
+  userId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
-  user: state.publicProfile.user,
+  people: state.people,
 });
 
 const mapDispatchToProps = {};

@@ -97,34 +97,51 @@ export const DELETE_FOLLOW_CLEAR = createClearActionType(DELETE_FOLLOW);
 
 // public-profile
 
-export const GET_PUBLIC_LISTS = 'GET_PUBLIC_LISTS';
-export const GET_PUBLIC_LISTS_REQUEST = createRequestActionType(
-  GET_PUBLIC_LISTS,
+export const GET_PUBLICPROFILE_LISTS = 'GET_PUBLICPROFILE_LISTS';
+export const GET_PUBLICPROFILE_LISTS_REQUEST = createRequestActionType(
+  GET_PUBLICPROFILE_LISTS,
 );
-export const GET_PUBLIC_LISTS_SUCCESS = createSuccessActionType(
-  GET_PUBLIC_LISTS,
+export const GET_PUBLICPROFILE_LISTS_SUCCESS = createSuccessActionType(
+  GET_PUBLICPROFILE_LISTS,
 );
-export const GET_PUBLIC_LISTS_FAILURE = createFailureActionType(
-  GET_PUBLIC_LISTS,
+export const GET_PUBLICPROFILE_LISTS_FAILURE = createFailureActionType(
+  GET_PUBLICPROFILE_LISTS,
 );
-export const GET_PUBLIC_LISTS_CLEAR = createClearActionType(GET_PUBLIC_LISTS);
+export const GET_PUBLICPROFILE_LISTS_CLEAR = createClearActionType(
+  GET_PUBLICPROFILE_LISTS,
+);
 
-export const GET_PUBLIC_USER = 'GET_PUBLIC_USER';
-export const GET_PUBLIC_USER_REQUEST = createRequestActionType(GET_PUBLIC_USER);
-export const GET_PUBLIC_USER_SUCCESS = createSuccessActionType(GET_PUBLIC_USER);
-export const GET_PUBLIC_USER_FAILURE = createFailureActionType(GET_PUBLIC_USER);
-export const GET_PUBLIC_USER_CLEAR = createClearActionType(GET_PUBLIC_USER);
+export const GET_PUBLICPROFILE_USER = 'GET_PUBLICPROFILE_USER';
+export const GET_PUBLICPROFILE_USER_REQUEST = createRequestActionType(
+  GET_PUBLICPROFILE_USER,
+);
+export const GET_PUBLICPROFILE_USER_SUCCESS = createSuccessActionType(
+  GET_PUBLICPROFILE_USER,
+);
+export const GET_PUBLICPROFILE_USER_FAILURE = createFailureActionType(
+  GET_PUBLICPROFILE_USER,
+);
+export const GET_PUBLICPROFILE_USER_CLEAR = createClearActionType(
+  GET_PUBLICPROFILE_USER,
+);
 
-export const GET_PUBLIC_FOLLOWS = 'GET_PUBLIC_FOLLOWS';
-export const GET_PUBLIC_FOLLOWS_REQUEST = createRequestActionType(
-  GET_PUBLIC_FOLLOWS,
+export const GET_PUBLICPROFILE_FOLLOWS = 'GET_PUBLICPROFILE_FOLLOWS';
+export const GET_PUBLICPROFILE_FOLLOWS_REQUEST = createRequestActionType(
+  GET_PUBLICPROFILE_FOLLOWS,
 );
-export const GET_PUBLIC_FOLLOWS_SUCCESS = createSuccessActionType(
-  GET_PUBLIC_FOLLOWS,
+export const GET_PUBLICPROFILE_FOLLOWS_SUCCESS = createSuccessActionType(
+  GET_PUBLICPROFILE_FOLLOWS,
 );
-export const GET_PUBLIC_FOLLOWS_FAILURE = createFailureActionType(
-  GET_PUBLIC_FOLLOWS,
+export const GET_PUBLICPROFILE_FOLLOWS_FAILURE = createFailureActionType(
+  GET_PUBLICPROFILE_FOLLOWS,
 );
-export const GET_PUBLIC_FOLLOWS_CLEAR = createClearActionType(
-  GET_PUBLIC_FOLLOWS,
+export const GET_PUBLICPROFILE_FOLLOWS_CLEAR = createClearActionType(
+  GET_PUBLICPROFILE_FOLLOWS,
 );
+
+// people
+export const GET_PEOPLE = 'GET_PEOPLE';
+export const GET_PEOPLE_REQUEST = createRequestActionType(GET_PEOPLE);
+export const GET_PEOPLE_SUCCESS = createSuccessActionType(GET_PEOPLE);
+export const GET_PEOPLE_FAILURE = createFailureActionType(GET_PEOPLE);
+export const GET_PEOPLE_CLEAR = createClearActionType(GET_PEOPLE);

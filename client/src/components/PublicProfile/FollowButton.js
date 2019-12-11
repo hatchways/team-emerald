@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { createFollow, deleteFollow } from '../../actions/people';
+
 const useStyles = makeStyles(theme => ({
   root: {
     width: '9rem',
@@ -18,16 +20,24 @@ const useStyles = makeStyles(theme => ({
 }));
 
 // eslint-disable-next-line no-unused-vars
-function FollowButton({ userId, following }) {
+function FollowButton(props) {
   const classes = useStyles();
 
-  return following ? (
+  // eslint-disable-next-line no-shadow
+  const { userId, people, createFollow, deleteFollow } = props;
+
+  const clickToFollow = () => createFollow(userId);
+  const clickToUnfollow = () => deleteFollow(userId);
+
+  return people[userId] && people[userId].isFollowed ? (
     <Button
       disableRipple
       size="medium"
-      variant="contained"
+      variant="outlined"
       color="secondary"
+      disabled={people[userId] === undefined}
       classes={classes}
+      onClick={clickToUnfollow}
     >
       Following
     </Button>
@@ -36,8 +46,10 @@ function FollowButton({ userId, following }) {
       disableRipple
       size="medium"
       variant="outlined"
-      color="secondary"
+      color="primary"
+      disabled={people[userId] === undefined}
       classes={classes}
+      onClick={clickToFollow}
     >
       Follow
     </Button>
@@ -46,12 +58,19 @@ function FollowButton({ userId, following }) {
 
 FollowButton.propTypes = {
   userId: PropTypes.string.isRequired,
-  following: PropTypes.bool.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  people: PropTypes.object.isRequired,
+  createFollow: PropTypes.func.isRequired,
+  deleteFollow: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  following: state.publicProfile.user.following,
+  people: state.people,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  createFollow,
+  deleteFollow,
+};
+
 export default connect(mapStateToProps, mapDispatchToProps)(FollowButton);

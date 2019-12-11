@@ -22,7 +22,8 @@ import {
   clearGetPublicListsErrors,
   clearGetPublicUserErrors,
 } from '../../actions/public-profile';
-import { GET_PUBLIC_LISTS } from '../../actions/types';
+
+import { GET_PUBLICPROFILE_LISTS } from '../../actions/types';
 
 import { createLoadingSelector } from '../../reducers/loading';
 import { createErrorMessageSelector } from '../../reducers/error';
@@ -78,7 +79,18 @@ function ShoppinglistsPublic(props) {
   const classes = useStyles(props);
   const [open, setOpen] = useState(false);
   const [listToDisplay, setlistToDisplay] = useState(null);
-  const { userId } = props;
+
+  const {
+    userId,
+    people,
+    getPublicProfile,
+    clearGetPublicListsErrors,
+    clearGetPublicUserErrors,
+    // eslint-disable-next-line no-unused-vars
+    error,
+    lists,
+    loading,
+  } = props;
 
   const handleClickOpen = list => {
     setOpen(true);
@@ -88,18 +100,6 @@ function ShoppinglistsPublic(props) {
   const handleClose = () => {
     setOpen(false);
   };
-
-  // eslint-disable-next-line no-unused-vars, no-shadow
-  const {
-    user,
-    getPublicProfile,
-    clearGetPublicListsErrors,
-    clearGetPublicUserErrors,
-    // eslint-disable-next-line no-unused-vars
-    error,
-    lists,
-    loading,
-  } = props;
 
   useEffect(() => {
     clearGetPublicListsErrors();
@@ -120,12 +120,14 @@ function ShoppinglistsPublic(props) {
         </Box>
       ) : (
         <Box>
-          {user ? <TopPanel /> : null}
+          {userId && people[userId] ? (
+            <>
+              <TopPanel userId={userId} />
 
-          {user ? (
-            <Typography variant="h6" className={classes.typography}>
-              {`${user.name.toUpperCase()}'s Shopping Lists:`}
-            </Typography>
+              <Typography variant="h6" className={classes.typography}>
+                {`${people[userId].name.toUpperCase()}'s Shopping Lists:`}
+              </Typography>
+            </>
           ) : null}
 
           {lists ? (
@@ -148,7 +150,7 @@ function ShoppinglistsPublic(props) {
 ShoppinglistsPublic.propTypes = {
   userId: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  user: PropTypes.object,
+  people: PropTypes.object.isRequired,
   getPublicProfile: PropTypes.func.isRequired,
   clearGetPublicUserErrors: PropTypes.func.isRequired,
   clearGetPublicListsErrors: PropTypes.func.isRequired,
@@ -157,16 +159,12 @@ ShoppinglistsPublic.propTypes = {
   loading: PropTypes.bool.isRequired,
 };
 
-ShoppinglistsPublic.defaultProps = {
-  user: null,
-};
-
-const errorSelector = createErrorMessageSelector([GET_PUBLIC_LISTS]);
-const loadingSelector = createLoadingSelector([GET_PUBLIC_LISTS]);
+const errorSelector = createErrorMessageSelector([GET_PUBLICPROFILE_LISTS]);
+const loadingSelector = createLoadingSelector([GET_PUBLICPROFILE_LISTS]);
 
 const mapStateToProps = state => ({
-  user: state.publicProfile.user,
   lists: state.publicProfile.lists,
+  people: state.people,
   error: errorSelector(state),
   loading: loadingSelector(state),
 });

@@ -115,15 +115,65 @@ const deleteFollow = asyncHandler(async (req, res, next) => {
     .select('followee');
 
   if (!follow) {
-    return next(new ErrorResponse(`Follow does not exist`, 400));
+    return next(new ErrorResponse(`Follow does not exist`, 404));
   }
 
   await follow.remove();
   return res.status(200).json({ success: true, data: follow.followee });
 });
 
+/**
+ * @api {put} /api/v1/follows/:userId
+ * @apiName updateFollow
+ * @apiGroup follows
+ * @apiPermission protected
+ *
+ * @apiDescription Update the follow status on user with userId
+ */
+const updateFollow = asyncHandler(async (req, res, next) => {
+  const { action } = req.query;
+
+  // Check that the userId is valid
+  const user = await User.findById(req.params.userId);
+
+  if (!user) {
+    return next(
+      new ErrorResponse(`No user with the id of ${req.params.userId}`, 404),
+    );
+  }
+
+  if (action === 'unfollow') {
+    const result = await Follow.findOneAndRemove({
+      follower: req.user.id,
+      followee: req.params.userId,
+    });
+
+    return res.status(200).json({ success: true, data: result });
+  }
+
+  // Check if the follow already exists
+  const follow = await Follow.findOne({
+    follower: req.user.id,
+    followee: req.params.userId,
+  });
+
+  if (follow) {
+    return res.status(200).json({ success: true, data: follow });
+  }
+
+  // Save the authenticate user following the user with userId
+  const savedFollow = await Follow.create({
+    follower: req.user.id,
+    followee: req.params.userId,
+  });
+
+  // Return the data with the populated followee fields
+  return res.status(201).json({ success: true, data: savedFollow });
+});
+
 module.exports = {
   getFollows,
   createFollow,
   deleteFollow,
+  updateFollow,
 };

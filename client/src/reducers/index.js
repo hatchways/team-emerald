@@ -5,13 +5,13 @@ import error from './error';
 import list from './list';
 import loading from './loading';
 import publicProfile from './publicProfile';
-import follow from './follow';
+import people from './people';
 
 export default combineReducers({
   auth,
   error,
   list,
   publicProfile,
-  follow,
+  people,
   loading,
 });
