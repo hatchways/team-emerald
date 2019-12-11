@@ -29,14 +29,14 @@ export const getFollows = (userId, options = {}) => async dispatch => {
         : GET_FOLLOWS_REQUEST,
     });
 
-    const res = await axios.get(`/api/v1/users/${userId}/follows`);
+    const res = await axios.get(`api/v1/users/${userId}/follows`);
 
     dispatch({
       type: publicProfile
         ? GET_PUBLICPROFILE_FOLLOWS_SUCCESS
         : GET_FOLLOWS_SUCCESS,
       payload: {
-        follows: res.data,
+        follows: res.data.data, // Two 'data's
       },
     });
   } catch (err) {
@@ -45,7 +45,7 @@ export const getFollows = (userId, options = {}) => async dispatch => {
         ? GET_PUBLICPROFILE_FOLLOWS_FAILURE
         : GET_FOLLOWS_FAILURE,
       payload: {
-        error: err.response.data.error,
+        error: err.response ? err.response.data.error : err,
       },
     });
   }
@@ -62,7 +62,7 @@ export const createFollow = userId => async dispatch => {
     if (res.data.success) {
       dispatch({
         type: CREATE_FOLLOW_SUCCESS,
-        payload: { id: userId },
+        payload: { followee: { id: userId } },
       });
     }
   } catch (err) {
@@ -85,7 +85,7 @@ export const deleteFollow = userId => async dispatch => {
     if (res.data.success) {
       dispatch({
         type: DELETE_FOLLOW_SUCCESS,
-        payload: { id: userId },
+        payload: { followee: { id: userId } },
       });
     }
   } catch (err) {

@@ -39,7 +39,7 @@ function mergeFolloweesArrayToPeople(discover, follows) {
   );
 }
 
-export default function peopleReducer(state = initialState, action) {
+export default function discoverReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case GET_PEOPLE_SUCCESS:
@@ -48,22 +48,28 @@ export default function peopleReducer(state = initialState, action) {
         normalizeFollowees(payload.follows),
       );
     case GET_FOLLOWS_SUCCESS:
-      return mergeFolloweesArrayToPeople(state, payload);
+      return mergeFolloweesArrayToPeople(state, payload.follows);
     case CREATE_FOLLOW_SUCCESS:
       // eslint-disable-next-line prefer-object-spread
       return Object.assign({}, state, {
-        [payload.id]: { ...state[payload.id], isFollowed: true },
+        [payload.followee.id]: {
+          ...state[payload.followee.id],
+          isFollowed: true,
+        },
       });
     case DELETE_FOLLOW_SUCCESS:
       // eslint-disable-next-line prefer-object-spread
       return Object.assign({}, state, {
-        [payload.id]: { ...state[payload.id], isFollowed: false },
+        [payload.followee.id]: {
+          ...state[payload.followee.id],
+          isFollowed: false,
+        },
       });
     case GET_PUBLICPROFILE_USER_SUCCESS:
       // eslint-disable-next-line prefer-object-spread
       return Object.assign({}, state, {
-        [payload.id]: {
-          ...payload,
+        [payload.user.id]: {
+          ...payload.user,
         },
       });
     default:

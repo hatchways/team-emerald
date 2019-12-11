@@ -20,7 +20,7 @@ export const getPublicProfile = userId => async dispatch => {
     dispatch({
       type: GET_PUBLICPROFILE_USER_SUCCESS,
       payload: {
-        ...res.data.user,
+        user: res.data.user,
       },
     });
   } catch (err) {

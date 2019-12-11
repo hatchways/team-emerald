@@ -1,36 +1,16 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Container } from '@material-ui/core';
+import React from 'react';
+import { Container, Toolbar } from '@material-ui/core';
 
-import { getFollows, clearGetFollowsErrors } from '../actions/follows';
+import FolloweesList from '../components/Follows/FolloweesList';
 
-function Follows(props) {
-  // eslint-disable-next-line no-shadow
-  const { discover, getFollows, clearGetFollowsErrors } = props;
-
-  useEffect(() => {
-    clearGetFollowsErrors();
-    getFollows();
-  }, [getFollows, clearGetFollowsErrors]);
-  return <Container>Follows</Container>;
+function Follows() {
+  return (
+    <div id="Follows">
+      <Toolbar />
+      <FolloweesList />
+    </div>
+  );
 }
 
-Follows.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  discover: PropTypes.object.isRequired,
-  getFollows: PropTypes.func.isRequired,
-  clearGetFollowsErrors: PropTypes.func.isRequired,
-};
-
-const mapSateToProps = state => ({
-  discover: state.discover,
-});
-
-const mapDispatchToProps = {
-  getFollows,
-  clearGetFollowsErrors,
-};
-
-export default connect(mapSateToProps, mapDispatchToProps)(Follows);
+export default Follows;
