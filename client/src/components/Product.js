@@ -10,7 +10,6 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: 'white',
     minHeight: '13rem',
     maxHeight: '13rem',
-    minWidth: '55rem',
     maxWidth: '55rem',
     display: 'flex',
   },
@@ -38,6 +37,9 @@ const useStyles = makeStyles(theme => ({
     fontSize: '1.8rem',
     fontWeight: theme.typography.fontWeightBold,
   },
+  fontColor: {
+    color: 'black',
+  },
 }));
 
 function Product(props) {
@@ -52,7 +54,7 @@ function Product(props) {
         <img src={imgUrl} alt="ProductImage" className={classes.image} />
       </Box>
       <Box className={classes.info}>
-        <Typography variant="h6">
+        <Typography variant="body1" className={classes.fontColor}>
           {name.length > 78 ? abbreviatedName : name}
         </Typography>
         <Typography className={classes.link} variant="body2">
