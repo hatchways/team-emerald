@@ -24,7 +24,7 @@ import SocketClient from './components/SocketClient';
 
 import { authenticateUser } from './actions/auth';
 import { getNotifications } from './actions/notifications';
-import { POST_AUTH, GET_NOTIFICATIONS } from './actions/types';
+import { POST_AUTH } from './actions/types';
 
 import { createLoadingSelector } from './reducers/loading';
 
@@ -78,7 +78,7 @@ App.propTypes = {
   loading: PropTypes.bool.isRequired,
 };
 
-const loadingSelector = createLoadingSelector([POST_AUTH, GET_NOTIFICATIONS]);
+const loadingSelector = createLoadingSelector([POST_AUTH]);
 
 const mapStateToProps = state => ({
   loading: loadingSelector(state),
