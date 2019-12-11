@@ -29,7 +29,7 @@ export const getNotifications = () => async (dispatch, getState) => {
     dispatch({
       type: GET_NOTIFICATIONS_FAILURE,
       payload: {
-        error: err.response.data.error,
+        error: err.response ? err.response.data.error : err.message,
       },
     });
   }
