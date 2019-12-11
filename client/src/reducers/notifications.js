@@ -1,4 +1,7 @@
-import { GET_NOTIFICATIONS_SUCCESS } from '../actions/types';
+import {
+  GET_NOTIFICATIONS_SUCCESS,
+  CLEAR_NOTIFICATIONS,
+} from '../actions/types';
 
 const initialState = {
   notifications: [],
@@ -12,6 +15,8 @@ export default function(state = initialState, action) {
         ...state,
         notifications: payload.notifications,
       };
+    case CLEAR_NOTIFICATIONS:
+      return initialState;
     default:
       return state;
   }

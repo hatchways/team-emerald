@@ -75,6 +75,8 @@ export const GET_NOTIFICATIONS_FAILURE = createFailureActionType(
 );
 export const GET_NOTIFICATIONS_CLEAR = createClearActionType(GET_NOTIFICATIONS);
 
+export const CLEAR_NOTIFICATIONS = 'CLEAR_NOTIFICATIONS';
+
 // product
 
 export const ADD_PRODUCT = 'ADD_PRODUCT';
