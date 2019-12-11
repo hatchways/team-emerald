@@ -38,13 +38,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-/* TODO: Connect Notifications component to redux to control when the dot appears, and retrieve price changes */
 function Notifications(props) {
   const classes = useStyles(props);
   const [anchorEl, setAnchorEl] = useState(null);
   const [arrowRef, setArrowRef] = useState(null);
 
   const history = useHistory();
+
+  const { notifications } = props;
 
   const handleClick = event => {
     const { isAuthenticated } = props;
@@ -63,7 +64,7 @@ function Notifications(props) {
   const id = open ? 'transitions-popper' : undefined;
 
   return (
-    <Badge badgeContent={4} color="secondary" variant="dot">
+    <Badge badgeContent={notifications.length} color="secondary" variant="dot">
       <Button onClick={handleClick} className={classes.notificationButton}>
         Notifications
       </Button>
@@ -103,10 +104,12 @@ function Notifications(props) {
 
 Notifications.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
+  notifications: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
+  notifications: state.notification.notifications,
 });
 
 export default connect(mapStateToProps)(Notifications);
