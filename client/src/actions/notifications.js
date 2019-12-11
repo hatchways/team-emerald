@@ -14,6 +14,9 @@ export const getNotifications = () => async (dispatch, getState) => {
       type: GET_NOTIFICATIONS_REQUEST,
     });
 
+    if (!auth.user) {
+      throw new Error('Not authenticated');
+    }
     const res = await axios.get(`api/v1/users/${auth.user.id}/notifications`);
 
     dispatch({
