@@ -6,9 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { Link } from 'react-router-dom';
 
-// eslint-disable-next-line no-unused-vars
 import { getFollows, clearGetFollowsErrors } from '../../actions/follows';
-import { getPeople, clearGetPeopleErrors } from '../../actions/discover';
 
 import FollowButton from '../FollowButton';
 
@@ -55,37 +53,17 @@ function FolloweeListItem({ name, photoUrl, id, classes }) {
 
 function FolloweesList(props) {
   // eslint-disable-next-line no-shadow
-  const {
-    user,
-    discover,
-    // getFollows,
-    // clearGetFollowsErrors,
-
-    // eslint-disable-next-line no-shadow
-    getPeople,
-    // eslint-disable-next-line no-shadow
-    clearGetPeopleErrors,
-  } = props;
+  const { user, discover, getFollows, clearGetFollowsErrors } = props;
   const classes = useStyles();
 
-  // const followees = Object.values(discover).filter(person => person.isFollowed);
-
-  const followees = Object.values(discover);
+  const followees = Object.values(discover).filter(person => person.isFollowed);
 
   useEffect(() => {
     if (!user) return;
 
-    clearGetPeopleErrors();
-    getPeople(user.id);
-  }, [clearGetPeopleErrors, getPeople, user]);
-
-  // useEffect(() => {
-  //   if (!user) return;
-
-  //   clearGetFollowsErrors();
-  //   getFollows(user.id);
-  // }, [user, getFollows, clearGetFollowsErrors]);
-
+    clearGetFollowsErrors();
+    getFollows(user.id);
+  }, [user, getFollows, clearGetFollowsErrors]);
   return (
     <Container maxWidth="lg">
       {followees.map(person => (
@@ -108,10 +86,8 @@ FolloweesList.propTypes = {
   user: PropTypes.object.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   discover: PropTypes.object.isRequired,
-  // getFollows: PropTypes.func.isRequired,
-  // clearGetFollowsErrors: PropTypes.func.isRequired,
-  getPeople: PropTypes.func.isRequired,
-  clearGetPeopleErrors: PropTypes.func.isRequired,
+  getFollows: PropTypes.func.isRequired,
+  clearGetFollowsErrors: PropTypes.func.isRequired,
 };
 
 const mapSateToProps = state => ({
@@ -120,10 +96,8 @@ const mapSateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  // getFollows,
-  // clearGetFollowsErrors,
-  getPeople,
-  clearGetPeopleErrors,
+  getFollows,
+  clearGetFollowsErrors,
 };
 
 export default connect(mapSateToProps, mapDispatchToProps)(FolloweesList);

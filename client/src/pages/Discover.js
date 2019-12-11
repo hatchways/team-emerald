@@ -2,13 +2,13 @@
 import React from 'react';
 import { Toolbar } from '@material-ui/core';
 
-import FolloweesList from '../components/Follows/FolloweesList';
+import DiscoveredUsersList from '../components/Discover/DiscoveredUsersList';
 
 function Follows() {
   return (
     <div id="Follows">
       <Toolbar />
-      <FolloweesList />
+      <DiscoveredUsersList />
     </div>
   );
 }

@@ -3,13 +3,15 @@
     "_id": "5dde4dc1532ccb37ffcc1ee9",
     "name": "John Doe",
     "email": "johndoe@gmail.com",
-    "password": "123456"
+    "password": "123456",
+    "photoUrl": "https://image.shutterstock.com/image-vector/businessman-character-avatar-icon-260nw-519895501.jpg"
   },
   {
     "_id": "5dde93a10f92c354511e013a",
     "name": "Jane Doe",
     "email": "janedoe@gmail.com",
-    "password": "123456"
+    "password": "123456",
+    "photoUrl": "https://image.shutterstock.com/image-vector/smiling-girl-avatar-cute-woman-260nw-1018322197.jpg"
   },
   {
     "_id": "5dde93d90f92c354511e013b",
@@ -28,6 +30,6 @@
     "name": "Victor",
     "email": "victor@gmail.com",
     "password": "123456",
-    "photoUrl": "https://cdn.shopify.com/s/files/1/0843/2781/products/derp_copy_large.png"
+    "photoUrl": ""
   }
 ]
