@@ -50,7 +50,7 @@ function NavLinks() {
             variant="body2"
             className={classes.linkText}
           >
-            Follows
+            Friends
           </Typography>
         </NavLink>
         <Notifications />
