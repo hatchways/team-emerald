@@ -115,7 +115,7 @@ const deleteFollow = asyncHandler(async (req, res, next) => {
     .select('followee');
 
   if (!follow) {
-    return next(new ErrorResponse(`Follow does not exist`, 404));
+    return next(new ErrorResponse(`Follow does not exist`, 400));
   }
 
   await follow.remove();
@@ -128,7 +128,7 @@ const deleteFollow = asyncHandler(async (req, res, next) => {
  * @apiGroup follows
  * @apiPermission protected
  *
- * @apiDescription Update the follow status on user with userId
+ * @apiDescription Update the follow status on user with userId.
  */
 const updateFollow = asyncHandler(async (req, res, next) => {
   const { action } = req.query;

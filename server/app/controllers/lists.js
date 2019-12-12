@@ -14,16 +14,16 @@ const { upload } = require('../services/aws-s3/aws-s3');
 // eslint-disable-next-line no-unused-vars
 const getLists = asyncHandler(async (req, res, next) => {
   const { userId } = req.params;
-  // const user = req.user.toJSON();
+  const user = req.user.toJSON();
 
-  // if (user.id !== userId) {
-  //   return next(
-  //     new ErrorResponse(
-  //       `User with id ${user.id} not authorized to get lists`,
-  //       401,
-  //     ),
-  //   );
-  // }
+  if (user.id !== userId) {
+    return next(
+      new ErrorResponse(
+        `User with id ${user.id} not authorized to get lists`,
+        401,
+      ),
+    );
+  }
 
   const lists = await List.find({ followers: userId })
     .select('-followers')
@@ -39,7 +39,7 @@ const getLists = asyncHandler(async (req, res, next) => {
  * @api {get} api/v1/users/:userId/lists/:listId
  * @apiName getList
  * @apiGroup lists
- * @apiPermission none
+ * @apiPermission protected
  *
  * @apiDescription Get one list for the user
  */

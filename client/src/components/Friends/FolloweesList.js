@@ -110,8 +110,12 @@ function FolloweesList(props) {
   useEffect(() => {
     if (!user) return;
 
+    // getFollows fetch all of the user's followees
     clearGetFollowsErrors();
     getFollows(user.id);
+
+    // getPeople fetches all the users in the db.
+    // TO DO: fetch suggested users instead
     clearGetPeopleErrors();
     getPeople(user.id);
   }, [

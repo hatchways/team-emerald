@@ -19,6 +19,7 @@ import {
   GET_PUBLICPROFILE_FOLLOWS_CLEAR,
 } from './types';
 
+// The option is for viewing a followee's followees and followers. To be implemented later.
 export const getFollows = (userId, options = {}) => async dispatch => {
   const { publicProfile } = options;
 

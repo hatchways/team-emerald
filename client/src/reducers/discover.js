@@ -6,6 +6,8 @@ import {
   GET_PUBLICPROFILE_USER_SUCCESS,
 } from '../actions/types';
 
+// Stores all the visited public profile. TO DO: mechanism to remove some
+// profiles when too many
 const initialState = {};
 
 function normalizeFollowees(follows) {
@@ -29,6 +31,7 @@ function normalizePeopleAndApplyFollows(discover, follows) {
   );
 }
 
+// Merge collection of followees to profiles already stored under `discover`
 function mergeFolloweesArrayToPeople(discover, follows) {
   return Object.assign(
     {},
