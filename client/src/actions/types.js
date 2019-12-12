@@ -75,6 +75,18 @@ export const GET_NOTIFICATIONS_FAILURE = createFailureActionType(
 );
 export const GET_NOTIFICATIONS_CLEAR = createClearActionType(GET_NOTIFICATIONS);
 
+export const PUT_NOTIFICATIONS = 'PUT_NOTIFICATIONS';
+export const PUT_NOTIFICATIONS_REQUEST = createRequestActionType(
+  PUT_NOTIFICATIONS,
+);
+export const PUT_NOTIFICATIONS_SUCCESS = createSuccessActionType(
+  PUT_NOTIFICATIONS,
+);
+export const PUT_NOTIFICATIONS_FAILURE = createFailureActionType(
+  PUT_NOTIFICATIONS,
+);
+export const PUT_NOTIFICATIONS_CLEAR = createClearActionType(PUT_NOTIFICATIONS);
+
 export const CLEAR_NOTIFICATIONS = 'CLEAR_NOTIFICATIONS';
 
 // product

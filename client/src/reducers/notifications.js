@@ -1,5 +1,6 @@
 import {
   GET_NOTIFICATIONS_SUCCESS,
+  PUT_NOTIFICATIONS_SUCCESS,
   CLEAR_NOTIFICATIONS,
 } from '../actions/types';
 
@@ -14,6 +15,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         notifications: payload.notifications,
+      };
+    case PUT_NOTIFICATIONS_SUCCESS:
+      return {
+        ...state,
+        notifications: state.notifications.filter(
+          notification => notification.id !== payload.notificationId,
+        ),
       };
     case CLEAR_NOTIFICATIONS:
       return initialState;

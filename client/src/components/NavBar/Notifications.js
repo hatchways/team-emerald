@@ -6,6 +6,9 @@ import { Badge, Box, Button, Popper, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Product from '../Product';
+import CloseIconButton from '../CloseIconButton';
+
+import { putNotifications } from '../../actions/notifications';
 
 const useStyles = makeStyles(theme => ({
   notificationButton: {
@@ -47,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function mapNotificationsToItems(notifications) {
+function mapNotificationsToItems(notifications, dismissNotification) {
   return notifications.map(notification => {
     const {
       id,
@@ -56,7 +59,7 @@ function mapNotificationsToItems(notifications) {
       previousPrice,
     } = notification;
     return (
-      <Box key={id}>
+      <Box key={id} display="flex">
         <Product
           name={name}
           link={link}
@@ -64,6 +67,9 @@ function mapNotificationsToItems(notifications) {
           currentPrice={currentPrice}
           previousPrice={previousPrice}
         />
+        <Box position="relative">
+          <CloseIconButton handleClose={() => dismissNotification(id)} />
+        </Box>
       </Box>
     );
   });
@@ -76,7 +82,7 @@ function Notifications(props) {
 
   const history = useHistory();
 
-  const { notifications } = props;
+  const { notifications, dismissNotification } = props;
 
   const handleClick = event => {
     const { isAuthenticated } = props;
@@ -125,8 +131,10 @@ function Notifications(props) {
           // onMouseOut={() => setAnchorEl(null)}
           // onBlur={() => setAnchorEl(null)}
         >
-          <Typography className={classes.newPrice}>new price!</Typography>
-          {mapNotificationsToItems(notifications)}
+          {!!notifications.length && (
+            <Typography className={classes.newPrice}>new price!</Typography>
+          )}
+          {mapNotificationsToItems(notifications, dismissNotification)}
         </Box>
       </Popper>
     </Badge>
@@ -136,6 +144,7 @@ function Notifications(props) {
 Notifications.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   notifications: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dismissNotification: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -143,4 +152,8 @@ const mapStateToProps = state => ({
   notifications: state.notification.notifications,
 });
 
-export default connect(mapStateToProps)(Notifications);
+const mapDispatchToProps = {
+  dismissNotification: putNotifications,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Notifications);

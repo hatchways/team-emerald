@@ -39,7 +39,7 @@ const getNotifications = asyncHandler(async (req, res, next) => {
 });
 
 /**
- * @api {get} /api/v1/users/:userId/notifications/notificationId
+ * @api {put} /api/v1/users/:userId/notifications/notificationId
  * @apiName dismissNotification
  * @apiGroup notifications
  * @apiPermission protected
