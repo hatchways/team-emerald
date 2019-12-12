@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
 function ListDetailsDialog(props) {
   const classes = useStyles(props);
 
-  const { open, handleClose, handleOpenAddItem, list } = props;
+  const { open, handleClose, handleOpenAddItem, list, isPublic } = props;
 
   return (
     <Dialog
@@ -63,14 +63,23 @@ function ListDetailsDialog(props) {
         </Typography>
       </DialogTitle>
       <Box display="flex" flexDirection="column" alignItems="center">
-        {list && <ListofProducts products={list.products} listId={list.id} />}
-        <ThemeButton
-          text="add new item"
-          padding="2rem 3rem"
-          width="26rem"
-          height="6.3rem"
-          handleClick={handleOpenAddItem}
-        />
+        {list && (
+          <ListofProducts
+            products={list.products}
+            listId={list.id}
+            isPublic={isPublic}
+          />
+        )}
+
+        {isPublic ? null : (
+          <ThemeButton
+            text="add new item"
+            padding="2rem 3rem"
+            width="26rem"
+            height="6.3rem"
+            handleClick={handleOpenAddItem}
+          />
+        )}
       </Box>
     </Dialog>
   );
@@ -91,6 +100,11 @@ ListDetailsDialog.propTypes = {
     creator: PropTypes.string,
     products: PropTypes.arrayOf(PropTypes.object),
   }),
+  isPublic: PropTypes.bool,
+};
+
+ListDetailsDialog.defaultProps = {
+  isPublic: false,
 };
 
 export default ListDetailsDialog;

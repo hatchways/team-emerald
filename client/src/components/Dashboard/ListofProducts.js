@@ -31,33 +31,34 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function mapProductsToList(listId, products, handleRemove, classes) {
-  return products.map(product => {
-    const { id, name, link, imageUrl, currentPrice, previousPrice } = product;
-    return (
-      <Box className={classes.box} key={id}>
-        <Product
-          name={name}
-          link={link}
-          imgUrl={imageUrl}
-          currentPrice={currentPrice}
-          previousPrice={previousPrice}
-        />
-        <RemoveButton
-          text="remove"
-          width="10rem"
-          height="4rem"
-          handleClick={() => handleRemove(listId, id)}
-        />
-      </Box>
-    );
-  });
-}
-
 function ListOfProducts(props) {
   const classes = useStyles(props);
+  const { listId, products, handleRemove, isPublic } = props;
 
-  const { listId, products, handleRemove } = props;
+  function mapProductsToList() {
+    return products.map(product => {
+      const { id, name, link, imageUrl, currentPrice, previousPrice } = product;
+      return (
+        <Box className={classes.box} key={id}>
+          <Product
+            name={name}
+            link={link}
+            imgUrl={imageUrl}
+            currentPrice={currentPrice}
+            previousPrice={previousPrice}
+          />
+          {isPublic ? null : (
+            <RemoveButton
+              text="remove"
+              width="10rem"
+              height="4rem"
+              handleClick={() => handleRemove(listId, id)}
+            />
+          )}
+        </Box>
+      );
+    });
+  }
 
   return (
     <Paper className={classes.paper}>
@@ -70,6 +71,11 @@ ListOfProducts.propTypes = {
   listId: PropTypes.string.isRequired,
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
   handleRemove: PropTypes.func.isRequired,
+  isPublic: PropTypes.bool,
+};
+
+ListOfProducts.defaultProps = {
+  isPublic: false,
 };
 
 const mapDispatchToProps = {
