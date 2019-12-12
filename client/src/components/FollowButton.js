@@ -24,10 +24,14 @@ function FollowButton(props) {
   const classes = useStyles();
 
   // eslint-disable-next-line no-shadow
-  const { userId, discover, createFollow, deleteFollow } = props;
+  const { ownId, userId, discover, createFollow, deleteFollow } = props;
 
   const clickToFollow = () => createFollow(userId);
   const clickToUnfollow = () => deleteFollow(userId);
+
+  if (ownId === userId) {
+    return null;
+  }
 
   return discover[userId] && discover[userId].isFollowed ? (
     <Button
@@ -57,6 +61,7 @@ function FollowButton(props) {
 }
 
 FollowButton.propTypes = {
+  ownId: PropTypes.string.isRequired,
   userId: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   discover: PropTypes.object.isRequired,
@@ -65,6 +70,7 @@ FollowButton.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  ownId: state.auth.user ? state.auth.user.id : '',
   discover: state.discover,
 });
 
