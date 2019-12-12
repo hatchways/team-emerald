@@ -32,9 +32,9 @@ function FollowButton(props) {
   return discover[userId] && discover[userId].isFollowed ? (
     <Button
       disableRipple
-      size="medium"
-      variant="outlined"
-      color="secondary"
+      size="large"
+      variant="contained"
+      color="primary"
       disabled={discover[userId] === undefined}
       classes={classes}
       onClick={clickToUnfollow}
@@ -44,9 +44,9 @@ function FollowButton(props) {
   ) : (
     <Button
       disableRipple
-      size="medium"
+      size="large"
       variant="outlined"
-      color="primary"
+      color="default"
       disabled={discover[userId] === undefined}
       classes={classes}
       onClick={clickToFollow}
