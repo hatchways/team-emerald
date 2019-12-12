@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { Badge, Box, Button, Popper } from '@material-ui/core';
+import { Badge, Box, Button, Popper, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
+import Product from '../Product';
+import CloseIconButton from '../CloseIconButton';
+
+import { putNotifications } from '../../actions/notifications';
 
 const useStyles = makeStyles(theme => ({
   notificationButton: {
@@ -17,9 +22,16 @@ const useStyles = makeStyles(theme => ({
   },
   notificationContent: {
     borderTop: '.5rem solid black',
-    padding: theme.spacing(1),
-    width: '50rem',
+    padding: theme.spacing(3),
+    width: '60rem',
     backgroundColor: theme.palette.background.paper,
+  },
+  newPrice: {
+    marginTop: '1rem',
+    marginBottom: '1rem',
+    fontSize: '1.8rem',
+    textTransform: 'capitalize',
+    color: 'black',
   },
   arrow: {
     fontSize: '.5rem',
@@ -38,13 +50,39 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-/* TODO: Connect Notifications component to redux to control when the dot appears, and retrieve price changes */
+function mapNotificationsToItems(notifications, dismissNotification) {
+  return notifications.map(notification => {
+    const {
+      id,
+      product: { imageUrl, name, link },
+      currentPrice,
+      previousPrice,
+    } = notification;
+    return (
+      <Box key={id} display="flex">
+        <Product
+          name={name}
+          link={link}
+          imgUrl={imageUrl}
+          currentPrice={currentPrice}
+          previousPrice={previousPrice}
+        />
+        <Box position="relative">
+          <CloseIconButton handleClose={() => dismissNotification(id)} />
+        </Box>
+      </Box>
+    );
+  });
+}
+
 function Notifications(props) {
   const classes = useStyles(props);
   const [anchorEl, setAnchorEl] = useState(null);
   const [arrowRef, setArrowRef] = useState(null);
 
   const history = useHistory();
+
+  const { notifications, dismissNotification } = props;
 
   const handleClick = event => {
     const { isAuthenticated } = props;
@@ -63,7 +101,7 @@ function Notifications(props) {
   const id = open ? 'transitions-popper' : undefined;
 
   return (
-    <Badge badgeContent={4} color="secondary" variant="dot">
+    <Badge badgeContent={notifications.length} color="secondary" variant="dot">
       <Button onClick={handleClick} className={classes.notificationButton}>
         Notifications
       </Button>
@@ -90,11 +128,13 @@ function Notifications(props) {
         <Box className={classes.arrow} ref={handleArrowRef} />
         <Box
           className={classes.notificationContent}
-          onMouseOut={() => setAnchorEl(null)}
-          onBlur={() => setAnchorEl(null)}
+          // onMouseOut={() => setAnchorEl(null)}
+          // onBlur={() => setAnchorEl(null)}
         >
-          {/* TODO: RENDER NOTIFICATION CARDS */}
-          Content of Notifications
+          {!!notifications.length && (
+            <Typography className={classes.newPrice}>new price!</Typography>
+          )}
+          {mapNotificationsToItems(notifications, dismissNotification)}
         </Box>
       </Popper>
     </Badge>
@@ -103,10 +143,17 @@ function Notifications(props) {
 
 Notifications.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
+  notifications: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dismissNotification: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
+  notifications: state.notification.notifications,
 });
 
-export default connect(mapStateToProps)(Notifications);
+const mapDispatchToProps = {
+  dismissNotification: putNotifications,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Notifications);

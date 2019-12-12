@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,8 +14,6 @@ import {
 } from '@material-ui/core';
 
 import CreateList from '../CreateList/CreateList';
-import ListDetailsDialog from './ListDetailsDialog';
-import AddItemDialog from './AddItemDialog';
 
 import { getLists, clearGetListsErrors } from '../../actions/lists';
 import { GET_LISTS } from '../../actions/types';
@@ -44,12 +42,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function mapListsToCards(shoppingLists, classes, handleOpenList) {
+function mapListsToCards(shoppingLists, classes, handleClickOpenList) {
   return shoppingLists.map(sl => (
     <Card key={sl.id}>
       <CardActionArea
         className={classes.cardActionArea}
-        onClick={() => handleOpenList(sl)}
+        onClick={() => handleClickOpenList(sl)}
       >
         <CardMedia
           component="img"
@@ -72,29 +70,17 @@ function mapListsToCards(shoppingLists, classes, handleOpenList) {
 
 function Shoppinglists(props) {
   const classes = useStyles(props);
-  const [openList, setOpenList] = useState(false);
-  const [openAddItem, setOpenAddItem] = useState(false);
-  const [listToDisplay, setListToDisplay] = useState(null);
 
-  const handleClickOpenList = list => {
-    setOpenList(true);
-    setListToDisplay(list);
-  };
-
-  const handleCloseList = () => {
-    setOpenList(false);
-  };
-
-  const handleClickOpenAddItem = () => {
-    setOpenAddItem(true);
-  };
-
-  const handleCloseAddItem = () => {
-    setOpenAddItem(false);
-  };
-
-  // eslint-disable-next-line no-unused-vars, no-shadow
-  const { getLists, clearErrors, error, lists, loading } = props;
+  const {
+    getLists, // eslint-disable-line no-shadow
+    clearErrors,
+    error, // eslint-disable-line no-unused-vars
+    lists,
+    loading,
+    handleClickOpenList,
+    listToDisplay,
+    setListToDisplay,
+  } = props;
 
   useEffect(() => {
     clearErrors(); // Clear previous errors when the component mounts
@@ -105,7 +91,7 @@ function Shoppinglists(props) {
     if (listToDisplay) {
       setListToDisplay(lists.find(list => list.id === listToDisplay.id));
     }
-  }, [listToDisplay, lists]);
+  }, [listToDisplay, setListToDisplay, lists]);
 
   return (
     <Container className={classes.root}>
@@ -120,16 +106,6 @@ function Shoppinglists(props) {
           <div className={classes.cardContainer}>
             {mapListsToCards(lists, classes, handleClickOpenList)}
             <CreateList />
-            <ListDetailsDialog
-              open={openList}
-              handleClose={handleCloseList}
-              handleOpenAddItem={handleClickOpenAddItem}
-              list={listToDisplay}
-            />
-            <AddItemDialog
-              open={openAddItem}
-              handleClose={handleCloseAddItem}
-            />
           </div>
         </Box>
       )}
@@ -137,12 +113,25 @@ function Shoppinglists(props) {
   );
 }
 
+Shoppinglists.defaultProps = {
+  listToDisplay: null,
+};
+
 Shoppinglists.propTypes = {
   getLists: PropTypes.func.isRequired,
   clearErrors: PropTypes.func.isRequired,
   error: PropTypes.string.isRequired,
   lists: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
+  handleClickOpenList: PropTypes.func.isRequired,
+  listToDisplay: PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+    coverUrl: PropTypes.string,
+    creator: PropTypes.string,
+    products: PropTypes.arrayOf(PropTypes.object),
+  }),
+  setListToDisplay: PropTypes.func.isRequired,
 };
 
 const errorSelector = createErrorMessageSelector([GET_LISTS]);

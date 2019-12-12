@@ -24,10 +24,10 @@ import SignInDialog from './components/SignIn/SignInDialog';
 import SocketClient from './components/SocketClient';
 
 import { authenticateUser } from './actions/auth';
+import { getNotifications } from './actions/notifications';
+import { POST_AUTH } from './actions/types';
 
 import { createLoadingSelector } from './reducers/loading';
-
-import { POST_AUTH } from './actions/types';
 
 const styles = () => ({
   '@global': {
@@ -39,10 +39,15 @@ const styles = () => ({
   },
 });
 
-function App({ loadUser, loading }) {
+function App({ loadUser, loadNotifications, loading }) {
   useEffect(() => {
-    loadUser();
-  }, [loadUser]);
+    async function load() {
+      await loadUser();
+      await loadNotifications();
+    }
+
+    load();
+  }, [loadUser, loadNotifications]);
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -75,6 +80,7 @@ function App({ loadUser, loading }) {
 
 App.propTypes = {
   loadUser: PropTypes.func.isRequired,
+  loadNotifications: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
 };
 
@@ -86,6 +92,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   loadUser: authenticateUser,
+  loadNotifications: getNotifications,
 };
 
 export default connect(

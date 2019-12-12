@@ -61,6 +61,34 @@ export const POST_LIST_SUCCESS = createSuccessActionType(POST_LIST);
 export const POST_LIST_FAILURE = createFailureActionType(POST_LIST);
 export const POST_LIST_CLEAR = createClearActionType(POST_LIST);
 
+// notification
+
+export const GET_NOTIFICATIONS = 'GET_NOTIFICATIONS';
+export const GET_NOTIFICATIONS_REQUEST = createRequestActionType(
+  GET_NOTIFICATIONS,
+);
+export const GET_NOTIFICATIONS_SUCCESS = createSuccessActionType(
+  GET_NOTIFICATIONS,
+);
+export const GET_NOTIFICATIONS_FAILURE = createFailureActionType(
+  GET_NOTIFICATIONS,
+);
+export const GET_NOTIFICATIONS_CLEAR = createClearActionType(GET_NOTIFICATIONS);
+
+export const PUT_NOTIFICATIONS = 'PUT_NOTIFICATIONS';
+export const PUT_NOTIFICATIONS_REQUEST = createRequestActionType(
+  PUT_NOTIFICATIONS,
+);
+export const PUT_NOTIFICATIONS_SUCCESS = createSuccessActionType(
+  PUT_NOTIFICATIONS,
+);
+export const PUT_NOTIFICATIONS_FAILURE = createFailureActionType(
+  PUT_NOTIFICATIONS,
+);
+export const PUT_NOTIFICATIONS_CLEAR = createClearActionType(PUT_NOTIFICATIONS);
+
+export const CLEAR_NOTIFICATIONS = 'CLEAR_NOTIFICATIONS';
+
 // product
 
 export const ADD_PRODUCT = 'ADD_PRODUCT';

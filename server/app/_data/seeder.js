@@ -9,7 +9,9 @@ dotenv.config({
 });
 
 // Load models
+const Follow = require('../models/Follow');
 const List = require('../models/List');
+const Notification = require('../models/Notification');
 const Product = require('../models/Product');
 const User = require('../models/User');
 
@@ -33,9 +35,11 @@ const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`, 'utf-8'));
 // Import data into database
 const importData = async () => {
   try {
-    await List.create(lists);
-    await Product.create(products);
-    await User.create(users);
+    await Promise.all([
+      List.create(lists),
+      Product.create(products),
+      User.create(users),
+    ]);
     console.log('Data Imported...'.green.inverse);
     process.exit();
   } catch (error) {
@@ -46,9 +50,13 @@ const importData = async () => {
 // Delete data from database
 const deleteData = async () => {
   try {
-    await List.deleteMany();
-    await Product.deleteMany();
-    await User.deleteMany();
+    await Promise.all([
+      Follow.deleteMany(),
+      List.deleteMany(),
+      Notification.deleteMany(),
+      Product.deleteMany(),
+      User.deleteMany(),
+    ]);
     console.log('Data Destroyed...'.red.inverse);
     process.exit();
   } catch (error) {
