@@ -14,7 +14,7 @@ import theme from './themes/theme';
 
 import LandingPage from './pages/Landing';
 import Dashboard from './pages/Dashboard';
-import Friends from './pages/Friends';
+import Follows from './pages/Follows';
 import PublicProfile from './pages/PublicProfile';
 
 import NavBar from './components/NavBar/NavBar';
@@ -57,7 +57,7 @@ function App({ loadUser, loading }) {
           <Switch>
             <Route path="/" component={LandingPage} exact />
             <PrivateRoute path="/shoppinglists" component={Dashboard} exact />
-            <PrivateRoute path="/follows" component={Friends} exact />
+            <PrivateRoute path="/follows" component={Follows} exact />
             <PrivateRoute
               path="/public/:userId"
               component={PublicProfile}

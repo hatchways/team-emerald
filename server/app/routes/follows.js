@@ -4,7 +4,6 @@ const {
   getFollows,
   createFollow,
   deleteFollow,
-  updateFollow,
 } = require('../controllers/follows');
 
 // protect checks for authenticated users
@@ -19,7 +18,6 @@ router.route('/').get(getFollows);
 router
   .route('/:userId')
   .post(protect, createFollow)
-  .delete(protect, deleteFollow)
-  .put(protect, updateFollow);
+  .delete(protect, deleteFollow);
 
 module.exports = router;

@@ -58,7 +58,7 @@ export const createFollow = userId => async dispatch => {
       type: CREATE_FOLLOW_REQUEST,
     });
 
-    const res = await axios.put(`/api/v1/follows/${userId}?action=follow`);
+    const res = await axios.post(`/api/v1/follows/${userId}`);
 
     if (res.data.success) {
       dispatch({
@@ -73,6 +73,7 @@ export const createFollow = userId => async dispatch => {
         error: err.response.data.error,
       },
     });
+    dispatch(getFollows(userId));
   }
 };
 
@@ -82,7 +83,7 @@ export const deleteFollow = userId => async dispatch => {
       type: DELETE_FOLLOW_REQUEST,
     });
 
-    const res = await axios.put(`/api/v1/follows/${userId}?action=unfollow`);
+    const res = await axios.delete(`/api/v1/follows/${userId}`);
     if (res.data.success) {
       dispatch({
         type: DELETE_FOLLOW_SUCCESS,
@@ -96,6 +97,7 @@ export const deleteFollow = userId => async dispatch => {
         error: err.response.data.error,
       },
     });
+    dispatch(getFollows(userId));
   }
 };
 
