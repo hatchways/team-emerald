@@ -7,6 +7,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Product from '../Product';
 import RemoveButton from './RemoveButton';
 import { removeProductFromList } from '../../actions/products';
+import {
+  setProductDetails,
+  openProductDetailsDialog,
+} from '../../actions/product-details';
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -28,36 +32,59 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     justifyContent: 'space-between',
     margin: '0 0 3rem 0',
+    '&:hover': {
+      opacity: '.75',
+      cursor: 'pointer',
+    },
   },
 }));
-
-function mapProductsToList(listId, products, handleRemove, classes) {
-  return products.map(product => {
-    const { id, name, link, imageUrl, currentPrice, previousPrice } = product;
-    return (
-      <Box className={classes.box} key={id}>
-        <Product
-          name={name}
-          link={link}
-          imgUrl={imageUrl}
-          currentPrice={currentPrice}
-          previousPrice={previousPrice}
-        />
-        <RemoveButton
-          text="remove"
-          width="10rem"
-          height="4rem"
-          handleClick={() => handleRemove(listId, id)}
-        />
-      </Box>
-    );
-  });
-}
 
 function ListOfProducts(props) {
   const classes = useStyles(props);
 
-  const { listId, products, handleRemove } = props;
+  /* eslint-disable no-shadow */
+  const {
+    listId,
+    products,
+    handleRemove,
+    isPublic,
+    setProductDetails,
+    openProductDetailsDialog,
+  } = props;
+
+  const handleClick = product => {
+    openProductDetailsDialog();
+    setProductDetails(product);
+  };
+
+  function mapProductsToList() {
+    return products.map(product => {
+      const { id, name, link, imageUrl, currentPrice, previousPrice } = product;
+      return (
+        <Box
+          className={classes.box}
+          key={id}
+          onClick={() => handleClick(product)}
+        >
+          <Product
+            name={name}
+            link={link}
+            imgUrl={imageUrl}
+            currentPrice={currentPrice}
+            previousPrice={previousPrice}
+          />
+          {isPublic ? null : (
+            <RemoveButton
+              text="remove"
+              width="10rem"
+              height="4rem"
+              handleClick={() => handleRemove(listId, id)}
+            />
+          )}
+        </Box>
+      );
+    });
+  }
 
   return (
     <Paper className={classes.paper}>
@@ -70,10 +97,19 @@ ListOfProducts.propTypes = {
   listId: PropTypes.string.isRequired,
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
   handleRemove: PropTypes.func.isRequired,
+  setProductDetails: PropTypes.func.isRequired,
+  openProductDetailsDialog: PropTypes.func.isRequired,
+  isPublic: PropTypes.bool,
+};
+
+ListOfProducts.defaultProps = {
+  isPublic: false,
 };
 
 const mapDispatchToProps = {
   handleRemove: removeProductFromList,
+  setProductDetails,
+  openProductDetailsDialog,
 };
 
 export default connect(null, mapDispatchToProps)(ListOfProducts);

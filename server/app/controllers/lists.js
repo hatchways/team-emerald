@@ -1,8 +1,6 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const List = require('../models/List');
-// eslint-disable-next-line no-unused-vars
-const Product = require('../models/Product');
 const { upload } = require('../services/aws-s3/aws-s3');
 
 /**

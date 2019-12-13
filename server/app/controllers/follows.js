@@ -35,6 +35,15 @@ const getFollows = asyncHandler(async (req, res, next) => {
 });
 
 /**
+ * @api {get} /api/v1/users/:userId/follows
+ * @apiName getFollows
+ * @apiGroup follows
+ * @apiPermission public
+ *
+ * @apiDescription Get the user's following
+ */
+
+/**
  * @api {post} /api/v1/follows/:userId
  * @apiName createFollow
  * @apiGroup follows

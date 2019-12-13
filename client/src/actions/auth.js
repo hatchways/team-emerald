@@ -13,6 +13,7 @@ import {
   POST_LOGIN_FAILURE,
   POST_LOGIN_CLEAR,
   LOGOUT,
+  CLEAR_NOTIFICATIONS,
 } from './types';
 
 // Authenticate user - determines whether or not the user is
@@ -116,6 +117,7 @@ export const logout = () => async dispatch => {
     // If a user deletes his/her token and attempts to logout, it should reset the state
     dispatch({ type: LOGOUT });
   }
+  dispatch({ type: CLEAR_NOTIFICATIONS });
 };
 
 export const clearLoginErrors = () => async dispatch => {

@@ -1,7 +1,37 @@
+const { ObjectId } = require('mongoose').Types;
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const User = require('../models/User');
+const Follow = require('../models/Follow');
 const { upload } = require('../services/aws-s3/aws-s3');
+
+/**
+ * @api {get} /api/v1/users
+ * @apiName getAllUsers
+ * @apiGroup users
+ * @apiPermission protected
+ *
+ * @apiDescription Get all users in db. Development only.
+ */
+const getAllUsers = asyncHandler(async (req, res, next) => {
+  const userId = req.user ? req.user.id : '';
+
+  try {
+    const usersOutput = await User.find();
+    const users = usersOutput.map(person => {
+      const json = person.toJSON();
+      delete json.email;
+      return json;
+    });
+
+    const followsOutput = await Follow.find({ follower: ObjectId(userId) });
+    const follows = followsOutput.map(follow => follow.toJSON());
+
+    return res.status(200).json({ users, follows });
+  } catch (err) {
+    return next(new ErrorResponse('Bad Request', 400));
+  }
+});
 
 /**
  * @api {put} /api/v1/users/:userId/profile-image
@@ -70,4 +100,5 @@ const updateProfileImage = asyncHandler(async (req, res, next) => {
 
 module.exports = {
   updateProfileImage,
+  getAllUsers,
 };

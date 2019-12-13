@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import ThemeButton from '../ThemeButton';
 import { login, clearLoginErrors } from '../../actions/auth';
+import { getNotifications } from '../../actions/notifications';
 import { POST_LOGIN } from '../../actions/types';
 
 import { createLoadingSelector } from '../../reducers/loading';
@@ -39,6 +40,7 @@ function SignInForm({
   isAuthenticated,
   error,
   loginUser,
+  loadNotifications,
   loading,
   clearErrors,
 }) {
@@ -57,14 +59,15 @@ function SignInForm({
     return <Redirect to={from.pathname} />;
   }
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
     const formData = {
       email,
       password,
     };
 
-    loginUser(formData);
+    await loginUser(formData);
+    await loadNotifications();
   };
 
   return (
@@ -117,6 +120,7 @@ SignInForm.propTypes = {
   clearErrors: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   loginUser: PropTypes.func.isRequired,
+  loadNotifications: PropTypes.func.isRequired,
 };
 
 /* The errorSelector and loadingSelector are used to get the error and loading
@@ -135,6 +139,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   loginUser: login,
+  loadNotifications: getNotifications,
   clearErrors: clearLoginErrors,
 };
 

@@ -6,6 +6,7 @@ const listsRouter = require('./lists');
 const notificationsRouter = require('./notifications');
 const productsRouter = require('./products');
 const usersRouter = require('./users');
+const publicProfilesRouter = require('./public-profiles');
 
 const router = express();
 
@@ -15,5 +16,6 @@ router.use('/lists', listsRouter);
 router.use('/notifications', notificationsRouter);
 router.use('/users', usersRouter);
 router.use('/products', productsRouter);
+router.use('/public', publicProfilesRouter);
 
 module.exports = router;
