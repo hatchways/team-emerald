@@ -87,12 +87,13 @@ function ListDetailsDialog(props) {
 
 ListDetailsDialog.defaultProps = {
   list: null,
+  handleOpenAddItem: null,
 };
 
 ListDetailsDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  handleOpenAddItem: PropTypes.func.isRequired,
+  handleOpenAddItem: PropTypes.func,
   list: PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string,
