@@ -21,6 +21,7 @@ import NavBar from './components/NavBar/NavBar';
 import PrivateRoute from './components/routing/PrivateRoute';
 import SignUpDialog from './components/SignUp/SignUpDialog';
 import SignInDialog from './components/SignIn/SignInDialog';
+import ProductDetailsDialog from './components/ProductDetails/ProductDetailsDialog';
 import SocketClient from './components/SocketClient';
 
 import { authenticateUser } from './actions/auth';
@@ -72,6 +73,7 @@ function App({ loadUser, loadNotifications, loading }) {
             <Route path="/register" component={SignUpDialog} exact />
           </Switch>
         )}
+        <ProductDetailsDialog />
       </BrowserRouter>
       <SocketClient />
     </MuiThemeProvider>
