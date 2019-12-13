@@ -9,6 +9,10 @@ import Product from '../Product';
 import CloseIconButton from '../CloseIconButton';
 
 import { putNotifications } from '../../actions/notifications';
+import {
+  setProductDetails,
+  openProductDetailsDialog,
+} from '../../actions/product-details';
 
 const useStyles = makeStyles(theme => ({
   notificationButton: {
@@ -48,32 +52,13 @@ const useStyles = makeStyles(theme => ({
       borderBottom: '.6rem solid black',
     },
   },
+  box: {
+    '&:hover': {
+      opacity: '.75',
+      cursor: 'pointer',
+    },
+  },
 }));
-
-function mapNotificationsToItems(notifications, dismissNotification) {
-  return notifications.map(notification => {
-    const {
-      id,
-      product: { imageUrl, name, link },
-      currentPrice,
-      previousPrice,
-    } = notification;
-    return (
-      <Box key={id} display="flex">
-        <Product
-          name={name}
-          link={link}
-          imgUrl={imageUrl}
-          currentPrice={currentPrice}
-          previousPrice={previousPrice}
-        />
-        <Box position="relative">
-          <CloseIconButton handleClose={() => dismissNotification(id)} />
-        </Box>
-      </Box>
-    );
-  });
-}
 
 function Notifications(props) {
   const classes = useStyles(props);
@@ -82,7 +67,58 @@ function Notifications(props) {
 
   const history = useHistory();
 
-  const { notifications, dismissNotification } = props;
+  /* eslint-disable no-shadow */
+  const {
+    notifications,
+    dismissNotification,
+    setProductDetails,
+    openProductDetailsDialog,
+  } = props;
+
+  const handleBoxClick = product => {
+    openProductDetailsDialog();
+    setProductDetails(product);
+  };
+
+  function mapNotificationsToItems() {
+    return notifications.map(notification => {
+      const {
+        id,
+        product: { imageUrl, name, link },
+        currentPrice,
+        previousPrice,
+      } = notification;
+      return (
+        <Box key={id} display="flex">
+          <Box
+            className={classes.box}
+            onClick={
+              () =>
+                handleBoxClick({
+                  name,
+                  imageUrl,
+                  link,
+                  currentPrice,
+                  previousPrice,
+                })
+              // eslint-disable-next-line react/jsx-curly-newline
+            }
+          >
+            <Product
+              name={name}
+              link={link}
+              imgUrl={imageUrl}
+              currentPrice={currentPrice}
+              previousPrice={previousPrice}
+            />
+          </Box>
+          <Box position="relative">
+            <CloseIconButton handleClose={() => dismissNotification(id)} />
+          </Box>
+        </Box>
+      );
+    });
+  }
 
   const handleClick = event => {
     const { isAuthenticated } = props;
@@ -145,6 +181,8 @@ Notifications.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   notifications: PropTypes.arrayOf(PropTypes.object).isRequired,
   dismissNotification: PropTypes.func.isRequired,
+  setProductDetails: PropTypes.func.isRequired,
+  openProductDetailsDialog: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -154,6 +192,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   dismissNotification: putNotifications,
+  setProductDetails,
+  openProductDetailsDialog,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notifications);
