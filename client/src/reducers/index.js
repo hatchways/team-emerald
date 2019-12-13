@@ -7,6 +7,7 @@ import loading from './loading';
 import notification from './notifications';
 import publicProfile from './public-profile';
 import discover from './discover';
+import productDetails from './product-details';
 
 export default combineReducers({
   auth,
@@ -16,4 +17,5 @@ export default combineReducers({
   discover,
   loading,
   notification,
+  productDetails,
 });

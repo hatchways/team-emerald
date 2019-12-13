@@ -173,3 +173,10 @@ export const GET_PEOPLE_REQUEST = createRequestActionType(GET_PEOPLE);
 export const GET_PEOPLE_SUCCESS = createSuccessActionType(GET_PEOPLE);
 export const GET_PEOPLE_FAILURE = createFailureActionType(GET_PEOPLE);
 export const GET_PEOPLE_CLEAR = createClearActionType(GET_PEOPLE);
+
+// product details dialog
+
+export const OPEN_PRODUCT_DETAILS_DIALOG = 'OPEN_PRODUCT_DETAILS_DIALOG';
+export const CLOSE_PRODUCT_DETAILS_DIALOG = 'CLOSE_PRODUCT_DETAILS_DIALOG';
+export const SET_PRODUCT_DETAILS = 'SET_PRODUCT_DETAILS';
+export const CLEAR_PRODUCT_DETAILS = 'CLEAR_PRODUCT_DETAILS';
