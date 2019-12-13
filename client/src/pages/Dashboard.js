@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Toolbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AddItemForm from '../components/Dashboard/AddItemForm';
@@ -12,14 +13,20 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Dashboard() {
+export default function Dashboard(props) {
   const classes = useStyles();
-
+  const { handleClickOpenProductDetails } = props;
   return (
     <div id="Dashboard" className={classes.dashboard}>
       <Toolbar />
       <AddItemForm />
-      <ShoppingLists />
+      <ShoppingLists
+        handleClickOpenProductDetails={handleClickOpenProductDetails}
+      />
     </div>
   );
 }
+
+Dashboard.propTypes = {
+  handleClickOpenProductDetails: PropTypes.func.isRequired,
+};

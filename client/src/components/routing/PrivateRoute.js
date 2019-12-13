@@ -19,7 +19,7 @@ const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
           }}
         />
       ) : (
-        <Component {...props} />
+        <Component {...props} {...rest} />
       )}
   />
 );

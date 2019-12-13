@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
@@ -27,6 +27,7 @@ import { authenticateUser } from './actions/auth';
 import { createLoadingSelector } from './reducers/loading';
 
 import { POST_AUTH } from './actions/types';
+import ProductDetailsDialog from './components/ProductDetails/ProductDetailsDialog';
 
 const styles = () => ({
   '@global': {
@@ -39,6 +40,18 @@ const styles = () => ({
 });
 
 function App({ loadUser, loading }) {
+  const [openProductDetails, setOpenProductDetails] = useState(false);
+  const [product, setProduct] = useState(null);
+
+  const handleClickOpenProductDetails = productDetails => {
+    setOpenProductDetails(true);
+    setProduct(productDetails);
+  };
+
+  const handleCloseProductDetails = () => {
+    setOpenProductDetails(false);
+  };
+
   useEffect(() => {
     loadUser();
   }, [loadUser]);
@@ -55,11 +68,24 @@ function App({ loadUser, loading }) {
         ) : (
           <Switch>
             <Route path="/" component={LandingPage} exact />
-            <PrivateRoute path="/shoppinglists" component={Dashboard} exact />
+            <PrivateRoute
+              path="/shoppinglists"
+              component={Dashboard}
+              handleClickOpenProductDetails={handleClickOpenProductDetails}
+              exact
+            />
             <PrivateRoute path="/follows" component={Follows} exact />
             <Route path="/login" component={SignInDialog} exact />
             <Route path="/register" component={SignUpDialog} exact />
           </Switch>
+        )}
+        {/* {console.log(product)} */}
+        {product && (
+          <ProductDetailsDialog
+            open={openProductDetails}
+            handleClose={handleCloseProductDetails}
+            product={product}
+          />
         )}
       </BrowserRouter>
       <SocketClient />

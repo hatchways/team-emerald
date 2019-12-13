@@ -93,8 +93,15 @@ function Shoppinglists(props) {
     setOpenAddItem(false);
   };
 
-  // eslint-disable-next-line no-unused-vars, no-shadow
-  const { getLists, clearErrors, error, lists, loading } = props;
+  /* eslint-disable no-unused-vars, no-shadow */
+  const {
+    getLists,
+    clearErrors,
+    error,
+    lists,
+    loading,
+    handleClickOpenProductDetails,
+  } = props;
 
   useEffect(() => {
     clearErrors(); // Clear previous errors when the component mounts
@@ -125,6 +132,7 @@ function Shoppinglists(props) {
               handleClose={handleCloseList}
               handleOpenAddItem={handleClickOpenAddItem}
               list={listToDisplay}
+              handleClickOpenProductDetails={handleClickOpenProductDetails}
             />
             <AddItemDialog
               open={openAddItem}
@@ -143,6 +151,7 @@ Shoppinglists.propTypes = {
   error: PropTypes.string.isRequired,
   lists: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
+  handleClickOpenProductDetails: PropTypes.func.isRequired,
 };
 
 const errorSelector = createErrorMessageSelector([GET_LISTS]);

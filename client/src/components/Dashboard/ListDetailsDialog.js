@@ -35,7 +35,13 @@ const useStyles = makeStyles(() => ({
 function ListDetailsDialog(props) {
   const classes = useStyles(props);
 
-  const { open, handleClose, handleOpenAddItem, list } = props;
+  const {
+    open,
+    handleClose,
+    handleOpenAddItem,
+    list,
+    handleClickOpenProductDetails,
+  } = props;
 
   return (
     <Dialog
@@ -63,7 +69,13 @@ function ListDetailsDialog(props) {
         </Typography>
       </DialogTitle>
       <Box display="flex" flexDirection="column" alignItems="center">
-        {list && <ListofProducts products={list.products} listId={list.id} />}
+        {list && (
+          <ListofProducts
+            products={list.products}
+            listId={list.id}
+            handleClickOpenProductDetails={handleClickOpenProductDetails}
+          />
+        )}
         <ThemeButton
           text="add new item"
           padding="2rem 3rem"
@@ -84,6 +96,7 @@ ListDetailsDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   handleOpenAddItem: PropTypes.func.isRequired,
+  handleClickOpenProductDetails: PropTypes.func.isRequired,
   list: PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string,

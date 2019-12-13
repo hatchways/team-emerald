@@ -31,11 +31,22 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function mapProductsToList(listId, products, handleRemove, classes) {
+function mapProductsToList(
+  listId,
+  products,
+  handleRemove,
+  classes,
+  handleClickOpenProductDetails,
+) {
   return products.map(product => {
     const { id, name, link, imageUrl, currentPrice, previousPrice } = product;
+
     return (
-      <Box className={classes.box} key={id}>
+      <Box
+        className={classes.box}
+        key={id}
+        onClick={() => handleClickOpenProductDetails(product)}
+      >
         <Product
           name={name}
           link={link}
@@ -57,11 +68,22 @@ function mapProductsToList(listId, products, handleRemove, classes) {
 function ListOfProducts(props) {
   const classes = useStyles(props);
 
-  const { listId, products, handleRemove } = props;
+  const {
+    listId,
+    products,
+    handleRemove,
+    handleClickOpenProductDetails,
+  } = props;
 
   return (
     <Paper className={classes.paper}>
-      {mapProductsToList(listId, products, handleRemove, classes)}
+      {mapProductsToList(
+        listId,
+        products,
+        handleRemove,
+        classes,
+        handleClickOpenProductDetails,
+      )}
     </Paper>
   );
 }
@@ -70,6 +92,7 @@ ListOfProducts.propTypes = {
   listId: PropTypes.string.isRequired,
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
   handleRemove: PropTypes.func.isRequired,
+  handleClickOpenProductDetails: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
