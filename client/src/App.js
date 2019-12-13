@@ -22,6 +22,7 @@ import PrivateRoute from './components/routing/PrivateRoute';
 import SignUpDialog from './components/SignUp/SignUpDialog';
 import SignInDialog from './components/SignIn/SignInDialog';
 import ProductDetailsDialog from './components/ProductDetails/ProductDetailsDialog';
+
 import SocketClient from './components/SocketClient';
 
 import { authenticateUser } from './actions/auth';
@@ -61,7 +62,7 @@ function App({ loadUser, loadNotifications, loading }) {
           </Box>
         ) : (
           <Switch>
-            <Route path="/" component={LandingPage} />
+            <Route path="/" component={LandingPage} exact />
             <PrivateRoute path="/shoppinglists" component={Dashboard} exact />
             <PrivateRoute path="/follows" component={Follows} exact />
             <PrivateRoute
@@ -69,8 +70,26 @@ function App({ loadUser, loadNotifications, loading }) {
               component={PublicProfile}
               exact
             />
-            <Route path="/login" component={SignInDialog} exact />
-            <Route path="/register" component={SignUpDialog} exact />
+            <Route
+              path="/login"
+              render={() => (
+                <>
+                  <LandingPage />
+                  <SignInDialog />
+                </>
+              )}
+              exact
+            />
+            <Route
+              path="/register"
+              render={() => (
+                <>
+                  <LandingPage />
+                  <SignUpDialog />
+                </>
+              )}
+              exact
+            />
           </Switch>
         )}
         <ProductDetailsDialog />

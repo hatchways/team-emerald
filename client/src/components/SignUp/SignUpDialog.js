@@ -44,49 +44,47 @@ const SignUpDialog = props => {
   };
 
   return (
-    <>
-      <div>
-        <Dialog
-          open
-          classes={{ paper: classes.dialogPaper }}
-          disableBackdropClick
-          fullWidth
-          onEscapeKeyDown={handleClose}
-        >
-          <DialogActions>
-            <CloseIconButton handleClose={handleClose} />
-          </DialogActions>
+    <div>
+      <Dialog
+        open
+        classes={{ paper: classes.dialogPaper }}
+        disableBackdropClick
+        fullWidth
+        onEscapeKeyDown={handleClose}
+      >
+        <DialogActions>
+          <CloseIconButton handleClose={handleClose} />
+        </DialogActions>
 
-          <DialogTitle className={classes.alignCenter}>
-            <Typography variant="h5" component="div">
-              Sign Up
-            </Typography>
-          </DialogTitle>
-
-          <SignUpForm className={classes.form} />
-
-          <Divider className={classes.dividerRoot} />
-
-          <Typography variant="h6" align="center">
-            Already a member?&nbsp;
-            <Link
-              component={linkToLogin}
-              to={{
-                pathname: '/login',
-                state: {
-                  from: {
-                    pathname:
-                      (location.state && location.state.from.pathname) || '/',
-                  },
-                },
-              }}
-            >
-              Sign In
-            </Link>
+        <DialogTitle className={classes.alignCenter}>
+          <Typography variant="h5" component="div">
+            Sign Up
           </Typography>
-        </Dialog>
-      </div>
-    </>
+        </DialogTitle>
+
+        <SignUpForm className={classes.form} />
+
+        <Divider className={classes.dividerRoot} />
+
+        <Typography variant="h6" align="center">
+          Already a member?&nbsp;
+          <Link
+            component={linkToLogin}
+            to={{
+              pathname: '/login',
+              state: {
+                from: {
+                  pathname:
+                    (location.state && location.state.from.pathname) || '/',
+                },
+              },
+            }}
+          >
+            Sign In
+          </Link>
+        </Typography>
+      </Dialog>
+    </div>
   );
 };
 

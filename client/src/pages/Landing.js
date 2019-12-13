@@ -1,19 +1,32 @@
-/* eslint-disable no-console */
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 
-import SignUpDialog from '../components/SignUp/SignUpDialog';
-import SignInDialog from '../components/SignIn/SignInDialog';
+const backgroundImage = `${process.env.PUBLIC_URL}/assets/photo-1516274626895-055a99214f08.jpeg`;
 
-function LandingPage({ match }) {
-  const backgroundImage = `${process.env.PUBLIC_URL}/assets/photo-1516274626895-055a99214f08.jpeg`;
-  console.log(match);
+const useStyles = makeStyles(() => ({
+  root: {
+    /* Set rules to fill background */
+    minHeight: '100%',
+    minWidth: '102.4rem',
+
+    /* Set up proportionate scaling */
+    width: '100%',
+    height: 'auto',
+
+    /* Set up positioning */
+    position: 'fixed',
+    top: 0,
+    left: 0,
+  },
+}));
+
+function LandingPage() {
+  const classes = useStyles();
+
   return (
-    <>
-      <img src={backgroundImage} alt="landingImage" className="landingImg" />
-      <Route path="/login" component={SignInDialog} exact />
-      <Route path="/register" component={SignUpDialog} exact />
-    </>
+    <div>
+      <img src={backgroundImage} alt="landing page" className={classes.root} />
+    </div>
   );
 }
 

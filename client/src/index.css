@@ -5,17 +5,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-y: hidden
+  overflow-y: hidden;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-.landingImg {
-  min-width: 100vw;
-  max-height: calc(100vw - 100px);
-  overflow: scroll;
-  margin-top: -200px;
 }
