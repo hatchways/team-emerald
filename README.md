@@ -1,10 +1,8 @@
 
 ## Deals Mate  
 
-<div style="display:flex;justify-content:space-around;">
-  <img src="./screenshots/screenshot_0.png" alt="screenshot" style="width:45%;" />
-  <img src="./screenshots/screenshot_1.png" alt="screenshot" style="width:45%;" />
-</div>
+  <img src="./screenshots/screenshot_0.png" alt="screenshot" style="max-width:400px;margin:10px;" />
+  <img src="./screenshots/screenshot_1.png" alt="screenshot" style="max-width:400px;margin:10px;" />
 
 <i>Deals Mate</i> helps online shoppers keep track of their shopping lists and stay tuned to any price change. Shoppers can also check out each others' lists for any good deals.
 
