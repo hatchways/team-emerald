@@ -57,7 +57,7 @@ app.use(mongoSanitize());
 app.use(expressFileUpload());
 
 // Set static folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'client', 'build', 'public')));
 
 // API routes
 app.use('/api/v1', indexRouter);
