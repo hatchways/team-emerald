@@ -43,7 +43,7 @@
     "mongoose": "^5.7.11",
     "morgan": "^1.9.1",
     "puppeteer": "^2.0.0",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.0",
     "socket.io-client": "^2.3.0",
     "user-agents": "^1.0.452",
     "uuid": "^3.3.3",
