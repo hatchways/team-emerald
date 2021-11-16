@@ -24,7 +24,7 @@
 },
   "root": true,
   "dependencies": {
-    "aws-sdk": "^2.578.0",
+    "aws-sdk": "^2.814.0",
     "bcryptjs": "^2.4.3",
     "bull": "^3.12.1",
     "colors": "^1.4.0",
